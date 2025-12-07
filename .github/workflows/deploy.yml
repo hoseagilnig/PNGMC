@@ -1,0 +1,26 @@
+name: Auto Deploy to InfinityFree
+
+# Trigger this workflow every time you push to main
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  ftp-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout your repository
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # Step 2: Deploy via FTP using secrets
+      - name: FTP Deploy
+        uses: SamKirkland/FTP-Deploy-Action@4.4.0
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./      # upload all project files
+          server-dir: /htdocs/  # InfinityFree web root
