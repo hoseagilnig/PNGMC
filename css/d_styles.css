@@ -1,0 +1,320 @@
+/* Dashboard styles for Admin, Finance, and Student Services
+   Matches color scheme used in sms2.html (primary blue #1d4e89, dark #163c6a,
+   light background #e6f0fa, header bg #f8f9fa). */
+
+:root{
+  --primary: #1d4e89;
+  --primary-dark: #163c6a;
+  --muted: #f8f9fa;
+  /* Sidebar background: slightly darker blue than --primary but not too dark */
+  --sidebar-bg: #234e7a;
+  --light-bleed: #e6f0fa;
+  --text: #333;
+  --card-bg: #ffffff;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial, Helvetica, sans-serif}
+
+body{background:linear-gradient(to bottom,var(--card-bg) 0%, var(--light-bleed) 100%);color:var(--text);min-height:100vh;display:flex;flex-direction:column}
+
+/* Header */
+header{display:flex;justify-content:space-between;align-items:center;padding:18px 36px;background-color:var(--muted);box-shadow:0 2px 6px rgba(0,0,0,0.06);}
+.logo{display:flex;align-items:center;font-weight:700;color:var(--primary);font-size:1.25rem}
+.logo-img{height:40px;margin-right:10px}
+
+.user-info{font-size:0.95rem;color:#222}
+.user-info a{color:var(--primary-dark);text-decoration:none;margin-left:8px}
+
+.container{max-width:1100px;margin:28px auto;padding:20px;width:calc(100% - 40px)}
+
+.dashboard-grid{display:grid;grid-template-columns:1fr 320px;gap:24px;align-items:start}
+
+.main-card{background:var(--card-bg);padding:22px;border-radius:10px;box-shadow:0 6px 18px rgba(15,30,60,0.06)}
+.welcome{margin-bottom:14px}
+.welcome h1{color:var(--primary);font-size:1.6rem}
+.welcome p{color:#444}
+
+.quick-links ul{list-style:none;margin-top:12px}
+.quick-links li{padding:8px 0}
+.quick-links a{color:var(--primary);text-decoration:none;font-weight:600}
+.quick-links a:hover{color:var(--primary-dark)}
+
+.side-card{background:var(--card-bg);padding:18px;border-radius:10px;box-shadow:0 6px 18px rgba(15,30,60,0.04)}
+.side-card h3{color:var(--primary);margin-bottom:10px}
+.stat-row{display:flex;gap:12px;flex-wrap:wrap}
+.stat{flex:1 1 140px;background:linear-gradient(180deg,#fff,#f6fbff);padding:12px;border-radius:8px;border:1px solid rgba(29,78,137,0.06);text-align:center}
+.stat .num{font-size:1.4rem;color:var(--primary);font-weight:700}
+.stat .label{font-size:0.85rem;color:#556}
+
+.cta-btn{display:inline-block;padding:10px 14px;background:var(--primary);color:#fff;border-radius:6px;text-decoration:none;font-weight:700;border:none;cursor:pointer}
+.cta-btn:hover{background:var(--primary-dark)}
+
+/* Responsive: stack columns */
+@media (max-width:900px){
+  .dashboard-grid{grid-template-columns:1fr;}
+  header{padding:14px 18px}
+  .container{margin:16px}
+}
+
+/* Small utilities */
+.muted{color:#666}
+.small{font-size:0.9rem}
+
+/* Quick table for future widgets */
+.data-table{width:100%;border-collapse:collapse;margin-top:12px}
+.data-table th,.data-table td{padding:10px;border-bottom:1px solid #eee;text-align:left}
+.data-table th{background:transparent;color:var(--primary);font-weight:700}
+
+/* Accessibility focus */
+a:focus, button:focus, input:focus{outline:3px solid rgba(29,78,137,0.12);outline-offset:2px}
+
+/* Small form styles used by dashboards */
+.form-row{display:flex;gap:10px;align-items:center}
+.form-row input, .form-row select{padding:8px;border-radius:6px;border:1px solid #ccc}
+
+/* Left sidebar navigation */
+.dashboard-wrap{display:flex;gap:24px;align-items:flex-start}
+.sidebar{width:220px;flex:0 0 220px;display:flex;flex-direction:column;gap:12px;padding:24px;background:var(--sidebar-bg);}
+.sidebar{position:fixed;top:0;left:0;height:100vh;border-right:1px solid rgba(0,0,0,0.06);}
+.sidebar .brand{display:flex;align-items:center;gap:10px;padding-bottom:6px}
+.sidebar .brand img{height:34px}
+.sidebar .menu{display:flex;flex-direction:column;gap:6px;margin-top:18px}
+.menu-section {
+    display: block;
+    padding: 8px 12px;
+    margin-top: 12px;
+    color: rgba(255,255,255,0.7);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+.menu-section:first-child {
+    margin-top: 0;
+    border-top: none;
+}
+.menu-item {
+    display: block;
+    padding: 10px 12px;
+    border-radius: 8px;
+    color: #f7fbff;
+    text-decoration: none;
+    font-weight: 700;
+}
+.menu-item:hover {
+    background: rgba(255,255,255,0.06);
+    color: #fff;
+}
+.menu-item.active {
+    background: var(--primary);
+    color: #fff;
+}
+.menu-item.logout{margin-top:auto;background:transparent;padding-top:14px;color:#fff}
+
+.sidebar .brand strong{color:#fff}
+.sidebar .brand img{filter:brightness(0) invert(1);opacity:0.95}
+
+/* Shift header and main content to the right of the fixed sidebar */
+body > header{margin-left:220px}
+.dashboard-wrap .content{margin-left:220px}
+
+/* If using container as a page-width wrapper, make sure it doesn't add extra left padding */
+.container{padding-left:0;padding-right:0}
+
+/* Mobile Menu Toggle Button */
+.menu-toggle {
+  display: none;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 8px;
+  margin-left: auto;
+  z-index: 1001;
+}
+
+.menu-toggle svg {
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
+}
+
+/* Responsive Breakpoints */
+
+/* Tablet (max-width: 1024px) */
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 200px;
+    flex: 0 0 200px;
+  }
+  body > header {
+    margin-left: 200px;
+  }
+  .dashboard-wrap .content {
+    margin-left: 200px;
+  }
+  header {
+    padding: 14px 24px;
+  }
+  .logo span {
+    font-size: 1rem;
+  }
+}
+
+/* Mobile and Small Tablets (max-width: 900px) */
+@media (max-width: 900px) {
+  /* Show hamburger menu */
+  .menu-toggle {
+    display: block;
+  }
+  
+  /* Header adjustments */
+  body > header {
+    margin-left: 0 !important;
+    padding: 12px 16px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: var(--muted);
+  }
+  
+  .logo span {
+    font-size: 0.9rem;
+    display: none;
+  }
+  
+  .user-info {
+    font-size: 0.85rem;
+  }
+  
+  .user-info .user-dropdown-trigger span:not(:last-child) {
+    display: none;
+  }
+  
+  /* Sidebar becomes overlay menu */
+  .dashboard-wrap {
+    flex-direction: column;
+    gap: 0;
+  }
+  
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: -220px;
+    width: 220px;
+    height: 100vh;
+    z-index: 1002;
+    transition: left 0.3s ease;
+    overflow-y: auto;
+    flex-direction: column;
+    padding: 20px;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+  }
+  
+  .sidebar.open {
+    left: 0;
+  }
+  
+  .sidebar .menu {
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 18px;
+    flex-wrap: nowrap;
+  }
+  
+  .menu-section {
+    margin-top: 12px;
+    padding: 8px 12px;
+  }
+  
+  .menu-item {
+    padding: 12px;
+    white-space: nowrap;
+    font-size: 0.9rem;
+  }
+  
+  .menu-item.logout {
+    margin-top: auto;
+    margin-left: 0;
+  }
+  
+  /* Content adjustments */
+  .dashboard-wrap .content {
+    margin-left: 0 !important;
+    width: 100%;
+    padding: 16px;
+  }
+  
+  .container {
+    padding-left: 16px;
+    padding-right: 16px;
+    width: 100%;
+    margin: 16px auto;
+  }
+  
+  /* Overlay when menu is open */
+  .sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 1001;
+  }
+  
+  .sidebar-overlay.active {
+    display: block;
+  }
+}
+
+/* Small Mobile (max-width: 480px) */
+@media (max-width: 480px) {
+  header {
+    padding: 10px 12px;
+  }
+  
+  .logo-img {
+    height: 32px;
+  }
+  
+  .user-info {
+    font-size: 0.8rem;
+  }
+  
+  .sidebar {
+    width: 100%;
+    left: -100%;
+  }
+  
+  .sidebar.open {
+    left: 0;
+  }
+  
+  .menu-item {
+    padding: 14px 12px;
+    font-size: 0.95rem;
+  }
+  
+  .dashboard-wrap .content {
+    padding: 12px;
+  }
+  
+  .container {
+    padding-left: 12px;
+    padding-right: 12px;
+    margin: 12px auto;
+  }
+  
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .main-card {
+    padding: 16px;
+  }
+}

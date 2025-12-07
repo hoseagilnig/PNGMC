@@ -1,0 +1,408 @@
+<?php
+/**
+ * Clear All Application Data
+ * This script will delete all application records and related data
+ * 
+ * WARNING: This will permanently delete all applications and related data!
+ * 
+ * Access via: http://localhost/sms2/database/clear_all_applications.php
+ */
+
+require_once __DIR__ . '/../pages/includes/db_config.php';
+
+$message = '';
+$message_type = '';
+$deleted_counts = [];
+$executed = false;
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_delete'])) {
+    $conn = getDBConnection();
+    
+    if (!$conn) {
+        $message = "Database connection failed!";
+        $message_type = "error";
+    } else {
+        // Disable foreign key checks temporarily to avoid constraint issues
+        $conn->query("SET FOREIGN_KEY_CHECKS = 0");
+        
+        try {
+            // Get counts before deletion for reporting
+            $counts = [];
+            
+            // Count records in each table
+            $tables_to_clear = [
+                'applications' => 'applications',
+                'application_documents' => 'application_documents',
+                'mandatory_checks' => 'mandatory_checks',
+                'correspondence' => 'correspondence',
+                'application_notes' => 'application_notes',
+                'continuing_student_requirements' => 'continuing_student_requirements',
+                'workflow_actions' => 'workflow_actions',
+                'workflow_notifications' => 'workflow_notifications WHERE application_id IS NOT NULL'
+            ];
+            
+            foreach ($tables_to_clear as $table_name => $table_query) {
+                $count_result = $conn->query("SELECT COUNT(*) as count FROM $table_query");
+                if ($count_result) {
+                    $counts[$table_name] = $count_result->fetch_assoc()['count'];
+                }
+            }
+            
+            // Delete workflow notifications linked to applications
+            $result = $conn->query("DELETE FROM workflow_notifications WHERE application_id IS NOT NULL");
+            $deleted_counts['workflow_notifications'] = $conn->affected_rows;
+            
+            // Delete workflow actions linked to applications
+            $result = $conn->query("DELETE FROM workflow_actions WHERE application_id IS NOT NULL");
+            $deleted_counts['workflow_actions'] = $conn->affected_rows;
+            
+            // Delete continuing student requirements (CASCADE should handle this, but doing explicitly)
+            $result = $conn->query("DELETE FROM continuing_student_requirements");
+            $deleted_counts['continuing_student_requirements'] = $conn->affected_rows;
+            
+            // Delete application notes (CASCADE should handle this, but doing explicitly)
+            $result = $conn->query("DELETE FROM application_notes");
+            $deleted_counts['application_notes'] = $conn->affected_rows;
+            
+            // Delete correspondence (CASCADE should handle this, but doing explicitly)
+            $result = $conn->query("DELETE FROM correspondence");
+            $deleted_counts['correspondence'] = $conn->affected_rows;
+            
+            // Delete mandatory checks (CASCADE should handle this, but doing explicitly)
+            $result = $conn->query("DELETE FROM mandatory_checks");
+            $deleted_counts['mandatory_checks'] = $conn->affected_rows;
+            
+            // Delete application documents (CASCADE should handle this, but doing explicitly)
+            $result = $conn->query("DELETE FROM application_documents");
+            $deleted_counts['application_documents'] = $conn->affected_rows;
+            
+            // Finally, delete all applications
+            $result = $conn->query("DELETE FROM applications");
+            $deleted_counts['applications'] = $conn->affected_rows;
+            
+            // Reset AUTO_INCREMENT for applications table
+            $conn->query("ALTER TABLE applications AUTO_INCREMENT = 1");
+            
+            // Re-enable foreign key checks
+            $conn->query("SET FOREIGN_KEY_CHECKS = 1");
+            
+            $message = "All application data has been successfully deleted!";
+            $message_type = "success";
+            $executed = true;
+            
+        } catch (Exception $e) {
+            // Re-enable foreign key checks even on error
+            $conn->query("SET FOREIGN_KEY_CHECKS = 1");
+            $message = "Error deleting data: " . $e->getMessage();
+            $message_type = "error";
+        }
+        
+        $conn->close();
+    }
+} else {
+    // Get current counts for display
+    $conn = getDBConnection();
+    if ($conn) {
+        $counts = [];
+        
+        $tables_to_check = [
+            'applications' => 'applications',
+            'application_documents' => 'application_documents',
+            'mandatory_checks' => 'mandatory_checks',
+            'correspondence' => 'correspondence',
+            'application_notes' => 'application_notes',
+            'continuing_student_requirements' => 'continuing_student_requirements',
+            'workflow_actions' => 'workflow_actions WHERE application_id IS NOT NULL',
+            'workflow_notifications' => 'workflow_notifications WHERE application_id IS NOT NULL'
+        ];
+        
+        foreach ($tables_to_check as $table_name => $table_query) {
+            $count_result = $conn->query("SELECT COUNT(*) as count FROM $table_query");
+            if ($count_result) {
+                $counts[$table_name] = $count_result->fetch_assoc()['count'];
+            } else {
+                $counts[$table_name] = 0;
+            }
+        }
+        
+        $conn->close();
+    }
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clear All Applications</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            max-width: 800px;
+            width: 100%;
+            padding: 40px;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 20px 0;
+            color: #856404;
+        }
+        
+        .warning strong {
+            color: #d9534f;
+            font-size: 18px;
+        }
+        
+        .info-box {
+            background: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        
+        .counts-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        .counts-table th,
+        .counts-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .counts-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .counts-table tr:hover {
+            background: #f5f5f5;
+        }
+        
+        .count-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .count-badge.zero {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .count-badge.has-data {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .message {
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        
+        .message.success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        
+        .message.error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 10px 5px;
+        }
+        
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+        
+        .form-group {
+            margin: 20px 0;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .form-group input[type="checkbox"] {
+            margin-right: 10px;
+            transform: scale(1.2);
+        }
+        
+        .deleted-summary {
+            background: #d1ecf1;
+            border-left: 4px solid #0c5460;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        
+        .deleted-summary h3 {
+            color: #0c5460;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🗑️ Clear All Application Data</h1>
+        
+        <?php if ($message): ?>
+            <div class="message <?php echo $message_type; ?>">
+                <?php echo htmlspecialchars($message); ?>
+            </div>
+        <?php endif; ?>
+        
+        <?php if ($executed && !empty($deleted_counts)): ?>
+            <div class="deleted-summary">
+                <h3>Deletion Summary:</h3>
+                <table class="counts-table">
+                    <tr>
+                        <th>Table</th>
+                        <th>Records Deleted</th>
+                    </tr>
+                    <?php foreach ($deleted_counts as $table => $count): ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars($table); ?></td>
+                            <td><span class="count-badge"><?php echo $count; ?></span></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </table>
+            </div>
+            <p style="margin-top: 20px;">
+                <a href="clear_all_applications.php" class="btn btn-secondary">Refresh</a>
+            </p>
+        <?php else: ?>
+            <div class="warning">
+                <strong>⚠️ WARNING:</strong> This action will permanently delete ALL application data including:
+                <ul style="margin: 10px 0 0 20px;">
+                    <li>All applications (new students and continuing students)</li>
+                    <li>All application documents</li>
+                    <li>All mandatory checks</li>
+                    <li>All correspondence records</li>
+                    <li>All application notes</li>
+                    <li>All continuing student requirements</li>
+                    <li>All workflow actions and notifications related to applications</li>
+                </ul>
+                <p style="margin-top: 10px;"><strong>This action cannot be undone!</strong></p>
+            </div>
+            
+            <div class="info-box">
+                <strong>Note:</strong> This will NOT delete:
+                <ul style="margin: 10px 0 0 20px;">
+                    <li>Staff user accounts</li>
+                    <li>System configuration</li>
+                    <li>Chatbot knowledge base</li>
+                    <li>Students that were already enrolled (if any)</li>
+                </ul>
+            </div>
+            
+            <?php if (isset($counts)): ?>
+                <h2 style="margin-top: 30px; color: #333;">Current Data Counts:</h2>
+                <table class="counts-table">
+                    <tr>
+                        <th>Table</th>
+                        <th>Current Records</th>
+                    </tr>
+                    <?php 
+                    $total_records = 0;
+                    foreach ($counts as $table => $count): 
+                        $total_records += $count;
+                    ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars($table); ?></td>
+                            <td>
+                                <span class="count-badge <?php echo $count > 0 ? 'has-data' : 'zero'; ?>">
+                                    <?php echo $count; ?> record(s)
+                                </span>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </table>
+                <p style="margin-top: 15px; font-weight: 600; color: #333;">
+                    Total records to be deleted: <strong><?php echo $total_records; ?></strong>
+                </p>
+            <?php endif; ?>
+            
+            <form method="POST" action="" style="margin-top: 30px;">
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" name="confirm_delete" required>
+                        I understand that this will permanently delete all application data and I want to proceed.
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you absolutely sure you want to delete ALL application data? This cannot be undone!');">
+                    🗑️ Delete All Application Data
+                </button>
+                <a href="../index.html" class="btn btn-secondary">Cancel</a>
+            </form>
+        <?php endif; ?>
+    </div>
+</body>
+</html>
+
