@@ -19,6 +19,11 @@ jobs:
           server: ${{ secrets.FTP_HOST }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./                
-          server-dir: ${{ secrets.FTP_PATH }}  
+          local-dir: ./
+          server-dir: ${{ secrets.FTP_PATH }}
+          protocol: ftps       # Force FTPS
+          port: 21            # Default FTP/FTPS port
+          passive: true       # Enable passive mode
+          secure: true        # Encrypt control channel
+
 
