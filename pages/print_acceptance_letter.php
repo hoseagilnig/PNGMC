@@ -12,32 +12,48 @@ $application = null;
 $invoice = null;
 
 if ($conn && $application_id) {
-    // Get application details
-    $result = $conn->query("SELECT a.*, u.full_name as hod_name 
+    // Get application details - using prepared statement
+    $stmt = $conn->prepare("SELECT a.*, u.full_name as hod_name 
         FROM applications a 
         LEFT JOIN users u ON a.hod_decision_by = u.user_id 
-        WHERE a.application_id = $application_id");
+        WHERE a.application_id = ?");
+    $stmt->bind_param("i", $application_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
     if ($result) {
         $application = $result->fetch_assoc();
     }
+    $stmt->close();
     
     // Get invoice if linked
     if ($application && $application['invoice_id']) {
-        $result = $conn->query("SELECT * FROM invoices WHERE invoice_id = {$application['invoice_id']}");
+        $invoice_id = intval($application['invoice_id']);
+        $stmt = $conn->prepare("SELECT * FROM invoices WHERE invoice_id = ?");
+        $stmt->bind_param("i", $invoice_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
         if ($result) {
             $invoice = $result->fetch_assoc();
         }
+        $stmt->close();
     }
     
     // Try to get proforma invoice if exists
     if (!$invoice && $application) {
         // Check if there's a proforma invoice linked via application number or student
-        $result = $conn->query("SELECT pi.* FROM proforma_invoices pi 
-            WHERE pi.student_name LIKE '%{$application['first_name']}%{$application['last_name']}%' 
+        $first_name = $application['first_name'];
+        $last_name = $application['last_name'];
+        $search_pattern = "%{$first_name}%{$last_name}%";
+        $stmt = $conn->prepare("SELECT pi.* FROM proforma_invoices pi 
+            WHERE pi.student_name LIKE ? 
             ORDER BY pi.pi_id DESC LIMIT 1");
+        $stmt->bind_param("s", $search_pattern);
+        $stmt->execute();
+        $result = $stmt->get_result();
         if ($result && $result->num_rows > 0) {
             $invoice = $result->fetch_assoc();
         }
+        $stmt->close();
     }
     
     // Don't close connection yet - we'll need it for program fee lookup
@@ -164,6 +180,9 @@ if (stripos($program, 'class 3') !== false) {
       @page {
         size: A4 portrait;
         margin: 1.5cm;
+        /* Remove browser headers and footers */
+        margin-header: 0;
+        margin-footer: 0;
       }
       body { 
         margin: 0; 
@@ -177,6 +196,15 @@ if (stripos($program, 'class 3') !== false) {
       }
       .page-break { 
         page-break-after: always; 
+      }
+      /* Hide any browser-added content */
+      @page {
+        @top-center { content: ""; }
+        @bottom-center { content: ""; }
+        @top-left { content: ""; }
+        @top-right { content: ""; }
+        @bottom-left { content: ""; }
+        @bottom-right { content: ""; }
       }
     }
     body {
@@ -302,7 +330,7 @@ if (stripos($program, 'class 3') !== false) {
 
   <div class="header">
     <div class="logo-left">
-      [LOGO]
+      <img src="../images/pnmc.png" alt="PNG Maritime College Logo" style="max-width: 100%; max-height: 100%; height: auto; width: auto;">
     </div>
     <div class="college-name">
       <h1>PAPUA NEW GUINEA MARITIME COLLEGE</h1>
@@ -313,7 +341,7 @@ if (stripos($program, 'class 3') !== false) {
       </div>
     </div>
     <div class="logo-right">
-      [LOGO]
+      <img src="../images/bird%20of%20paradise.png" alt="Papua New Guinea Emblem" style="max-width: 100%; max-height: 100%; height: auto; width: auto;">
     </div>
   </div>
 
@@ -431,6 +459,24 @@ if (stripos($program, 'class 3') !== false) {
       A/ PRINCIPAL
     </p>
   </div>
+
+  <script>
+    // Prevent browser from adding URL/date to print
+    window.onbeforeprint = function() {
+      // Remove any potential extra content
+      var noPrintElements = document.querySelectorAll('.no-print');
+      noPrintElements.forEach(function(el) {
+        el.style.display = 'none';
+      });
+    };
+    window.onafterprint = function() {
+      // Restore elements after printing
+      var noPrintElements = document.querySelectorAll('.no-print');
+      noPrintElements.forEach(function(el) {
+        el.style.display = '';
+      });
+    };
+  </script>
 </body>
 </html>
 

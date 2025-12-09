@@ -25,14 +25,15 @@ define('OPENAI_MAX_TOKENS', 500); // Maximum response length
 
 // Google Gemini Configuration
 // ⚠️ SECURITY: Use environment variable in production!
-// Priority: 1. Environment variable (.env), 2. System environment, 3. Fallback (for development only)
+// Priority: 1. Environment variable (.env), 2. System environment
+// ⚠️ SECURITY: No hardcoded fallback - must be set in .env file for production!
 $gemini_key = getEnvVar('GEMINI_API_KEY', '');
 if (empty($gemini_key)) {
     $gemini_key = getenv('GEMINI_API_KEY') ?: '';
 }
-// ⚠️ REMOVE THIS FALLBACK IN PRODUCTION!
-if (empty($gemini_key)) {
-    $gemini_key = 'AIzaSyD2DHnfmijjr2dn85B2S2VgBzLVUo8oPWY'; // TEMPORARY: Move to .env file!
+// Log warning if API key is not set (but don't expose in production)
+if (empty($gemini_key) && (defined('DEVELOPMENT_MODE') && DEVELOPMENT_MODE)) {
+    error_log('WARNING: GEMINI_API_KEY not set in environment variables');
 }
 define('GEMINI_API_KEY', $gemini_key);
 define('GEMINI_MODEL', 'gemini-pro'); // Model to use: 'gemini-pro' or 'gemini-1.5-flash'

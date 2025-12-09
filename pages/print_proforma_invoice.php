@@ -256,10 +256,18 @@ if (!$pi) {
     <a href="proforma_invoice_details.php?id=<?php echo $pi['pi_id']; ?>" class="btn">← Back to Details</a>
   </div>
 
-  <div class="header">
-    <h1>PROFORMA INVOICE</h1>
-    <p>PNG Maritime College</p>
-    <p>Updated Record of Student Throughout the Year</p>
+  <div class="header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+    <div style="flex: 0 0 auto;">
+      <img src="../images/pnmc.png" alt="PNG Maritime College Logo" style="max-height: 80px; max-width: 200px; height: auto;">
+    </div>
+    <div style="flex: 1; text-align: center;">
+      <h1>PROFORMA INVOICE</h1>
+      <p>PNG Maritime College</p>
+      <p>Updated Record of Student Throughout the Year</p>
+    </div>
+    <div style="flex: 0 0 auto;">
+      <img src="../images/bird%20of%20paradise.png" alt="Papua New Guinea Emblem" style="max-height: 80px; max-width: 200px; height: auto;">
+    </div>
   </div>
 
   <div class="invoice-info">

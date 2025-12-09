@@ -6,60 +6,88 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['role'] !== 'finance') {
 }
 require_once 'includes/menu_helper.php';
 require_once 'includes/db_config.php';
+require_once 'includes/archive_helper.php';
+require_once 'includes/security_helper.php';
 
 $message = '';
 $message_type = '';
 
 // Handle form submissions
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $conn = getDBConnection();
-    if ($conn) {
-        if (isset($_POST['action']) && $_POST['action'] === 'create') {
-            $student_id = $_POST['student_id'];
-            $invoice_date = $_POST['invoice_date'];
-            $due_date = $_POST['due_date'];
-            $description = $_POST['description'];
-            
-            // Get invoice prefix
-            $prefix_result = $conn->query("SELECT setting_value FROM system_settings WHERE setting_key = 'invoice_prefix'");
-            $prefix = $prefix_result ? $prefix_result->fetch_assoc()['setting_value'] : 'INV-';
-            
-            // Generate invoice number
-            $invoice_number = $prefix . date('Y') . '-' . str_pad(rand(1, 9999), 4, '0', STR_PAD_LEFT);
-            
-            // Calculate total from items
-            $total = 0;
-            if (isset($_POST['items'])) {
-                foreach ($_POST['items'] as $item) {
-                    $total += floatval($item['total_price']);
-                }
-            }
-            
-            $stmt = $conn->prepare("INSERT INTO invoices (invoice_number, student_id, invoice_date, due_date, total_amount, balance_amount, description, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-            $stmt->bind_param("sissdddi", $invoice_number, $student_id, $invoice_date, $due_date, $total, $total, $description, $_SESSION['user_id']);
-            
-            if ($stmt->execute()) {
-                $invoice_id = $conn->insert_id;
-                
-                // Insert invoice items
-                if (isset($_POST['items'])) {
-                    $item_stmt = $conn->prepare("INSERT INTO invoice_items (invoice_id, item_description, quantity, unit_price, total_price, item_type) VALUES (?, ?, ?, ?, ?, ?)");
-                    foreach ($_POST['items'] as $item) {
-                        $item_stmt->bind_param("isidds", $invoice_id, $item['description'], $item['quantity'], $item['unit_price'], $item['total_price'], $item['type']);
-                        $item_stmt->execute();
+    // Verify CSRF token
+    if (!isset($_POST['csrf_token']) || !verifyCSRFToken($_POST['csrf_token'])) {
+        $message = 'Invalid security token. Please refresh the page and try again.';
+        $message_type = "error";
+    } else {
+        $conn = getDBConnection();
+        if ($conn) {
+            if (isset($_POST['action']) && $_POST['action'] === 'archive') {
+                // Only admin can archive
+                if ($_SESSION['role'] === 'admin') {
+                    $invoice_id = intval($_POST['invoice_id']);
+                    $reason = trim($_POST['archive_reason'] ?? 'Manual archive');
+                    $notes = trim($_POST['archive_notes'] ?? '');
+                    
+                    $result = archiveInvoice($invoice_id, $_SESSION['user_id'], $reason, $notes);
+                    
+                    if ($result['success']) {
+                        $message = $result['message'];
+                        $message_type = "success";
+                    } else {
+                        $message = $result['message'];
+                        $message_type = "error";
                     }
-                    $item_stmt->close();
+                } else {
+                    $message = "Only administrators can archive invoices.";
+                    $message_type = "error";
+                }
+            } elseif (isset($_POST['action']) && $_POST['action'] === 'create') {
+                $student_id = $_POST['student_id'];
+                $invoice_date = $_POST['invoice_date'];
+                $due_date = $_POST['due_date'];
+                $description = $_POST['description'];
+                
+                // Get invoice prefix
+                $prefix_result = $conn->query("SELECT setting_value FROM system_settings WHERE setting_key = 'invoice_prefix'");
+                $prefix = $prefix_result ? $prefix_result->fetch_assoc()['setting_value'] : 'INV-';
+                
+                // Generate invoice number
+                $invoice_number = $prefix . date('Y') . '-' . str_pad(rand(1, 9999), 4, '0', STR_PAD_LEFT);
+                
+                // Calculate total from items
+                $total = 0;
+                if (isset($_POST['items'])) {
+                    foreach ($_POST['items'] as $item) {
+                        $total += floatval($item['total_price']);
+                    }
                 }
                 
-                $message = "Invoice created successfully! Invoice #: " . $invoice_number;
-                $message_type = "success";
-            } else {
-                $message = "Error: " . $stmt->error;
-                $message_type = "error";
+                $stmt = $conn->prepare("INSERT INTO invoices (invoice_number, student_id, invoice_date, due_date, total_amount, balance_amount, description, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+                $stmt->bind_param("sissdddi", $invoice_number, $student_id, $invoice_date, $due_date, $total, $total, $description, $_SESSION['user_id']);
+                
+                if ($stmt->execute()) {
+                    $invoice_id = $conn->insert_id;
+                    
+                    // Insert invoice items
+                    if (isset($_POST['items'])) {
+                        $item_stmt = $conn->prepare("INSERT INTO invoice_items (invoice_id, item_description, quantity, unit_price, total_price, item_type) VALUES (?, ?, ?, ?, ?, ?)");
+                        foreach ($_POST['items'] as $item) {
+                            $item_stmt->bind_param("isidds", $invoice_id, $item['description'], $item['quantity'], $item['unit_price'], $item['total_price'], $item['type']);
+                            $item_stmt->execute();
+                        }
+                        $item_stmt->close();
+                    }
+                    
+                    $message = "Invoice created successfully! Invoice #: " . $invoice_number;
+                    $message_type = "success";
+                } else {
+                    $message = "Error: " . $stmt->error;
+                    $message_type = "error";
+                }
+                $stmt->close();
             }
-            $stmt->close();
+            $conn->close();
         }
-        $conn->close();
     }
 }
 
@@ -100,10 +128,14 @@ if ($conn) {
     th { background: var(--primary); color: white; }
     .badge { padding: 4px 8px; border-radius: 3px; font-size: 0.85rem; }
     .badge-paid { background: #28a745; color: white; }
+    .badge-pending { background: #ffc107; color: #333; }
     .badge-overdue { background: #dc3545; color: white; }
-    .badge-pending { background: #ffc107; color: #000; }
-    .btn { padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: 600; }
-    .btn-primary { background: var(--primary); color: white; }
+    .btn { padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: 600; background: var(--primary); color: white; }
+    .invoice-item { margin-bottom: 15px; padding: 15px; background: #f8f9fa; border-radius: 5px; }
+    .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); }
+    .modal-content { background: white; margin: 15% auto; padding: 20px; border-radius: 10px; width: 500px; max-width: 90%; }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .close { font-size: 28px; font-weight: bold; cursor: pointer; }
   </style>
 </head>
 <body>
@@ -129,15 +161,15 @@ if ($conn) {
       </div>
       <div class="menu">
         <a class="menu-item" href="finance_dashboard.php">Dashboard</a>
-        <a class="menu-item" href="billing.php">Billing</a>
         <a class="menu-item active" href="invoices.php">Invoices</a>
-        <a class="menu-item" href="financial_reports.php">Financial Reports</a>
+        <a class="menu-item" href="payments.php">Payments</a>
+        <a class="menu-item" href="fee_reports.php">Reports</a>
       </div>
     </nav>
 
     <div class="content">
       <div class="main-card">
-        <h1>Manage Invoices</h1>
+        <h1>Invoices</h1>
         
         <?php if ($message): ?>
           <div class="message <?php echo $message_type; ?>"><?php echo htmlspecialchars($message); ?></div>
@@ -145,7 +177,8 @@ if ($conn) {
 
         <div class="form-section">
           <h2>Create New Invoice</h2>
-          <form method="POST" id="invoiceForm">
+          <form method="POST">
+            <?php echo generateCSRFToken(); ?>
             <input type="hidden" name="action" value="create">
             <div class="form-row">
               <div>
@@ -210,11 +243,14 @@ if ($conn) {
                 <th>Paid</th>
                 <th>Balance</th>
                 <th>Status</th>
+                <?php if ($_SESSION['role'] === 'admin'): ?>
+                  <th>Actions</th>
+                <?php endif; ?>
               </tr>
             </thead>
             <tbody>
               <?php if (empty($invoices)): ?>
-                <tr><td colspan="8" style="text-align: center;">No invoices found.</td></tr>
+                <tr><td colspan="<?php echo $_SESSION['role'] === 'admin' ? '9' : '8'; ?>" style="text-align: center;">No invoices found.</td></tr>
               <?php else: ?>
                 <?php foreach ($invoices as $invoice): ?>
                   <tr>
@@ -231,6 +267,11 @@ if ($conn) {
                             ($invoice['status'] === 'overdue' ? 'overdue' : 'pending'); 
                       ?>"><?php echo ucfirst($invoice['status']); ?></span>
                     </td>
+                    <?php if ($_SESSION['role'] === 'admin'): ?>
+                      <td>
+                        <button onclick="archiveInvoice(<?php echo $invoice['invoice_id']; ?>)" class="btn" style="background: #6c757d; font-size: 0.85rem; padding: 6px 12px;">Archive</button>
+                      </td>
+                    <?php endif; ?>
                   </tr>
                 <?php endforeach; ?>
               <?php endif; ?>
@@ -238,6 +279,33 @@ if ($conn) {
           </table>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- Archive Modal -->
+  <div id="archiveModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Archive Invoice</h2>
+        <span class="close" onclick="closeArchiveModal()">&times;</span>
+      </div>
+      <form method="POST" id="archiveForm">
+        <?php echo generateCSRFToken(); ?>
+        <input type="hidden" name="action" value="archive">
+        <input type="hidden" name="invoice_id" id="archive_invoice_id">
+        <div style="margin-bottom: 15px;">
+          <label>Archive Reason *</label>
+          <input type="text" name="archive_reason" required placeholder="e.g., Paid invoice, Historical record">
+        </div>
+        <div style="margin-bottom: 15px;">
+          <label>Notes</label>
+          <textarea name="archive_notes" rows="3" placeholder="Additional notes..."></textarea>
+        </div>
+        <div style="display: flex; gap: 10px; justify-content: flex-end;">
+          <button type="button" onclick="closeArchiveModal()" class="btn" style="background: #6c757d;">Cancel</button>
+          <button type="submit" class="btn" style="background: #dc3545;">Archive</button>
+        </div>
+      </form>
     </div>
   </div>
 
@@ -266,36 +334,31 @@ if ($conn) {
       itemCount++;
     }
     
+    function archiveInvoice(invoiceId) {
+      document.getElementById('archive_invoice_id').value = invoiceId;
+      document.getElementById('archiveModal').style.display = 'block';
+    }
+    
+    function closeArchiveModal() {
+      document.getElementById('archiveModal').style.display = 'none';
+    }
+    
+    window.onclick = function(event) {
+      const modal = document.getElementById('archiveModal');
+      if (event.target == modal) {
+        modal.style.display = 'none';
+      }
+    }
+    
     // Calculate total price on input
     document.addEventListener('input', function(e) {
       if (e.target.name && e.target.name.includes('[unit_price]') || e.target.name.includes('[quantity]')) {
         const row = e.target.closest('.invoice-item') || e.target.closest('.form-row');
-        const quantity = row.querySelector('input[name*="[quantity]"]')?.value || 1;
-        const unitPrice = row.querySelector('input[name*="[unit_price]"]')?.value || 0;
-        // You can add total calculation display here if needed
+        const quantity = parseFloat(row.querySelector('input[name*="[quantity]"]').value) || 0;
+        const unitPrice = parseFloat(row.querySelector('input[name*="[unit_price]"]').value) || 0;
+        // Note: total_price calculation would need to be handled server-side or with additional JS
       }
-    });
-    
-    // Calculate totals before submit
-    document.getElementById('invoiceForm').addEventListener('submit', function(e) {
-      const items = document.querySelectorAll('.invoice-item');
-      items.forEach((item, index) => {
-        const quantity = parseFloat(item.querySelector('input[name*="[quantity]"]').value) || 0;
-        const unitPrice = parseFloat(item.querySelector('input[name*="[unit_price]"]').value) || 0;
-        const totalPrice = quantity * unitPrice;
-        
-        // Add hidden input for total_price
-        let totalInput = item.querySelector('input[name*="[total_price]"]');
-        if (!totalInput) {
-          totalInput = document.createElement('input');
-          totalInput.type = 'hidden';
-          totalInput.name = `items[${index}][total_price]`;
-          item.appendChild(totalInput);
-        }
-        totalInput.value = totalPrice.toFixed(2);
-      });
     });
   </script>
 </body>
 </html>
-

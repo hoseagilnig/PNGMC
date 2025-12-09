@@ -6,62 +6,90 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['role'] !== 'studentservices') {
 }
 require_once 'includes/menu_helper.php';
 require_once 'includes/db_config.php';
+require_once 'includes/archive_helper.php';
+require_once 'includes/security_helper.php';
 
 $message = '';
 $message_type = '';
 
 // Handle form submissions
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $conn = getDBConnection();
-    if ($conn) {
-        if (isset($_POST['action']) && $_POST['action'] === 'add') {
-            $student_number = trim($_POST['student_number']);
-            $first_name = trim($_POST['first_name']);
-            $last_name = trim($_POST['last_name']);
-            $middle_name = trim($_POST['middle_name'] ?? '');
-            $date_of_birth = $_POST['date_of_birth'] ?? null;
-            $gender = $_POST['gender'] ?? null;
-            $email = trim($_POST['email'] ?? '');
-            $phone = trim($_POST['phone'] ?? '');
-            $address = trim($_POST['address'] ?? '');
-            $program_id = $_POST['program_id'] ?? null;
-            $enrollment_date = $_POST['enrollment_date'] ?? date('Y-m-d');
-            
-            // Check if student_number already exists
-            $check_stmt = $conn->prepare("SELECT student_id FROM students WHERE student_number = ?");
-            $check_stmt->bind_param("s", $student_number);
-            $check_stmt->execute();
-            $check_result = $check_stmt->get_result();
-            
-            if ($check_result->num_rows > 0) {
-                $message = "Error: Student number '$student_number' already exists. Please use a different student number.";
-                $message_type = "error";
-                $check_stmt->close();
-            } else {
-                $check_stmt->close();
-                
-                $stmt = $conn->prepare("INSERT INTO students (student_number, first_name, last_name, middle_name, date_of_birth, gender, email, phone, address, program_id, enrollment_date, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'active')");
-                $stmt->bind_param("sssssssssis", $student_number, $first_name, $last_name, $middle_name, $date_of_birth, $gender, $email, $phone, $address, $program_id, $enrollment_date);
-                
-                if ($stmt->execute()) {
-                    $student_id = $conn->insert_id;
-                    // Create enrollment
-                    if ($program_id) {
-                        $enroll_stmt = $conn->prepare("INSERT INTO enrollments (student_id, program_id, enrollment_date, status) VALUES (?, ?, ?, 'enrolled')");
-                        $enroll_stmt->bind_param("iis", $student_id, $program_id, $enrollment_date);
-                        $enroll_stmt->execute();
-                        $enroll_stmt->close();
+    // Verify CSRF token
+    if (!isset($_POST['csrf_token']) || !verifyCSRFToken($_POST['csrf_token'])) {
+        $message = 'Invalid security token. Please refresh the page and try again.';
+        $message_type = "error";
+    } else {
+        $conn = getDBConnection();
+        if ($conn) {
+            if (isset($_POST['action']) && $_POST['action'] === 'archive') {
+                // Only admin can archive
+                if ($_SESSION['role'] === 'admin') {
+                    $student_id = intval($_POST['student_id']);
+                    $reason = trim($_POST['archive_reason'] ?? 'Manual archive');
+                    $notes = trim($_POST['archive_notes'] ?? '');
+                    
+                    $result = archiveStudent($student_id, $_SESSION['user_id'], $reason, $notes);
+                    
+                    if ($result['success']) {
+                        $message = $result['message'];
+                        $message_type = "success";
+                    } else {
+                        $message = $result['message'];
+                        $message_type = "error";
                     }
-                    $message = "Student added successfully!";
-                    $message_type = "success";
                 } else {
-                    $message = "Error: " . $stmt->error;
+                    $message = "Only administrators can archive students.";
                     $message_type = "error";
                 }
-                $stmt->close();
+            } elseif (isset($_POST['action']) && $_POST['action'] === 'add') {
+                $student_number = trim($_POST['student_number']);
+                $first_name = trim($_POST['first_name']);
+                $last_name = trim($_POST['last_name']);
+                $middle_name = trim($_POST['middle_name'] ?? '');
+                $date_of_birth = $_POST['date_of_birth'] ?? null;
+                $gender = $_POST['gender'] ?? null;
+                $email = trim($_POST['email'] ?? '');
+                $phone = trim($_POST['phone'] ?? '');
+                $address = trim($_POST['address'] ?? '');
+                $program_id = $_POST['program_id'] ?? null;
+                $enrollment_date = $_POST['enrollment_date'] ?? date('Y-m-d');
+                
+                // Check if student_number already exists
+                $check_stmt = $conn->prepare("SELECT student_id FROM students WHERE student_number = ?");
+                $check_stmt->bind_param("s", $student_number);
+                $check_stmt->execute();
+                $check_result = $check_stmt->get_result();
+                
+                if ($check_result->num_rows > 0) {
+                    $message = "Error: Student number '$student_number' already exists. Please use a different student number.";
+                    $message_type = "error";
+                    $check_stmt->close();
+                } else {
+                    $check_stmt->close();
+                    
+                    $stmt = $conn->prepare("INSERT INTO students (student_number, first_name, last_name, middle_name, date_of_birth, gender, email, phone, address, program_id, enrollment_date, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'active')");
+                    $stmt->bind_param("sssssssssis", $student_number, $first_name, $last_name, $middle_name, $date_of_birth, $gender, $email, $phone, $address, $program_id, $enrollment_date);
+                    
+                    if ($stmt->execute()) {
+                        $student_id = $conn->insert_id;
+                        // Create enrollment
+                        if ($program_id) {
+                            $enroll_stmt = $conn->prepare("INSERT INTO enrollments (student_id, program_id, enrollment_date, status) VALUES (?, ?, ?, 'enrolled')");
+                            $enroll_stmt->bind_param("iis", $student_id, $program_id, $enrollment_date);
+                            $enroll_stmt->execute();
+                            $enroll_stmt->close();
+                        }
+                        $message = "Student added successfully!";
+                        $message_type = "success";
+                    } else {
+                        $message = "Error: " . $stmt->error;
+                        $message_type = "error";
+                    }
+                    $stmt->close();
+                }
             }
+            $conn->close();
         }
-        $conn->close();
     }
 }
 
@@ -103,6 +131,10 @@ if ($conn) {
     .badge { padding: 4px 8px; border-radius: 3px; font-size: 0.85rem; }
     .badge-active { background: #28a745; color: white; }
     .btn { padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: 600; background: var(--primary); color: white; }
+    .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); }
+    .modal-content { background: white; margin: 15% auto; padding: 20px; border-radius: 10px; width: 500px; max-width: 90%; }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .close { font-size: 28px; font-weight: bold; cursor: pointer; }
   </style>
 </head>
 <body>
@@ -145,6 +177,7 @@ if ($conn) {
         <div class="form-section">
           <h2>Add New Student</h2>
           <form method="POST">
+            <?php echo generateCSRFToken(); ?>
             <input type="hidden" name="action" value="add">
             <div class="form-row">
               <div>
@@ -194,8 +227,8 @@ if ($conn) {
                 </select>
               </div>
               <div>
-                <label>Enrollment Date</label>
-                <input type="date" name="enrollment_date" value="<?php echo date('Y-m-d'); ?>">
+                <label>Enrollment Date *</label>
+                <input type="date" name="enrollment_date" value="<?php echo date('Y-m-d'); ?>" required>
               </div>
             </div>
             <div class="form-row">
@@ -208,8 +241,8 @@ if ($conn) {
                 <input type="text" name="phone">
               </div>
             </div>
-            <div class="form-row full">
-              <div>
+            <div class="form-row">
+              <div style="grid-column: 1 / -1;">
                 <label>Address</label>
                 <textarea name="address" rows="2"></textarea>
               </div>
@@ -230,11 +263,14 @@ if ($conn) {
                 <th>Phone</th>
                 <th>Status</th>
                 <th>Enrollment Date</th>
+                <?php if ($_SESSION['role'] === 'admin'): ?>
+                  <th>Actions</th>
+                <?php endif; ?>
               </tr>
             </thead>
             <tbody>
               <?php if (empty($students)): ?>
-                <tr><td colspan="7" style="text-align: center;">No students found.</td></tr>
+                <tr><td colspan="<?php echo $_SESSION['role'] === 'admin' ? '8' : '7'; ?>" style="text-align: center;">No students found.</td></tr>
               <?php else: ?>
                 <?php foreach ($students as $student): ?>
                   <tr>
@@ -245,6 +281,11 @@ if ($conn) {
                     <td><?php echo htmlspecialchars($student['phone'] ?? '-'); ?></td>
                     <td><span class="badge badge-<?php echo $student['status'] === 'active' ? 'active' : 'inactive'; ?>"><?php echo ucfirst($student['status']); ?></span></td>
                     <td><?php echo $student['enrollment_date'] ? date('Y-m-d', strtotime($student['enrollment_date'])) : '-'; ?></td>
+                    <?php if ($_SESSION['role'] === 'admin'): ?>
+                      <td>
+                        <button onclick="archiveStudent(<?php echo $student['student_id']; ?>)" class="btn" style="background: #6c757d; font-size: 0.85rem; padding: 6px 12px;">Archive</button>
+                      </td>
+                    <?php endif; ?>
                   </tr>
                 <?php endforeach; ?>
               <?php endif; ?>
@@ -254,6 +295,50 @@ if ($conn) {
       </div>
     </div>
   </div>
+
+  <!-- Archive Modal -->
+  <div id="archiveModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Archive Student</h2>
+        <span class="close" onclick="closeArchiveModal()">&times;</span>
+      </div>
+      <form method="POST" id="archiveForm">
+        <?php echo generateCSRFToken(); ?>
+        <input type="hidden" name="action" value="archive">
+        <input type="hidden" name="student_id" id="archive_student_id">
+        <div style="margin-bottom: 15px;">
+          <label>Archive Reason *</label>
+          <input type="text" name="archive_reason" required placeholder="e.g., Graduated, Withdrawn, Inactive">
+        </div>
+        <div style="margin-bottom: 15px;">
+          <label>Notes</label>
+          <textarea name="archive_notes" rows="3" placeholder="Additional notes..."></textarea>
+        </div>
+        <div style="display: flex; gap: 10px; justify-content: flex-end;">
+          <button type="button" onclick="closeArchiveModal()" class="btn" style="background: #6c757d;">Cancel</button>
+          <button type="submit" class="btn" style="background: #dc3545;">Archive</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function archiveStudent(studentId) {
+      document.getElementById('archive_student_id').value = studentId;
+      document.getElementById('archiveModal').style.display = 'block';
+    }
+    
+    function closeArchiveModal() {
+      document.getElementById('archiveModal').style.display = 'none';
+    }
+    
+    window.onclick = function(event) {
+      const modal = document.getElementById('archiveModal');
+      if (event.target == modal) {
+        modal.style.display = 'none';
+      }
+    }
+  </script>
 </body>
 </html>
-

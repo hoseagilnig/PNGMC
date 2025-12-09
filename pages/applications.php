@@ -9,6 +9,7 @@ require_once 'includes/menu_helper.php';
 require_once 'includes/db_config.php';
 require_once 'includes/workflow_helper.php';
 require_once 'includes/security_helper.php';
+require_once 'includes/archive_helper.php';
 
 $message = '';
 $message_type = '';
@@ -344,6 +345,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $message .= "Default Password: <strong>" . $default_password . "</strong><br><br>";
                     $message .= "<a href='../student_credentials.php?student_id=" . $student_id . "' target='_blank' style='color: #1d4e89; font-weight: bold;'>View Full Credentials →</a>";
                     $message_type = "success";
+                } elseif ($_POST['action'] === 'archive') {
+                    // Only admin can archive
+                    if ($_SESSION['role'] === 'admin') {
+                        $application_id = intval($_POST['application_id']);
+                        $reason = trim($_POST['archive_reason'] ?? 'Manual archive');
+                        $notes = trim($_POST['archive_notes'] ?? '');
+                        
+                        $result = archiveApplication($application_id, $_SESSION['user_id'], $reason, $notes);
+                        
+                        if ($result['success']) {
+                            $message = $result['message'];
+                            $message_type = "success";
+                        } else {
+                            $message = $result['message'];
+                            $message_type = "error";
+                        }
+                    } else {
+                        $message = "Only administrators can archive applications.";
+                        $message_type = "error";
+                    }
                 } elseif ($_POST['action'] === 'notify_applicant') {
                     $application_id = intval($_POST['application_id']);
                     $subject = trim($_POST['notification_subject'] ?? '');

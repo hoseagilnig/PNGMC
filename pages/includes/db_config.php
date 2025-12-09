@@ -3,16 +3,24 @@
  * Database Configuration File
  * PNG Maritime College - Student Management System
  * 
- * Update these values according to your MySQL server configuration
+ * Database settings can be configured via environment variables (.env file)
+ * or by modifying the default values below.
  */
 
+// Load environment variables
+require_once __DIR__ . '/env_loader.php';
+
 // Database connection settings
-define('DB_HOST', 'localhost');
-define('DB_PORT', 3307);  // Change this if your MySQL server uses a different port
-define('DB_USER', 'root');
-define('DB_PASS', '');
-define('DB_NAME', 'sms2_db');
-define('DB_CHARSET', 'utf8mb4');
+// Priority: 1. Environment variable (.env), 2. System environment, 3. Default value
+// Auto-detect port: 3307 for Windows/XAMPP, 3306 for Linux
+$default_port = (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') ? '3307' : '3306';
+
+define('DB_HOST', getEnvVar('DB_HOST', 'localhost'));
+define('DB_PORT', (int)getEnvVar('DB_PORT', $default_port));  // Auto-detects: 3307 for Windows, 3306 for Linux
+define('DB_USER', getEnvVar('DB_USER', 'root'));
+define('DB_PASS', getEnvVar('DB_PASS', ''));
+define('DB_NAME', getEnvVar('DB_NAME', 'sms2_db'));
+define('DB_CHARSET', getEnvVar('DB_CHARSET', 'utf8mb4'));
 
 /**
  * Create database connection

@@ -40,9 +40,12 @@ cp .env.example .env
 ```
 
 **Required values:**
-- `GEMINI_API_KEY` - Your Google Gemini API key
+- `DB_HOST` - Database host (default: localhost)
+- `DB_PORT` - Database port (default: 3306 for Linux, 3307 for XAMPP/Windows)
 - `DB_USER` - Database username (after creating dedicated user)
 - `DB_PASS` - Database password
+- `DB_NAME` - Database name (default: sms2_db)
+- `GEMINI_API_KEY` - Your Google Gemini API key (if using AI chatbot)
 - `CHATBOT_DEBUG=false` - Set to false for production
 
 ### Step 2: Create Database User
@@ -55,11 +58,14 @@ mysql -u root -p
 source database/setup_database_user.sql
 ```
 
-**Then update `pages/includes/db_config.php`:**
-```php
-define('DB_USER', 'sms_user');
-define('DB_PASS', 'your_secure_password');
+**Then update `.env` file with new database credentials:**
+```env
+DB_USER=sms_user
+DB_PASS=your_secure_password
+DB_PORT=3306
 ```
+
+**Note:** Database configuration is now environment-based. Update `.env` file instead of editing `db_config.php` directly.
 
 ### Step 3: Apply Production .htaccess
 ```bash

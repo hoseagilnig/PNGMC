@@ -355,7 +355,7 @@ if ($invoice && isset($invoice['issuing_officer_name'])) {
 
   <div class="header">
     <div class="logo-left">
-      [LOGO]
+      <img src="../images/pnmc.png" alt="PNG Maritime College Logo" style="max-width: 100%; max-height: 100%; height: auto; width: auto;">
     </div>
     <div class="college-name">
       <h1>PAPUA NEW GUINEA MARITIME COLLEGE</h1>
@@ -366,7 +366,7 @@ if ($invoice && isset($invoice['issuing_officer_name'])) {
       </div>
     </div>
     <div class="logo-right">
-      [LOGO]
+      <img src="../images/bird%20of%20paradise.png" alt="Papua New Guinea Emblem" style="max-width: 100%; max-height: 100%; height: auto; width: auto;">
     </div>
   </div>
 
