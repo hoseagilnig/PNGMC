@@ -75,7 +75,7 @@ a:focus, button:focus, input:focus{outline:3px solid rgba(29,78,137,0.12);outlin
 /* Left sidebar navigation */
 .dashboard-wrap{display:flex;gap:24px;align-items:flex-start}
 .sidebar{width:220px;flex:0 0 220px;display:flex;flex-direction:column;gap:12px;padding:24px;background:var(--sidebar-bg);}
-.sidebar{position:fixed;top:0;left:0;height:100vh;border-right:1px solid rgba(0,0,0,0.06);}
+.sidebar{position:fixed;top:0;left:0;height:100vh;border-right:1px solid rgba(0,0,0,0.06);overflow-y:auto;overflow-x:hidden;}
 .sidebar .brand{display:flex;align-items:center;gap:10px;padding-bottom:6px}
 .sidebar .brand img{height:34px}
 .sidebar .menu{display:flex;flex-direction:column;gap:6px;margin-top:18px}
