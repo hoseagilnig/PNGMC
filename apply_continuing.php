@@ -1,13 +1,14 @@
 <?php
 session_start();
 require_once 'pages/includes/db_config.php';
+require_once 'pages/includes/security_helper.php';
 
 $message = '';
 $message_type = '';
 
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Check if POST data was truncated due to size limit
+    // Check if POST data was truncated due to size limit (check before CSRF to avoid issues)
     if (empty($_POST) && empty($_FILES) && isset($_SERVER['CONTENT_LENGTH']) && $_SERVER['CONTENT_LENGTH'] > 0) {
         $content_length = intval($_SERVER['CONTENT_LENGTH']);
         $post_max_size = ini_get('post_max_size');
@@ -16,6 +17,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header('Location: index.html?error=upload_size&size=' . round($content_length / 1024 / 1024, 2) . '&limit=' . $post_max_size);
         exit;
     }
+    
+    // Verify CSRF token
+    if (!isset($_POST['csrf_token']) || !verifyCSRFToken($_POST['csrf_token'])) {
+        $message = 'Invalid security token. Please refresh the page and try again.';
+        $message_type = 'error';
+    } else {
     
     $conn = getDBConnection();
     if ($conn) {
@@ -60,31 +67,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             // Try to find existing student account by email, phone, or name
             if (!$previous_student_id) {
-                // Search by email
+                // Search by email (using prepared statement to prevent SQL injection)
                 if ($email) {
-                    $search_result = $conn->query("SELECT student_id, student_number FROM students WHERE email = '$email' LIMIT 1");
+                    $search_stmt = $conn->prepare("SELECT student_id, student_number FROM students WHERE email = ? LIMIT 1");
+                    $search_stmt->bind_param("s", $email);
+                    $search_stmt->execute();
+                    $search_result = $search_stmt->get_result();
                     if ($search_result && $search_result->num_rows > 0) {
                         $existing = $search_result->fetch_assoc();
                         $previous_student_id = $existing['student_id'];
                     }
+                    $search_stmt->close();
                 }
                 
-                // If not found, search by phone
+                // If not found, search by phone (using prepared statement to prevent SQL injection)
                 if (!$previous_student_id && $phone) {
-                    $search_result = $conn->query("SELECT student_id, student_number FROM students WHERE phone = '$phone' LIMIT 1");
+                    $search_stmt = $conn->prepare("SELECT student_id, student_number FROM students WHERE phone = ? LIMIT 1");
+                    $search_stmt->bind_param("s", $phone);
+                    $search_stmt->execute();
+                    $search_result = $search_stmt->get_result();
                     if ($search_result && $search_result->num_rows > 0) {
                         $existing = $search_result->fetch_assoc();
                         $previous_student_id = $existing['student_id'];
                     }
+                    $search_stmt->close();
                 }
                 
-                // If still not found, search by name and date of birth
+                // If still not found, search by name and date of birth (using prepared statement to prevent SQL injection)
                 if (!$previous_student_id && $date_of_birth) {
-                    $search_result = $conn->query("SELECT student_id, student_number FROM students WHERE first_name = '$first_name' AND last_name = '$last_name' AND date_of_birth = '$date_of_birth' LIMIT 1");
+                    $search_stmt = $conn->prepare("SELECT student_id, student_number FROM students WHERE first_name = ? AND last_name = ? AND date_of_birth = ? LIMIT 1");
+                    $search_stmt->bind_param("sss", $first_name, $last_name, $date_of_birth);
+                    $search_stmt->execute();
+                    $search_result = $search_stmt->get_result();
                     if ($search_result && $search_result->num_rows > 0) {
                         $existing = $search_result->fetch_assoc();
                         $previous_student_id = $existing['student_id'];
                     }
+                    $search_stmt->close();
                 }
             }
             
@@ -208,7 +227,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             $conn->close();
         }
-    }
+    } // End CSRF check
 }
 ?>
 <!DOCTYPE html>

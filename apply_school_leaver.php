@@ -1,12 +1,18 @@
 <?php
 session_start();
 require_once 'pages/includes/db_config.php';
+require_once 'pages/includes/security_helper.php';
 
 $message = '';
 $message_type = '';
 
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Verify CSRF token
+    if (!isset($_POST['csrf_token']) || !verifyCSRFToken($_POST['csrf_token'])) {
+        $message = 'Invalid security token. Please refresh the page and try again.';
+        $message_type = 'error';
+    } else {
     // Check if POST data was truncated due to size limit
     if (empty($_POST) && empty($_FILES) && isset($_SERVER['CONTENT_LENGTH']) && $_SERVER['CONTENT_LENGTH'] > 0) {
         $content_length = intval($_SERVER['CONTENT_LENGTH']);
@@ -240,7 +246,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $conn->close();
             }
         }
-    }
+    } // End CSRF check
+}
 }
 ?>
 <!DOCTYPE html>
@@ -438,6 +445,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php endif; ?>
 
     <form method="POST" id="applicationForm" enctype="multipart/form-data">
+      <!-- CSRF Token -->
+      <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars(generateCSRFToken()); ?>">
       <!-- Program Selection -->
       <div class="form-section">
         <h2 class="section-title">Program Selection</h2>
