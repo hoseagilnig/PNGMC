@@ -1,0 +1,28 @@
+# DigitalOcean Server SSH Configuration
+# Add this to your SSH config file: ~/.ssh/config (Mac/Linux) or C:\Users\YourName\.ssh\config (Windows)
+
+Host digitalocean
+    HostName 134.199.174.78
+    User root
+    IdentityFile ~/.ssh/id_rsa
+    Port 22
+    ServerAliveInterval 60
+    ServerAliveCountMax 3
+
+# Alternative: Using password authentication
+# Host digitalocean
+#     HostName 134.199.174.78
+#     User root
+#     Port 22
+#     PreferredAuthentications password
+#     ServerAliveInterval 60
+#     ServerAliveCountMax 3
+
+# Instructions:
+# 1. Replace 'root' with your SSH username if different
+# 2. Replace ~/.ssh/id_rsa with path to your SSH private key (Windows: C:\Users\YourName\.ssh\id_rsa)
+# 3. Save the file
+# 4. In Cursor: Ctrl+Shift+P → "Remote-SSH: Connect to Host" → Select "digitalocean"
+
+# Your DigitalOcean Server IP: 134.199.174.78
+
