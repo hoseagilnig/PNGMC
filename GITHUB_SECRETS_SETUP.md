@@ -86,7 +86,7 @@ ssh-keygen -t rsa -b 4096 -C "github-actions-deploy"
 cat ~/.ssh/github_deploy_key
 
 # Copy public key to DigitalOcean server
-ssh-copy-id -i ~/.ssh/github_deploy_key.pub root@YOUR_DROPLET_IP
+ssh-copy-id -i ~/.ssh/github_deploy_key.pub root@134.199.174.78
 ```
 
 ---

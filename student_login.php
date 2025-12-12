@@ -25,56 +25,57 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
         if (empty($username) || empty($password)) {
             $error = "Please enter both username and password.";
         } else {
-        $conn = getDBConnection();
-        if ($conn) {
-            // Check if student_accounts table exists
-            $table_check = $conn->query("SHOW TABLES LIKE 'student_accounts'");
-            if ($table_check->num_rows > 0) {
-                $stmt = $conn->prepare("SELECT sa.*, s.first_name, s.last_name, s.student_number, s.account_status as student_account_status 
-                    FROM student_accounts sa 
-                    LEFT JOIN students s ON sa.student_id = s.student_id 
-                    WHERE sa.username = ? AND sa.account_status = 'active'");
-                $stmt->bind_param("s", $username);
-                $stmt->execute();
-                $result = $stmt->get_result();
-                
-                if ($result->num_rows === 1) {
-                    $account = $result->fetch_assoc();
+            $conn = getDBConnection();
+            if ($conn) {
+                // Check if student_accounts table exists
+                $table_check = $conn->query("SHOW TABLES LIKE 'student_accounts'");
+                if ($table_check->num_rows > 0) {
+                    $stmt = $conn->prepare("SELECT sa.*, s.first_name, s.last_name, s.student_number, s.account_status as student_account_status 
+                        FROM student_accounts sa 
+                        LEFT JOIN students s ON sa.student_id = s.student_id 
+                        WHERE sa.username = ? AND sa.account_status = 'active'");
+                    $stmt->bind_param("s", $username);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
                     
-                    // Verify password
-                    if (password_verify($password, $account['password_hash'])) {
-                        // Check if student account_status is also active
-                        if ($account['student_account_status'] === 'active' || $account['student_account_status'] === 'on_hold') {
-                            // Login successful
-                            $_SESSION['student_loggedin'] = true;
-                            $_SESSION['student_id'] = $account['student_id'];
-                            $_SESSION['student_number'] = $account['student_number'];
-                            $_SESSION['student_name'] = $account['first_name'] . ' ' . $account['last_name'];
-                            $_SESSION['student_username'] = $account['username'];
-                            
-                            // Update last login
-                            $conn->query("UPDATE student_accounts SET last_login = CURRENT_TIMESTAMP WHERE account_id = {$account['account_id']}");
-                            
-                            header('Location: student_dashboard.php');
-                            exit;
+                    if ($result->num_rows === 1) {
+                        $account = $result->fetch_assoc();
+                        
+                        // Verify password
+                        if (password_verify($password, $account['password_hash'])) {
+                            // Check if student account_status is also active
+                            if ($account['student_account_status'] === 'active' || $account['student_account_status'] === 'on_hold') {
+                                // Login successful
+                                $_SESSION['student_loggedin'] = true;
+                                $_SESSION['student_id'] = $account['student_id'];
+                                $_SESSION['student_number'] = $account['student_number'];
+                                $_SESSION['student_name'] = $account['first_name'] . ' ' . $account['last_name'];
+                                $_SESSION['student_username'] = $account['username'];
+                                
+                                // Update last login
+                                $conn->query("UPDATE student_accounts SET last_login = CURRENT_TIMESTAMP WHERE account_id = {$account['account_id']}");
+                                
+                                header('Location: student_dashboard.php');
+                                exit;
+                            } else {
+                                $error = "Your account is currently inactive. Please contact Student Admin Service.";
+                            }
                         } else {
-                            $error = "Your account is currently inactive. Please contact Student Admin Service.";
+                            $error = "Invalid username or password.";
                         }
                     } else {
                         $error = "Invalid username or password.";
                     }
+                    $stmt->close();
                 } else {
-                    $error = "Invalid username or password.";
+                    $error = "Student account system is not yet set up. Please contact administration.";
                 }
-                $stmt->close();
+                $conn->close();
             } else {
-                $error = "Student account system is not yet set up. Please contact administration.";
+                $error = "Database connection error. Please try again later.";
             }
-            $conn->close();
-        } else {
-            $error = "Database connection error. Please try again later.";
-        }
-    }
+        } // Close else block from line 27 (empty check)
+    } // Close else block from line 21 (CSRF check)
 }
 
 // Redirect to password reset page

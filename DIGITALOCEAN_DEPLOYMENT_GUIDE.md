@@ -39,7 +39,7 @@ If you don't have an SSH key:
 ssh-keygen -t rsa -b 4096 -C "github-actions-deploy"
 
 # Copy public key to DigitalOcean droplet
-ssh-copy-id -i ~/.ssh/id_rsa.pub root@YOUR_DROPLET_IP
+ssh-copy-id -i ~/.ssh/id_rsa.pub root@134.199.174.78
 ```
 
 ### **Step 2: Add GitHub Secrets**
@@ -49,7 +49,7 @@ Go to your GitHub repository → Settings → Secrets and variables → Actions
 Add these secrets:
 
 1. **`DIGITALOCEAN_HOST`**
-   - Value: Your droplet IP address (e.g., `123.45.67.89`)
+   - Value: `134.199.174.78`
 
 2. **`DIGITALOCEAN_USER`**
    - Value: SSH username (usually `root`)
@@ -65,7 +65,7 @@ Add these secrets:
 SSH into your DigitalOcean droplet:
 
 ```bash
-ssh root@YOUR_DROPLET_IP
+ssh root@134.199.174.78
 ```
 
 #### **Install LAMP Stack:**

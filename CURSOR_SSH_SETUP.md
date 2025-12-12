@@ -25,9 +25,24 @@ Before starting, you need:
 
 ### **Step 2: Configure SSH Config File**
 
+**Option A: Using Command Palette (Recommended)**
+
 1. Press `Ctrl+Shift+P` (or `Cmd+Shift+P` on Mac) to open command palette
-2. Type: **"Remote-SSH: Open SSH Configuration File"**
-3. Select: **"C:\Users\YourUsername\.ssh\config"** (Windows) or **"~/.ssh/config"** (Mac/Linux)
+2. Type: **"Remote-SSH: Open SSH Configuration File"** or **"Remote-SSH: Open Configuration File"**
+3. If multiple options appear, select the one that says **"Open SSH Configuration File"**
+4. If no config file exists, Cursor will ask you to create one - select:
+   - **Windows:** `C:\Users\YourUsername\.ssh\config`
+   - **Mac/Linux:** `~/.ssh/config`
+
+**Option B: Manual Method (If Command Doesn't Work)**
+
+1. Create the `.ssh` folder if it doesn't exist:
+   - **Windows:** `C:\Users\YourUsername\.ssh\`
+   - **Mac/Linux:** `~/.ssh/`
+
+2. Create a file named `config` (no extension) in that folder
+
+3. Open the file in Cursor and add your server configuration
 
 ### **Step 3: Add DigitalOcean Server Configuration**
 
@@ -48,10 +63,10 @@ Host digitalocean
 - `root` - Your SSH username (if different)
 - `~/.ssh/id_rsa` - Path to your SSH private key
 
-**Example:**
+**Example (Your Server):**
 ```
 Host digitalocean
-    HostName 123.45.67.89
+    HostName 134.199.174.78
     User root
     IdentityFile C:\Users\YourName\.ssh\id_rsa
     Port 22
@@ -59,13 +74,23 @@ Host digitalocean
     ServerAliveCountMax 3
 ```
 
+**Your DigitalOcean Server IP:** `134.199.174.78`
+
 ### **Step 4: Connect to Server**
 
-1. Press `Ctrl+Shift+P` (or `Cmd+Shift+P`)
-2. Type: **"Remote-SSH: Connect to Host"**
+1. Press `Ctrl+Shift+P` (or `Cmd+Shift+P`) to open command palette
+2. Type: **"Remote-SSH: Connect to Host"** or **"Connect to Host"**
 3. Select: **"digitalocean"** (the host you just configured)
+   - If you don't see "digitalocean", make sure you saved the config file
+   - Try typing "Remote-SSH" to see all available commands
 4. Cursor will open a new window connected to your server
-5. Enter your SSH password if prompted (or it will use your SSH key)
+5. Select the platform (Linux) when prompted
+6. Enter your SSH password if prompted (or it will use your SSH key automatically)
+
+**Alternative: Using the Remote Explorer**
+1. Click the **Remote Explorer** icon in the left sidebar (or press `Ctrl+Shift+E` then click the remote icon)
+2. You should see "SSH Targets" section
+3. Click the **"+"** next to "digitalocean" or right-click and select "Connect to Host"
 
 ### **Step 5: Open Remote Folder**
 

@@ -18,3 +18,14 @@
 [2025-12-09 08:06:56] [::1] [User: 7] [LOGIN_SUCCESS] User: service01
 [2025-12-09 08:07:50] [::1] [User: anonymous] [LOGIN_FAILED] User: finance01
 [2025-12-09 08:08:04] [::1] [User: 4] [LOGIN_SUCCESS] User: finance01
+[2025-12-11 00:12:02] [::1] [User: anonymous] [LOGIN_FAILED] User: service01
+[2025-12-11 00:12:14] [::1] [User: anonymous] [LOGIN_FAILED] User: service01
+[2025-12-11 00:12:19] [::1] [User: anonymous] [LOGIN_FAILED] User: service01
+[2025-12-11 00:12:23] [::1] [User: anonymous] [LOGIN_FAILED] User: service01
+[2025-12-11 00:12:26] [::1] [User: anonymous] [LOGIN_FAILED] User: service01
+[2025-12-11 00:12:32] [::1] [User: anonymous] [LOGIN_FAILED] User: service01
+[2025-12-11 00:12:51] [::1] [User: anonymous] [LOGIN_FAILED] User: service01
+[2025-12-11 00:13:06] [::1] [User: anonymous] [LOGIN_FAILED] User: service01
+[2025-12-11 00:13:14] [::1] [User: anonymous] [LOGIN_FAILED] User: service01
+[2025-12-11 00:13:30] [::1] [User: anonymous] [LOGIN_FAILED] User: service01
+[2025-12-11 06:34:37] [::1] [User: 7] [LOGIN_SUCCESS] User: service01
