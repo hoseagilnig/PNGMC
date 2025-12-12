@@ -864,8 +864,29 @@
       }
     });
 
+    // Prevent scroll restoration on page refresh
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+    
+    // Scroll to top on page load/refresh
+    window.addEventListener('beforeunload', function() {
+      window.scrollTo(0, 0);
+    });
+    
+    window.addEventListener('load', function() {
+      window.scrollTo(0, 0);
+      // Also scroll to top after a short delay to ensure content is fully loaded
+      setTimeout(function() {
+        window.scrollTo(0, 0);
+      }, 100);
+    });
+
     // Update the existing DOMContentLoaded to use custom modal
     window.addEventListener('DOMContentLoaded', function() {
+      // Ensure page starts at top
+      window.scrollTo(0, 0);
+      
       const urlParams = new URLSearchParams(window.location.search);
       
       // Check for upload size error

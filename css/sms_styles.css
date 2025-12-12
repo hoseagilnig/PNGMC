@@ -6,12 +6,19 @@
   font-family: Arial, Helvetica, sans-serif; /* Using offline system fonts */
 }
 
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
 body {
   background-color: #ffffff;
   color: #333;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
+  position: relative;
 }
 
 /* Header */
