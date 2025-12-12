@@ -27,9 +27,11 @@ jobs:
             git pull origin main
             
             # Set proper file permissions
-            find . -type d -exec chmod 755 {} \;
-            find . -type f -exec chmod 644 {} \;
+            # Use error suppression to ensure critical commands always execute
+            find . -type d -exec chmod 755 {} \; 2>/dev/null || true
+            find . -type f -exec chmod 644 {} \; 2>/dev/null || true
             chmod -R 755 uploads/ 2>/dev/null || true
+            # Critical: Always secure .env file permissions
             chmod 600 .env 2>/dev/null || true
             
             # Restart Apache (if using Apache)
