@@ -21,6 +21,7 @@ jobs:
           username: ${{ secrets.DIGITALOCEAN_USER }}
           key: ${{ secrets.DIGITALOCEAN_SSH_KEY }}
           port: ${{ secrets.DIGITALOCEAN_SSH_PORT }}
+          script_stop: true
           script: |
             cd /var/www/html
             git pull origin main
