@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PNG Maritime College - Student Management System</title>
+  <link rel="stylesheet" href="css/sms_styles.css">
+  <style>
+    /* Slideshow Styles */
+    .slideshow-container {
+      position: relative;
+      width: 100%;
+      max-width: 900px;
+      margin: 40px auto;
+      overflow: hidden;
+      background: #000;
+      border-radius: 15px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .slideshow-container:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+    }
+
+    .slideshow-wrapper {
+      position: relative;
+      width: 100%;
+      height: 400px;
+      overflow: hidden;
+    }
+
+    .slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transform: scale(1);
+      z-index: 1;
+      transition: opacity 1.5s ease-in-out, transform 1.5s ease-in-out;
+    }
+
+    .slide.active {
+      opacity: 1;
+      transform: scale(1);
+      z-index: 2;
+    }
+
+    .slide.fade-out {
+      opacity: 0;
+      z-index: 1;
+    }
+
+    /* Elegant Sea Wave Animations */
+    @keyframes waveSlideIn {
+      0% {
+        opacity: 0;
+        transform: translateX(20%) translateY(10px) scale(1.05);
+        filter: blur(2px);
+      }
+      50% {
+        opacity: 0.7;
+        transform: translateX(0) translateY(-3px) scale(1.01);
+        filter: blur(0.5px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateX(0) translateY(0) scale(1);
+        filter: blur(0);
+      }
+    }
+
+    @keyframes waveSlideOut {
+      0% {
+        opacity: 1;
+        transform: translateX(0) translateY(0) scale(1);
+        filter: blur(0);
+      }
+      50% {
+        opacity: 0.5;
+        transform: translateX(-20%) translateY(5px) scale(0.98);
+        filter: blur(1px);
+      }
+      100% {
+        opacity: 0;
+        transform: translateX(-40%) translateY(10px) scale(0.95);
+        filter: blur(2px);
+      }
+    }
+
+    @keyframes waveSlideInReverse {
+      0% {
+        opacity: 0;
+        transform: translateX(-20%) translateY(10px) scale(1.05);
+        filter: blur(2px);
+      }
+      50% {
+        opacity: 0.7;
+        transform: translateX(0) translateY(-3px) scale(1.01);
+        filter: blur(0.5px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateX(0) translateY(0) scale(1);
+        filter: blur(0);
+      }
+    }
+
+    @keyframes waveSlideOutReverse {
+      0% {
+        opacity: 1;
+        transform: translateX(0) translateY(0) scale(1);
+        filter: blur(0);
+      }
+      50% {
+        opacity: 0.5;
+        transform: translateX(20%) translateY(5px) scale(0.98);
+        filter: blur(1px);
+      }
+      100% {
+        opacity: 0;
+        transform: translateX(40%) translateY(10px) scale(0.95);
+        filter: blur(2px);
+      }
+    }
+
+    @keyframes smoothFadeIn {
+      0% {
+        opacity: 0;
+        transform: scale(1.05) translateY(5px);
+        filter: blur(1px);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+        filter: blur(0);
+      }
+    }
+
+    /* Navigation Arrows */
+    .slideshow-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(29, 78, 137, 0.8);
+      color: white;
+      border: none;
+      padding: 18px 15px;
+      cursor: pointer;
+      font-size: 22px;
+      font-weight: bold;
+      z-index: 10;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      backdrop-filter: blur(5px);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .slideshow-nav:hover {
+      background: rgba(29, 78, 137, 1);
+      transform: translateY(-50%) scale(1.1);
+      box-shadow: 0 4px 15px rgba(29, 78, 137, 0.5);
+    }
+
+    .slideshow-nav:active {
+      transform: translateY(-50%) scale(0.95);
+    }
+
+    .slideshow-nav.prev {
+      left: 15px;
+      border-radius: 50%;
+      padding-left: 18px;
+    }
+
+    .slideshow-nav.next {
+      right: 15px;
+      border-radius: 50%;
+      padding-right: 18px;
+    }
+
+    /* Slide Indicators */
+    .slide-indicators {
+      position: absolute;
+      bottom: 25px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 12px;
+      z-index: 10;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 10px 15px;
+      border-radius: 25px;
+      backdrop-filter: blur(10px);
+    }
+
+    .indicator {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.4);
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 2px solid transparent;
+    }
+
+    .indicator:hover {
+      background: rgba(255, 255, 255, 0.7);
+      transform: scale(1.3);
+    }
+
+    .indicator.active {
+      background: #1d4e89;
+      width: 30px;
+      border-radius: 5px;
+      border-color: rgba(255, 255, 255, 0.3);
+      box-shadow: 0 2px 8px rgba(29, 78, 137, 0.6);
+    }
+
+    /* Slideshow Overlay Text */
+    .slideshow-overlay {
+      position: absolute;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.3);
+      color: white;
+      padding: 15px 30px;
+      border-radius: 10px;
+      text-align: center;
+      z-index: 10;
+      backdrop-filter: blur(3px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
+      animation: slideUp 0.6s ease-out;
+      transition: all 0.3s ease;
+    }
+
+    .slideshow-overlay:hover {
+      transform: translateX(-50%) translateY(-5px);
+      background: rgba(0, 0, 0, 0.4);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .slideshow-overlay h2 {
+      margin: 0;
+      font-size: 1.5rem;
+      color: white;
+      text-shadow: 0 3px 15px rgba(0, 0, 0, 0.8), 0 2px 8px rgba(0, 0, 0, 0.6);
+      letter-spacing: 1px;
+      font-weight: 600;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .slideshow-container {
+        max-width: 95%;
+        margin: 30px auto;
+      }
+      
+      .slideshow-wrapper {
+        height: 300px;
+      }
+
+      .slideshow-nav {
+        padding: 12px 8px;
+        font-size: 16px;
+      }
+
+      .slideshow-nav.prev {
+        left: 10px;
+      }
+
+      .slideshow-nav.next {
+        right: 10px;
+      }
+
+      .slideshow-overlay {
+        bottom: 60px;
+        padding: 10px 20px;
+      }
+
+      .slideshow-overlay h2 {
+        font-size: 1.1rem;
+      }
+
+      .slide-indicators {
+        bottom: 15px;
+        padding: 8px 12px;
+        gap: 8px;
+      }
+
+      .indicator {
+        width: 8px;
+        height: 8px;
+      }
+
+      .indicator.active {
+        width: 24px;
+      }
+    }
+
+    /* Custom Styled Modal */
+    .custom-modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(5px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 10000;
+      opacity: 0;
+      animation: fadeIn 0.3s ease-out forwards;
+    }
+
+    .custom-modal {
+      background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1);
+      max-width: 500px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+      position: relative;
+      transform: scale(0.9) translateY(20px);
+      animation: modalSlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    .custom-modal.success {
+      border-top: 5px solid #28a745;
+    }
+
+    .custom-modal.error {
+      border-top: 5px solid #dc3545;
+    }
+
+    .custom-modal-header {
+      padding: 25px 30px 20px;
+      text-align: center;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .custom-modal-icon {
+      width: 70px;
+      height: 70px;
+      margin: 0 auto 15px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 35px;
+      animation: iconBounce 0.6s ease-out 0.2s both;
+    }
+
+    .custom-modal.success .custom-modal-icon {
+      background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+      color: white;
+      box-shadow: 0 10px 30px rgba(40, 167, 69, 0.3);
+    }
+
+    .custom-modal.error .custom-modal-icon {
+      background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+      color: white;
+      box-shadow: 0 10px 30px rgba(220, 53, 69, 0.3);
+    }
+
+    .custom-modal-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: #1d4e89;
+      margin: 0;
+      letter-spacing: 0.5px;
+    }
+
+    .custom-modal-body {
+      padding: 25px 30px;
+      color: #333;
+      line-height: 1.8;
+      font-size: 15px;
+    }
+
+    .custom-modal-body p {
+      margin: 0 0 15px 0;
+    }
+
+    .custom-modal-body strong {
+      color: #1d4e89;
+      font-weight: 600;
+    }
+
+    .custom-modal-footer {
+      padding: 20px 30px 25px;
+      text-align: center;
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .custom-modal-btn {
+      background: linear-gradient(135deg, #1d4e89 0%, #163c6a 100%);
+      color: white;
+      border: none;
+      padding: 14px 40px;
+      border-radius: 50px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(29, 78, 137, 0.3);
+      letter-spacing: 0.5px;
+    }
+
+    .custom-modal-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(29, 78, 137, 0.4);
+      background: linear-gradient(135deg, #163c6a 0%, #1d4e89 100%);
+    }
+
+    .custom-modal-btn:active {
+      transform: translateY(0);
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes modalSlideIn {
+      from {
+        transform: scale(0.9) translateY(20px);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes iconBounce {
+      0% {
+        transform: scale(0);
+        opacity: 0;
+      }
+      50% {
+        transform: scale(1.1);
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .custom-modal {
+        max-width: 95%;
+        border-radius: 15px;
+      }
+
+      .custom-modal-header {
+        padding: 20px 20px 15px;
+      }
+
+      .custom-modal-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 30px;
+      }
+
+      .custom-modal-title {
+        font-size: 20px;
+      }
+
+      .custom-modal-body {
+        padding: 20px;
+        font-size: 14px;
+      }
+
+      .custom-modal-footer {
+        padding: 15px 20px 20px;
+      }
+
+      .custom-modal-btn {
+        padding: 12px 30px;
+        font-size: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="logo">
+      <a href="index.html" style="display: flex; align-items: center; text-decoration: none; color: inherit;">
+        <img src="images/pnmc.png" alt="PNG Maritime College Logo" class="logo-img">
+        <span style="margin-left: 10px;">PNG Maritime College</span>
+      </a>
+    </div>
+    <a href="pages/login.php" class="login-btn">Login</a>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">Welcome to PNG Maritime College</div>
+      <h1 class="hero-title">
+        <span class="title-line">PNG Maritime</span>
+        <span class="title-line highlight">Student Management System</span>
+      </h1>
+      <p class="hero-description">Streamline admissions, enrollments, and student services with our comprehensive, secure platform designed specifically for PNG Maritime College.</p>
+      <div class="hero-buttons">
+        <button class="cta-btn primary" onclick="window.location.href='apply_school_leaver.php'">
+          <span class="btn-icon">📝</span>
+          <span>School Leaver Application</span>
+        </button>
+        <button class="cta-btn secondary" onclick="window.location.href='apply_continuing.php'">
+          <span class="btn-icon">🔄</span>
+          <span>Returning Student Application</span>
+        </button>
+        <button class="cta-btn tertiary" onclick="window.location.href='student_login.php'" style="background: #28a745; border-color: #28a745;">
+          <span class="btn-icon">👤</span>
+          <span>Student Portal</span>
+        </button>
+        <button class="cta-btn outline" onclick="window.location.href='pages/login.php'">
+          <span class="btn-icon">🔐</span>
+          <span>Staff Login</span>
+        </button>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-item">
+          <div class="stat-number">1000+</div>
+          <div class="stat-label">Students</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">50+</div>
+          <div class="stat-label">Programs</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">24/7</div>
+          <div class="stat-label">Support</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-decoration">
+      <div class="wave wave1"></div>
+      <div class="wave wave2"></div>
+      <div class="wave wave3"></div>
+    </div>
+  </section>
+
+  <!-- Quick Links Section -->
+  <section class="quick-links">
+    <div class="quick-links-container">
+      <h2 class="section-title">Quick Access</h2>
+      <p class="section-subtitle white">Get started with your application or access the staff portal</p>
+      <div class="links-grid">
+        <a href="apply_school_leaver.php" class="quick-link-card">
+          <div class="link-icon">📝</div>
+          <h3>New Student?</h3>
+          <p>Apply as a school leaver</p>
+          <span class="link-arrow">→</span>
+        </a>
+        <a href="apply_continuing.php" class="quick-link-card">
+          <div class="link-icon">🔄</div>
+          <h3>Returning Student?</h3>
+          <p>Continue your application</p>
+          <span class="link-arrow">→</span>
+        </a>
+        <a href="pages/login.php" class="quick-link-card">
+          <div class="link-icon">👨‍💼</div>
+          <h3>Staff Portal</h3>
+          <p>Access staff dashboard</p>
+          <span class="link-arrow">→</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slideshow Section -->
+  <section class="slideshow-section">
+    <div class="slideshow-header">
+      <h2 class="section-title">Our Campus</h2>
+      <p class="section-subtitle">Explore PNG Maritime College through our campus gallery</p>
+    </div>
+    <div class="slideshow-container">
+    <div class="slideshow-wrapper">
+      <img src="images/Slideshow/IMG_2863.JPG" alt="Campus View" class="slide active">
+      <img src="images/Slideshow/IMG_3042.JPG" alt="Campus View" class="slide">
+      <img src="images/Slideshow/IMG_3044.JPG" alt="Campus View" class="slide">
+      <img src="images/Slideshow/IMG_3106.JPG" alt="Campus View" class="slide">
+      <img src="images/Slideshow/IMG_3212.JPG" alt="Campus View" class="slide">
+      <img src="images/Slideshow/IMG_3223.JPG" alt="Campus View" class="slide">
+      <img src="images/Slideshow/IMG_3398.JPG" alt="Campus View" class="slide">
+      <img src="images/Slideshow/IMG_3400.JPG" alt="Campus View" class="slide">
+      <img src="images/Slideshow/IMG_3403.JPG" alt="Campus View" class="slide">
+      <img src="images/Slideshow/IMG_3429.JPG" alt="Campus View" class="slide">
+      <img src="images/Slideshow/IMG_3430.JPG" alt="Campus View" class="slide">
+      <img src="images/Slideshow/IMG_3435.JPG" alt="Campus View" class="slide">
+      <img src="images/Slideshow/IMG_3459.JPG" alt="Campus View" class="slide">
+      <img src="images/Slideshow/IMG_3461.JPG" alt="Campus View" class="slide">
+      <img src="images/Slideshow/IMG_3493.JPG" alt="Campus View" class="slide">
+      <img src="images/Slideshow/IMG_3497.JPG" alt="Campus View" class="slide">
+      
+      <!-- Navigation Arrows -->
+      <button class="slideshow-nav prev" onclick="changeSlide(-1)">&#10094;</button>
+      <button class="slideshow-nav next" onclick="changeSlide(1)">&#10095;</button>
+      
+      <!-- Overlay Text -->
+      <div class="slideshow-overlay">
+        <h2>Welcome to PNG Maritime College</h2>
+      </div>
+      
+      <!-- Indicators -->
+      <div class="slide-indicators" id="indicators"></div>
+    </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features">
+    <div class="features-header">
+      <h2 class="section-title">Why Choose Our System?</h2>
+      <p class="section-subtitle">Comprehensive solutions for modern maritime education management</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🎓</div>
+        <h3>Student Enrollment</h3>
+        <p>Streamline the enrollment process with automated workflows, document management, and real-time tracking of student applications and academic progress.</p>
+        <div class="feature-link">Learn more →</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🏠</div>
+        <h3>Dormitory & Welfare</h3>
+        <p>Efficient dormitory allocation, occupancy monitoring, and comprehensive student welfare services management all in one place.</p>
+        <div class="feature-link">Learn more →</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3>Reporting & Analytics</h3>
+        <p>Generate detailed reports, visualize key metrics, and gain insights into student performance, financial data, and institutional analytics.</p>
+        <div class="feature-link">Learn more →</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    &copy; 2025 PNG Maritime College. All rights reserved.
+  </footer>
+
+  <script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+    let slideInterval;
+
+    // Create indicators
+    const indicatorsContainer = document.getElementById('indicators');
+    for (let i = 0; i < totalSlides; i++) {
+      const indicator = document.createElement('div');
+      indicator.className = 'indicator' + (i === 0 ? ' active' : '');
+      indicator.onclick = () => goToSlide(i);
+      indicatorsContainer.appendChild(indicator);
+    }
+
+    // Function to show specific slide with elegant wave animation
+    function showSlide(n, direction = 0) {
+      const prevSlide = slides[currentSlide];
+      const prevIndicator = document.querySelectorAll('.indicator')[currentSlide];
+      
+      // Remove active class
+      prevSlide.classList.remove('active');
+      prevSlide.style.animation = '';
+      prevIndicator.classList.remove('active');
+      
+      // Apply wave out animation based on direction
+      if (direction === 1) {
+        prevSlide.style.animation = 'waveSlideOut 1.2s ease-in-out forwards';
+      } else if (direction === -1) {
+        prevSlide.style.animation = 'waveSlideOutReverse 1.2s ease-in-out forwards';
+      } else {
+        prevSlide.style.animation = 'waveSlideOut 1.2s ease-in-out forwards';
+      }
+      
+      // Update current slide
+      currentSlide = (n + totalSlides) % totalSlides;
+      const nextSlide = slides[currentSlide];
+      const nextIndicator = document.querySelectorAll('.indicator')[currentSlide];
+      
+      // Reset next slide
+      nextSlide.style.opacity = '0';
+      nextSlide.style.transform = '';
+      nextSlide.style.filter = '';
+      
+      // Add active with elegant wave animation
+      setTimeout(() => {
+        prevSlide.classList.add('fade-out');
+        nextSlide.classList.add('active');
+        
+        // Apply elegant wave animation based on direction
+        if (direction === 1) {
+          nextSlide.style.animation = 'waveSlideIn 1.2s ease-in-out forwards';
+        } else if (direction === -1) {
+          nextSlide.style.animation = 'waveSlideInReverse 1.2s ease-in-out forwards';
+        } else {
+          nextSlide.style.animation = 'smoothFadeIn 1.2s ease-in-out forwards';
+        }
+        nextIndicator.classList.add('active');
+      }, 50);
+    }
+
+    // Function to change slide
+    function changeSlide(direction) {
+      showSlide(currentSlide + direction, direction);
+      resetInterval();
+    }
+
+    // Function to go to specific slide
+    function goToSlide(n) {
+      const direction = n > currentSlide ? 1 : -1;
+      showSlide(n, direction);
+      resetInterval();
+    }
+
+    // Auto-play slideshow
+    function startSlideshow() {
+      slideInterval = setInterval(() => {
+        showSlide(currentSlide + 1, 1);
+      }, 5000); // Change slide every 5 seconds
+    }
+
+    // Reset interval when user interacts
+    function resetInterval() {
+      clearInterval(slideInterval);
+      startSlideshow();
+    }
+
+    // Pause on hover
+    const slideshowContainer = document.querySelector('.slideshow-container');
+    slideshowContainer.addEventListener('mouseenter', () => {
+      clearInterval(slideInterval);
+    });
+
+    slideshowContainer.addEventListener('mouseleave', () => {
+      startSlideshow();
+    });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') {
+        changeSlide(-1);
+      } else if (e.key === 'ArrowRight') {
+        changeSlide(1);
+      }
+    });
+
+    // Start the slideshow
+    startSlideshow();
+  </script>
+
+  <!-- Custom Styled Modal -->
+  <div id="customModal" class="custom-modal-overlay" style="display: none;">
+    <div class="custom-modal" id="modalContent">
+      <div class="custom-modal-header">
+        <div class="custom-modal-icon" id="modalIcon">✓</div>
+        <h3 class="custom-modal-title" id="modalTitle">Success!</h3>
+      </div>
+      <div class="custom-modal-body" id="modalBody">
+        <!-- Message content will be inserted here -->
+      </div>
+      <div class="custom-modal-footer">
+        <button class="custom-modal-btn" onclick="closeCustomModal()">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Custom Modal Functions
+    function showCustomModal(title, message, type = 'success') {
+      const modal = document.getElementById('customModal');
+      const modalContent = document.getElementById('modalContent');
+      const modalIcon = document.getElementById('modalIcon');
+      const modalTitle = document.getElementById('modalTitle');
+      const modalBody = document.getElementById('modalBody');
+
+      // Set modal type (success or error)
+      modalContent.className = 'custom-modal ' + type;
+
+      // Set icon based on type
+      if (type === 'success') {
+        modalIcon.textContent = '✓';
+      } else if (type === 'error') {
+        modalIcon.textContent = '✕';
+      }
+
+      // Set title
+      modalTitle.textContent = title;
+
+      // Format message (replace \n with <br> and format paragraphs)
+      const formattedMessage = message
+        .split('\n\n')
+        .map(paragraph => {
+          if (paragraph.trim()) {
+            // Check if paragraph contains strong text (Application Number)
+            if (paragraph.includes('Application') && paragraph.includes('Number')) {
+              return '<p><strong>' + paragraph.replace(/\n/g, '<br>') + '</strong></p>';
+            }
+            return '<p>' + paragraph.replace(/\n/g, '<br>') + '</p>';
+          }
+          return '';
+        })
+        .join('');
+
+      modalBody.innerHTML = formattedMessage;
+
+      // Show modal
+      modal.style.display = 'flex';
+      document.body.style.overflow = 'hidden'; // Prevent background scrolling
+    }
+
+    function closeCustomModal() {
+      const modal = document.getElementById('customModal');
+      modal.style.animation = 'fadeIn 0.3s ease-out reverse';
+      setTimeout(() => {
+        modal.style.display = 'none';
+        document.body.style.overflow = ''; // Restore scrolling
+      }, 300);
+    }
+
+    // Close modal when clicking outside
+    document.getElementById('customModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeCustomModal();
+      }
+    });
+
+    // Close modal with Escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        const modal = document.getElementById('customModal');
+        if (modal.style.display === 'flex') {
+          closeCustomModal();
+        }
+      }
+    });
+
+    // Prevent scroll restoration on page refresh
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+    
+    // Scroll to top on page load/refresh
+    window.addEventListener('beforeunload', function() {
+      window.scrollTo(0, 0);
+    });
+    
+    window.addEventListener('load', function() {
+      window.scrollTo(0, 0);
+      // Also scroll to top after a short delay to ensure content is fully loaded
+      setTimeout(function() {
+        window.scrollTo(0, 0);
+      }, 100);
+    });
+
+    // Update the existing DOMContentLoaded to use custom modal
+    window.addEventListener('DOMContentLoaded', function() {
+      // Ensure page starts at top
+      window.scrollTo(0, 0);
+      
+      const urlParams = new URLSearchParams(window.location.search);
+      
+      // Check for upload size error
+      if (urlParams.get('error') === 'upload_size') {
+        const size = urlParams.get('size');
+        const limit = urlParams.get('limit');
+        const message = 'The total size of your uploaded files (' + (size || 'unknown') + ' MB) exceeds the maximum allowed size (' + (limit || '40') + ' MB).\n\n' +
+                      'Please reduce the file sizes or upload fewer files. Each file should be no more than 5 MB.\n\n' +
+                      'Tip: You can compress images or split large documents into smaller files.';
+        showCustomModal('File Upload Error!', message, 'error');
+        // Remove error parameters from URL
+        window.history.replaceState({}, document.title, window.location.pathname);
+        return;
+      }
+      
+      // Check for success message
+      if (urlParams.get('success') === '1') {
+        const type = urlParams.get('type');
+        const appNum = urlParams.get('app');
+        const course = urlParams.get('course');
+        
+        let title = 'Application Submitted Successfully!';
+        let message = '';
+        
+        if (type === 'enrollment') {
+          message = 'Your ' + (course ? decodeURIComponent(course) : 'enrollment') + ' application has been submitted successfully!\n\n' +
+                   'Application Registration Number: ' + (appNum ? decodeURIComponent(appNum) : '') + '\n\n' +
+                   'Please save this number for your records.\n\n' +
+                   'You will be notified of the status of your application through the email or phone number you provided. Please ensure your contact information is up to date.';
+        } else if (type === 'school_leaver') {
+          message = 'Your school leaver application has been submitted successfully!\n\n' +
+                   'Application Number: ' + (appNum ? decodeURIComponent(appNum) : '') + '\n\n' +
+                   'Please save this number for your records.\n\n' +
+                   'You will be notified of the status of your application through the email or phone number you provided. Please ensure your contact information is up to date.';
+        } else if (type === 'continuing') {
+          message = 'Your candidate returning application has been submitted successfully!\n\n' +
+                   'Application Number: ' + (appNum ? decodeURIComponent(appNum) : '') + '\n\n' +
+                   'Please save this number for your records.\n\n' +
+                   'You will be notified of the status of your application through the email or phone number you provided. Please ensure your contact information is up to date.';
+        } else if (type === 'expression') {
+          message = 'Your expression of interest has been submitted successfully!\n\n' +
+                   'Application Number: ' + (appNum ? decodeURIComponent(appNum) : '') + '\n\n' +
+                   'Please save this number for your records.\n\n' +
+                   'You will be notified of the status of your application through the email or phone number you provided. Please ensure your contact information is up to date.';
+        }
+        
+        if (message) {
+          showCustomModal(title, message, 'success');
+          // Remove success parameters from URL
+          window.history.replaceState({}, document.title, window.location.pathname);
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>
+

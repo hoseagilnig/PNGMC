@@ -1,0 +1,97 @@
+# PHP Project .gitignore for Student Management System
+
+# Environment and Configuration Files
+.env
+.env.local
+.env.production
+*.env
+config.local.php
+db_config.local.php
+
+# Sensitive Files
+*.log
+logs/
+*.sql
+!database/*.sql
+database/*_local.sql
+database/*_production.sql
+
+# Uploaded Files (User Content)
+uploads/
+!uploads/.gitkeep
+
+# Temporary Files
+*.tmp
+*.temp
+*.cache
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# IDE and Editor Files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+.project
+.classpath
+.settings/
+
+# PHP Specific
+vendor/
+composer.lock
+composer.phar
+.phpunit.result.cache
+
+# Node modules (if any)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Backup Files
+*.bak
+*.backup
+*_backup.*
+*.old
+
+# Debug and Test Files
+test_*.php
+debug_*.php
+*_test.php
+*_debug.php
+remove_debug_files.php
+
+# Database Dumps
+*.sql.gz
+*.sql.bz2
+*.dump
+
+# Session Files
+sessions/
+tmp/
+
+# Error Logs
+error_log
+php_errors.log
+security.log
+
+# Production Files (keep templates, ignore actual production files)
+.htaccess
+!.htaccess_production
+!pages/includes/production_config.php
+
+# OS Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Desktop.ini
+
+# Cursor/VS Code
+.cursor/
+.vscode/
+
