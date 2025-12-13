@@ -23,11 +23,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $message = 'Invalid security token. Please refresh the page and try again.';
         $message_type = 'error';
     } else {
-    
-    $conn = getDBConnection();
-    if ($conn) {
-        // Check if applications table exists
-        $table_check = $conn->query("SHOW TABLES LIKE 'applications'");
+        $conn = getDBConnection();
+        if ($conn) {
+            // Check if applications table exists
+            $table_check = $conn->query("SHOW TABLES LIKE 'applications'");
         if ($table_check->num_rows === 0) {
             $message = "Error: Application tables not found. <a href='database/create_app_tables.php' style='color: #1d4e89; text-decoration: underline; font-weight: bold;'>Click here to automatically create the tables</a> or import database/application_workflow_tables.sql manually.";
             $message_type = "error";
@@ -227,8 +226,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             $conn->close();
         }
-    } // End CSRF check
-}
+    } // End CSRF check (closes else block from line 25)
+} // End POST check (closes if from line 10)
 ?>
 <!DOCTYPE html>
 <html lang="en">
