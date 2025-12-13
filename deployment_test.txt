@@ -1,0 +1,10 @@
+Deployment Test File
+====================
+
+This file is used to test automatic deployment from GitHub to DigitalOcean.
+
+Last Updated: 2025-01-12 (This will update when you push changes)
+
+If you see this file on the live site at http://134.199.174.78/deployment_test.txt
+and the timestamp matches your latest push, then auto-deployment is working! ✅
+
