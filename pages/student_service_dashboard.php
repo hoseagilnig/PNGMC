@@ -18,20 +18,17 @@ $conn = getDBConnection();
 $stats = [];
 if ($conn) {
     // Check if application_type column exists
-    $col_name = 'application_type';
-    $col_check = $conn->prepare("SHOW COLUMNS FROM applications LIKE ?");
-    $col_check->bind_param("s", $col_name);
-    $col_check->execute();
-    $has_application_type = $col_check->get_result()->num_rows > 0;
-    $col_check->close();
+    // Note: SHOW COLUMNS doesn't support placeholders, so we use direct query with escaped column name
+    $col_name = $conn->real_escape_string('application_type');
+    $col_check = $conn->query("SHOW COLUMNS FROM applications LIKE '{$col_name}'");
+    $has_application_type = $col_check && $col_check->num_rows > 0;
+    if ($col_check) $col_check->close();
     
     // Check if requirements_met column exists
-    $col_name = 'requirements_met';
-    $req_check = $conn->prepare("SHOW COLUMNS FROM applications LIKE ?");
-    $req_check->bind_param("s", $col_name);
-    $req_check->execute();
-    $has_requirements_met = $req_check->get_result()->num_rows > 0;
-    $req_check->close();
+    $col_name = $conn->real_escape_string('requirements_met');
+    $req_check = $conn->query("SHOW COLUMNS FROM applications LIKE '{$col_name}'");
+    $has_requirements_met = $req_check && $req_check->num_rows > 0;
+    if ($req_check) $req_check->close();
     
     if ($has_application_type) {
         // School Leaver Applications (new students - Grade 10/12)
@@ -82,12 +79,14 @@ if ($conn) {
     
     // Ready for enrollment
     $enroll_check = $conn->query("SHOW COLUMNS FROM applications LIKE 'enrollment_ready'");
-    if ($enroll_check->num_rows > 0) {
+    if ($enroll_check && $enroll_check->num_rows > 0) {
         $result = $conn->query("SELECT COUNT(*) as count FROM applications WHERE enrollment_ready = TRUE AND enrolled = FALSE");
-        $stats['ready_enroll'] = $result->fetch_assoc()['count'];
+        $stats['ready_enroll'] = $result ? ($result->fetch_assoc()['count'] ?? 0) : 0;
+        if ($enroll_check) $enroll_check->close();
     } else {
         $result = $conn->query("SELECT COUNT(*) as count FROM applications WHERE enrolled = FALSE AND status = 'accepted'");
-        $stats['ready_enroll'] = $result->fetch_assoc()['count'];
+        $stats['ready_enroll'] = $result ? ($result->fetch_assoc()['count'] ?? 0) : 0;
+        if ($enroll_check) $enroll_check->close();
     }
     
     // Support tickets
