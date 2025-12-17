@@ -201,71 +201,89 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
                 call_user_func_array([$stmt, 'bind_param'], array_merge([$types], $refs));
                 
-                if ($stmt->execute()) {
-                    $application_id = $conn->insert_id;
-                    
-                    // Link to existing student account if found
-                    if ($previous_student_id) {
-                        if (file_exists(__DIR__ . '/pages/includes/student_account_helper.php')) {
-                            require_once __DIR__ . '/pages/includes/student_account_helper.php';
-                            if (function_exists('linkApplicationToStudentAccount')) {
-                                @linkApplicationToStudentAccount($application_id, $previous_student_id);
-                            }
-                        }
-                    }
-                    
-                    // Save uploaded files to application_documents table
-                    if (file_exists(__DIR__ . '/pages/includes/document_helper.php')) {
-                        require_once __DIR__ . '/pages/includes/document_helper.php';
+                try {
+                    if ($stmt->execute()) {
+                        $application_id = $conn->insert_id;
+                        error_log("Apply Continuing: Application created successfully - ID: $application_id, Number: $application_number");
                         
-                        // Save NMSA approval letter if uploaded
-                        if ($nmsa_approval_path && isset($_FILES['nmsa_approval_letter'])) {
-                            $original_filename = $_FILES['nmsa_approval_letter']['name'];
-                            if (function_exists('saveApplicationDocument')) {
-                                @saveApplicationDocument($application_id, 'nmsa_approval_letter', $nmsa_approval_path, $original_filename);
-                            }
-                        }
-                        
-                        // Save sea service record if uploaded
-                        if ($sea_service_record_path && isset($_FILES['sea_service_record'])) {
-                            $original_filename = $_FILES['sea_service_record']['name'];
-                            if (function_exists('saveApplicationDocument')) {
-                                @saveApplicationDocument($application_id, 'sea_service_record', $sea_service_record_path, $original_filename);
-                            }
-                        }
-                    }
-                    
-                    // Create requirement records (non-critical, continue even if fails)
-                    if ($has_application_type) {
-                        $table_check_req = $conn->query("SHOW TABLES LIKE 'continuing_student_requirements'");
-                        if ($table_check_req && $table_check_req->num_rows > 0) {
-                            $req_sql = "INSERT INTO continuing_student_requirements (application_id, requirement_type, requirement_name, status) VALUES (?, ?, ?, 'pending')";
-                            $req_stmt = $conn->prepare($req_sql);
-                            
-                            if ($req_stmt) {
-                                $requirements = [
-                                    ['nmsa_approval', 'NMSA Approval Letter'],
-                                    ['sea_service_record', 'Record of Sea Service'],
-                                    ['expression_of_interest', 'Expression of Interest Application']
-                                ];
-                                
-                                foreach ($requirements as $req) {
-                                    $req_stmt->bind_param('iss', $application_id, $req[0], $req[1]);
-                                    @$req_stmt->execute();
+                        // Link to existing student account if found
+                        if ($previous_student_id) {
+                            if (file_exists(__DIR__ . '/pages/includes/student_account_helper.php')) {
+                                require_once __DIR__ . '/pages/includes/student_account_helper.php';
+                                if (function_exists('linkApplicationToStudentAccount')) {
+                                    @linkApplicationToStudentAccount($application_id, $previous_student_id);
                                 }
-                                $req_stmt->close();
                             }
                         }
+                        
+                        // Save uploaded files to application_documents table
+                        if (file_exists(__DIR__ . '/pages/includes/document_helper.php')) {
+                            require_once __DIR__ . '/pages/includes/document_helper.php';
+                            
+                            // Save NMSA approval letter if uploaded
+                            if ($nmsa_approval_path && isset($_FILES['nmsa_approval_letter'])) {
+                                $original_filename = $_FILES['nmsa_approval_letter']['name'];
+                                if (function_exists('saveApplicationDocument')) {
+                                    $doc_result = @saveApplicationDocument($application_id, 'nmsa_approval_letter', $nmsa_approval_path, $original_filename);
+                                    error_log("Apply Continuing: NMSA document saved - " . ($doc_result ? "Success" : "Failed"));
+                                }
+                            }
+                            
+                            // Save sea service record if uploaded
+                            if ($sea_service_record_path && isset($_FILES['sea_service_record'])) {
+                                $original_filename = $_FILES['sea_service_record']['name'];
+                                if (function_exists('saveApplicationDocument')) {
+                                    $doc_result = @saveApplicationDocument($application_id, 'sea_service_record', $sea_service_record_path, $original_filename);
+                                    error_log("Apply Continuing: Sea service document saved - " . ($doc_result ? "Success" : "Failed"));
+                                }
+                            }
+                        }
+                        
+                        // Create requirement records (non-critical, continue even if fails)
+                        if ($has_application_type) {
+                            $table_check_req = $conn->query("SHOW TABLES LIKE 'continuing_student_requirements'");
+                            if ($table_check_req && $table_check_req->num_rows > 0) {
+                                $req_sql = "INSERT INTO continuing_student_requirements (application_id, requirement_type, requirement_name, status) VALUES (?, ?, ?, 'pending')";
+                                $req_stmt = $conn->prepare($req_sql);
+                                
+                                if ($req_stmt) {
+                                    $requirements = [
+                                        ['nmsa_approval', 'NMSA Approval Letter'],
+                                        ['sea_service_record', 'Record of Sea Service'],
+                                        ['expression_of_interest', 'Expression of Interest Application']
+                                    ];
+                                    
+                                    foreach ($requirements as $req) {
+                                        $req_stmt->bind_param('iss', $application_id, $req[0], $req[1]);
+                                        @$req_stmt->execute();
+                                    }
+                                    $req_stmt->close();
+                                }
+                            }
+                        }
+                        
+                        // Success - redirect to confirmation page
+                        ob_end_clean(); // Clear any output before redirect
+                        $app_num = htmlspecialchars($application_number);
+                        $redirect_url = 'index.html?success=1&type=continuing&app=' . urlencode($app_num);
+                        error_log("Apply Continuing: Redirecting to: $redirect_url");
+                        
+                        if (!headers_sent()) {
+                            header('Location: ' . $redirect_url);
+                            exit;
+                        } else {
+                            error_log("Apply Continuing: ERROR - Headers already sent! Cannot redirect.");
+                            $message = "Application submitted successfully! Application Number: " . htmlspecialchars($application_number);
+                            $message_type = "success";
+                        }
+                    } else {
+                        error_log("Apply Continuing Error: " . $stmt->error);
+                        $message = "Error submitting application: " . htmlspecialchars($stmt->error);
+                        $message_type = "error";
                     }
-                    
-                    // Success - redirect to confirmation page
-                    ob_end_clean(); // Clear any output before redirect
-                    $app_num = htmlspecialchars($application_number);
-                    header('Location: index.html?success=1&type=continuing&app=' . urlencode($app_num));
-                    exit;
-                } else {
-                    error_log("Apply Continuing Error: " . $stmt->error);
-                    $message = "Error submitting application: " . htmlspecialchars($stmt->error);
+                } catch (Exception $e) {
+                    error_log("Apply Continuing Exception: " . $e->getMessage());
+                    $message = "An error occurred: " . htmlspecialchars($e->getMessage());
                     $message_type = "error";
                 }
                 $stmt->close();
