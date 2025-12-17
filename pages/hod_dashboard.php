@@ -24,40 +24,48 @@ $stats = [
 
 if ($conn) {
     try {
+        // Check if hod_decision columns exist
+        $col_check = $conn->query("SHOW COLUMNS FROM applications LIKE 'hod_decision'");
+        $has_hod_decision = $col_check->num_rows > 0;
+        
         // Applications pending HOD review
-        $dept = 'hod';
         $status = 'hod_review';
-        $stmt = $conn->prepare("SELECT COUNT(*) as count FROM applications WHERE current_department = ? AND status = ?");
-        $stmt->bind_param("ss", $dept, $status);
+        $stmt = $conn->prepare("SELECT COUNT(*) as count FROM applications WHERE status = ?");
+        $stmt->bind_param("s", $status);
         $stmt->execute();
         $result = $stmt->get_result();
         $stats['pending_review'] = $result->fetch_assoc()['count'] ?? 0;
         $stmt->close();
         
-        // Applications approved today
-        $decision = 'approved';
-        $stmt = $conn->prepare("SELECT COUNT(*) as count FROM applications WHERE hod_decision = ? AND hod_decision_date = CURDATE()");
-        $stmt->bind_param("s", $decision);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $stats['approved_today'] = $result->fetch_assoc()['count'] ?? 0;
-        $stmt->close();
-        
-        // Applications rejected today
-        $decision = 'rejected';
-        $stmt = $conn->prepare("SELECT COUNT(*) as count FROM applications WHERE hod_decision = ? AND hod_decision_date = CURDATE()");
-        $stmt->bind_param("s", $decision);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $stats['rejected_today'] = $result->fetch_assoc()['count'] ?? 0;
-        $stmt->close();
+        // Applications approved today (only if hod_decision column exists)
+        if ($has_hod_decision) {
+            $decision = 'approved';
+            $stmt = $conn->prepare("SELECT COUNT(*) as count FROM applications WHERE hod_decision = ? AND hod_decision_date = CURDATE()");
+            $stmt->bind_param("s", $decision);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $stats['approved_today'] = $result->fetch_assoc()['count'] ?? 0;
+            $stmt->close();
+            
+            // Applications rejected today
+            $decision = 'rejected';
+            $stmt = $conn->prepare("SELECT COUNT(*) as count FROM applications WHERE hod_decision = ? AND hod_decision_date = CURDATE()");
+            $stmt->bind_param("s", $decision);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $stats['rejected_today'] = $result->fetch_assoc()['count'] ?? 0;
+            $stmt->close();
+        } else {
+            // If columns don't exist, set to 0
+            $stats['approved_today'] = 0;
+            $stats['rejected_today'] = 0;
+        }
         
         // Total pending
-        $dept = 'hod';
         $status1 = 'ineligible';
         $status2 = 'enrolled';
-        $stmt = $conn->prepare("SELECT COUNT(*) as count FROM applications WHERE current_department = ? AND status != ? AND status != ?");
-        $stmt->bind_param("sss", $dept, $status1, $status2);
+        $stmt = $conn->prepare("SELECT COUNT(*) as count FROM applications WHERE status != ? AND status != ?");
+        $stmt->bind_param("ss", $status1, $status2);
         $stmt->execute();
         $result = $stmt->get_result();
         $stats['total_pending'] = $result->fetch_assoc()['count'] ?? 0;
