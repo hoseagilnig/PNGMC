@@ -195,9 +195,79 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     if ($stmt->execute()) {
                         $application_id = $conn->insert_id;
                         
+                        // Handle file uploads and save to application_documents table
+                        require_once 'pages/includes/document_helper.php';
+                        
+                        $upload_dir = 'uploads/enrollment_documents/';
+                        if (!file_exists($upload_dir)) {
+                            mkdir($upload_dir, 0777, true);
+                        }
+                        
+                        // Upload Academic Certificates
+                        if (isset($_FILES['academic_certificates']) && !empty($_FILES['academic_certificates']['name'][0])) {
+                            foreach ($_FILES['academic_certificates']['name'] as $key => $name) {
+                                if ($_FILES['academic_certificates']['error'][$key] === UPLOAD_ERR_OK) {
+                                    $file_ext = pathinfo($name, PATHINFO_EXTENSION);
+                                    $filename = 'cert_' . $application_id . '_' . time() . '_' . $key . '.' . $file_ext;
+                                    $file_path = $upload_dir . $filename;
+                                    if (move_uploaded_file($_FILES['academic_certificates']['tmp_name'][$key], $file_path)) {
+                                        saveApplicationDocument($application_id, 'grade_12_certificate', $file_path, $name);
+                                    }
+                                }
+                            }
+                        }
+                        
+                        // Upload Academic Transcripts
+                        if (isset($_FILES['academic_transcripts']) && !empty($_FILES['academic_transcripts']['name'][0])) {
+                            foreach ($_FILES['academic_transcripts']['name'] as $key => $name) {
+                                if ($_FILES['academic_transcripts']['error'][$key] === UPLOAD_ERR_OK) {
+                                    $file_ext = pathinfo($name, PATHINFO_EXTENSION);
+                                    $filename = 'transcript_' . $application_id . '_' . time() . '_' . $key . '.' . $file_ext;
+                                    $file_path = $upload_dir . $filename;
+                                    if (move_uploaded_file($_FILES['academic_transcripts']['tmp_name'][$key], $file_path)) {
+                                        saveApplicationDocument($application_id, 'transcript', $file_path, $name);
+                                    }
+                                }
+                            }
+                        }
+                        
+                        // Upload Reference Letters
+                        if (isset($_FILES['reference_letters']) && !empty($_FILES['reference_letters']['name'][0])) {
+                            foreach ($_FILES['reference_letters']['name'] as $key => $name) {
+                                if ($_FILES['reference_letters']['error'][$key] === UPLOAD_ERR_OK) {
+                                    $file_ext = pathinfo($name, PATHINFO_EXTENSION);
+                                    $filename = 'reference_' . $application_id . '_' . time() . '_' . $key . '.' . $file_ext;
+                                    $file_path = $upload_dir . $filename;
+                                    if (move_uploaded_file($_FILES['reference_letters']['tmp_name'][$key], $file_path)) {
+                                        saveApplicationDocument($application_id, 'other', $file_path, 'Reference Letter: ' . $name);
+                                    }
+                                }
+                            }
+                        }
+                        
+                        // Upload CV
+                        if (isset($_FILES['cv']) && $_FILES['cv']['error'] === UPLOAD_ERR_OK) {
+                            $file_ext = pathinfo($_FILES['cv']['name'], PATHINFO_EXTENSION);
+                            $filename = 'cv_' . $application_id . '_' . time() . '.' . $file_ext;
+                            $file_path = $upload_dir . $filename;
+                            if (move_uploaded_file($_FILES['cv']['tmp_name'], $file_path)) {
+                                saveApplicationDocument($application_id, 'other', $file_path, 'CV: ' . $_FILES['cv']['name']);
+                            }
+                        }
+                        
+                        // Upload Identity Document
+                        if (isset($_FILES['identity_document']) && $_FILES['identity_document']['error'] === UPLOAD_ERR_OK) {
+                            $file_ext = pathinfo($_FILES['identity_document']['name'], PATHINFO_EXTENSION);
+                            $filename = 'id_' . $application_id . '_' . time() . '.' . $file_ext;
+                            $file_path = $upload_dir . $filename;
+                            if (move_uploaded_file($_FILES['identity_document']['tmp_name'], $file_path)) {
+                                saveApplicationDocument($application_id, 'birth_certificate', $file_path, 'Identity Document: ' . $_FILES['identity_document']['name']);
+                            }
+                        }
+                        
                         // Automatically create requirements for school leaver applications
                         $table_check = $conn->query("SHOW TABLES LIKE 'continuing_student_requirements'");
-                        if ($table_check->num_rows > 0) {
+                        if ($table_check && $table_check->num_rows > 0) {
                             require_once 'pages/includes/workflow_helper.php';
                             createApplicationRequirements($application_id, 'new_student');
                         }
@@ -291,7 +361,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       </div>
     <?php endif; ?>
 
-    <form method="POST">
+    <form method="POST" enctype="multipart/form-data">
       <h2 class="section-title">Personal Information</h2>
       <div class="form-row">
         <div>
@@ -397,6 +467,55 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <label>Overall GPA</label>
           <input type="number" name="overall_gpa" step="0.01" min="0" max="4" placeholder="e.g., 3.5" value="<?php echo htmlspecialchars($_POST['overall_gpa'] ?? ''); ?>">
         </div>
+      </div>
+
+      <h2 class="section-title">Required Documents</h2>
+      <div style="background: #fff3cd; padding: 15px; border-radius: 5px; margin: 20px 0; border-left: 4px solid #ffc107;">
+        <strong>⚠️ Important:</strong> Please upload copies of all required documents. Accepted formats: PDF, DOC, DOCX, JPG, JPEG, PNG. Maximum file size: 5MB per file. <strong>DO NOT SEND ORIGINALS.</strong>
+      </div>
+      
+      <div class="form-row full">
+        <div>
+          <label>Academic Certificate(s) <span class="required">*</span></label>
+          <input type="file" name="academic_certificates[]" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" multiple required>
+          <small style="color: #666; display: block; margin-top: 5px;">Upload certified copy of your most recent academic certificate(s). You can upload multiple files.</small>
+        </div>
+      </div>
+      
+      <div class="form-row full">
+        <div>
+          <label>Academic Transcripts/Term Reports <span class="required">*</span></label>
+          <input type="file" name="academic_transcripts[]" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" multiple required>
+          <small style="color: #666; display: block; margin-top: 5px;">Upload certified copy of your most recent academic transcripts/term reports. You can upload multiple files.</small>
+        </div>
+      </div>
+      
+      <div class="form-row full">
+        <div>
+          <label>Letters of Reference <span class="required">*</span></label>
+          <input type="file" name="reference_letters[]" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" multiple required>
+          <small style="color: #666; display: block; margin-top: 5px;">Upload 2 copies of Letters of Reference. You can upload multiple files.</small>
+        </div>
+      </div>
+      
+      <div class="form-row full">
+        <div>
+          <label>Curriculum Vitae (CV) <span class="required">*</span></label>
+          <input type="file" name="cv" accept=".pdf,.doc,.docx" required>
+          <small style="color: #666; display: block; margin-top: 5px;">Upload your updated Curriculum Vitae.</small>
+        </div>
+      </div>
+      
+      <div class="form-row full">
+        <div>
+          <label>Identity Document <span class="required">*</span></label>
+          <input type="file" name="identity_document" accept=".pdf,.jpg,.jpeg,.png" required>
+          <small style="color: #666; display: block; margin-top: 5px;">Upload certified copy of your NID Card, Driver's License, School ID Card, or Employment ID Card.</small>
+        </div>
+      </div>
+      
+      <div style="background: #f8d7da; padding: 15px; border-radius: 5px; margin: 20px 0; border-left: 4px solid #dc3545;">
+        <strong>⚠️ Important:</strong> If you submit an application that does not include all supporting certified documents or does not meet all submission requirements, then your application will be considered non-compliant and will be disqualified.
       </div>
 
       <button type="submit" class="btn-submit" id="submitBtn">Submit Expression of Interest</button>
