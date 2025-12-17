@@ -117,7 +117,8 @@ if ($workflow_tables_exist) {
 $finance_transfer_count = 0;
 $conn = getDBConnection();
 if ($conn) {
-    $tables_exist = $conn->query("SHOW TABLES LIKE 'finance_to_sas_transfers'")->num_rows > 0;
+    $table_check = $conn->query("SHOW TABLES LIKE 'finance_to_sas_transfers'");
+    $tables_exist = $table_check && $table_check->num_rows > 0;
     if ($tables_exist) {
         // Get last viewed timestamp from session
         $last_viewed = isset($_SESSION['last_viewed_transfers']) ? $_SESSION['last_viewed_transfers'] : 0;
