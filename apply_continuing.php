@@ -259,6 +259,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     }
                     
                     // Success - redirect to confirmation page
+                    ob_end_clean(); // Clear any output before redirect
                     $app_num = htmlspecialchars($application_number);
                     header('Location: index.html?success=1&type=continuing&app=' . urlencode($app_num));
                     exit;
