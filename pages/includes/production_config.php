@@ -1,39 +1,60 @@
 <?php
 /**
  * Production Configuration
- * Include this file in production to override development settings
+ * Set production-ready PHP settings
+ * Include this file at the very top of your entry points
  * 
- * Usage: Add this at the top of your main entry points:
+ * Usage:
  * require_once __DIR__ . '/includes/production_config.php';
  */
 
-// Disable error display in production
-ini_set('display_errors', '0');
-ini_set('display_startup_errors', '0');
-error_reporting(E_ALL);
-ini_set('log_errors', '1');
-ini_set('error_log', __DIR__ . '/../../logs/php_errors.log');
+// Only apply in production environment
+$app_env = getenv('APP_ENV') ?: (defined('APP_ENV') ? APP_ENV : 'production');
 
-// Security: Prevent information disclosure
-ini_set('expose_php', '0');
+if ($app_env === 'production' || $app_env === 'prod') {
+    // Disable error display in production
+    ini_set('display_errors', '0');
+    ini_set('display_startup_errors', '0');
+    
+    // Enable error logging
+    ini_set('log_errors', '1');
+    $log_dir = __DIR__ . '/../../logs';
+    if (!is_dir($log_dir)) {
+        @mkdir($log_dir, 0755, true);
+    }
+    ini_set('error_log', $log_dir . '/php_errors.log');
+    
+    // Set error reporting level (log all errors but don't display)
+    error_reporting(E_ALL);
+    
+    // Hide PHP version
+    header_remove('X-Powered-By');
+    
+    // Security headers
+    if (!headers_sent()) {
+        header('X-Content-Type-Options: nosniff');
+        header('X-Frame-Options: SAMEORIGIN');
+        header('X-XSS-Protection: 1; mode=block');
+    }
+} else {
+    // Development mode - show errors
+    ini_set('display_errors', '1');
+    ini_set('display_startup_errors', '1');
+    error_reporting(E_ALL);
+}
 
-// Session security settings
-ini_set('session.cookie_httponly', '1');
-ini_set('session.cookie_secure', '1'); // Enable only if using HTTPS
-ini_set('session.use_strict_mode', '1');
-ini_set('session.cookie_samesite', 'Strict');
+// Set timezone
+date_default_timezone_set('Pacific/Port_Moresby');
 
-// Set session timeout (30 minutes)
-ini_set('session.gc_maxlifetime', '1800');
-
-// Disable chatbot debug mode
-if (file_exists(__DIR__ . '/chatbot_config.php')) {
-    // This will be overridden when chatbot_config.php is included
-    // But we set it here as a reminder
-    if (!defined('CHATBOT_DEBUG')) {
-        define('CHATBOT_DEBUG', false);
+// Set session security (if not already set)
+if (session_status() === PHP_SESSION_NONE) {
+    ini_set('session.cookie_httponly', '1');
+    ini_set('session.use_strict_mode', '1');
+    ini_set('session.cookie_samesite', 'Strict');
+    
+    if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
+        ini_set('session.cookie_secure', '1');
     }
 }
 
 ?>
-

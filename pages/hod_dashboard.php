@@ -1,32 +1,72 @@
 <?php
-session_start();
-if (!isset($_SESSION['loggedin']) || $_SESSION['role'] !== 'hod') {
-    header('Location: login.php');
-    exit;
-}
-require_once 'includes/menu_helper.php';
-require_once 'includes/db_config.php';
-require_once 'includes/workflow_helper.php';
+/**
+ * HOD Dashboard
+ * Standardized authentication and error handling
+ */
 
-// Get statistics
+// Use standardized auth guard
+require_once __DIR__ . '/includes/auth_guard.php';
+requireRole('hod');
+
+// Load required files with __DIR__ for Linux compatibility
+require_once __DIR__ . '/includes/menu_helper.php';
+require_once __DIR__ . '/includes/db_config.php';
+require_once __DIR__ . '/includes/workflow_helper.php';
+
+// Get statistics with prepared statements and error handling
 $conn = getDBConnection();
-$stats = [];
+$stats = [
+    'pending_review' => 0,
+    'approved_today' => 0,
+    'rejected_today' => 0,
+    'total_pending' => 0
+];
+
 if ($conn) {
-    // Applications pending HOD review
-    $result = $conn->query("SELECT COUNT(*) as count FROM applications WHERE current_department = 'hod' AND status = 'hod_review'");
-    $stats['pending_review'] = $result->fetch_assoc()['count'];
-    
-    // Applications approved today
-    $result = $conn->query("SELECT COUNT(*) as count FROM applications WHERE hod_decision = 'approved' AND hod_decision_date = CURDATE()");
-    $stats['approved_today'] = $result->fetch_assoc()['count'];
-    
-    // Applications rejected today
-    $result = $conn->query("SELECT COUNT(*) as count FROM applications WHERE hod_decision = 'rejected' AND hod_decision_date = CURDATE()");
-    $stats['rejected_today'] = $result->fetch_assoc()['count'];
-    
-    // Total pending
-    $result = $conn->query("SELECT COUNT(*) as count FROM applications WHERE current_department = 'hod' AND status != 'ineligible' AND status != 'enrolled'");
-    $stats['total_pending'] = $result->fetch_assoc()['count'];
+    try {
+        // Applications pending HOD review
+        $dept = 'hod';
+        $status = 'hod_review';
+        $stmt = $conn->prepare("SELECT COUNT(*) as count FROM applications WHERE current_department = ? AND status = ?");
+        $stmt->bind_param("ss", $dept, $status);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $stats['pending_review'] = $result->fetch_assoc()['count'] ?? 0;
+        $stmt->close();
+        
+        // Applications approved today
+        $decision = 'approved';
+        $stmt = $conn->prepare("SELECT COUNT(*) as count FROM applications WHERE hod_decision = ? AND hod_decision_date = CURDATE()");
+        $stmt->bind_param("s", $decision);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $stats['approved_today'] = $result->fetch_assoc()['count'] ?? 0;
+        $stmt->close();
+        
+        // Applications rejected today
+        $decision = 'rejected';
+        $stmt = $conn->prepare("SELECT COUNT(*) as count FROM applications WHERE hod_decision = ? AND hod_decision_date = CURDATE()");
+        $stmt->bind_param("s", $decision);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $stats['rejected_today'] = $result->fetch_assoc()['count'] ?? 0;
+        $stmt->close();
+        
+        // Total pending
+        $dept = 'hod';
+        $status1 = 'ineligible';
+        $status2 = 'enrolled';
+        $stmt = $conn->prepare("SELECT COUNT(*) as count FROM applications WHERE current_department = ? AND status != ? AND status != ?");
+        $stmt->bind_param("sss", $dept, $status1, $status2);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $stats['total_pending'] = $result->fetch_assoc()['count'] ?? 0;
+        $stmt->close();
+        
+    } catch (Exception $e) {
+        // Log error but don't expose to user
+        error_log("HOD Dashboard statistics error: " . $e->getMessage());
+    }
     
     $conn->close();
 }
@@ -282,7 +322,7 @@ $pending_applications = getPendingApplicationsForDepartment('hod', 'hod_review')
     </div>
   </div>
 
-  <?php require_once 'includes/chatbot_simple.php'; ?>
+  <?php require_once __DIR__ . '/includes/chatbot_simple.php'; ?>
     <?php echo getMobileMenuScript(); ?>
 </body>
 </html>

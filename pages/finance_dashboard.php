@@ -1,13 +1,18 @@
 <?php
-session_start();
-if (!isset($_SESSION['loggedin']) || $_SESSION['role'] !== 'finance') {
-    header('Location: login.php');
-    exit;
-}
-require_once 'includes/menu_helper.php';
-require_once 'includes/db_config.php';
-require_once 'includes/fee_helper.php';
-require_once 'includes/workflow_helper.php';
+/**
+ * Finance Dashboard
+ * Standardized authentication and error handling
+ */
+
+// Use standardized auth guard
+require_once __DIR__ . '/includes/auth_guard.php';
+requireRole('finance');
+
+// Load required files with __DIR__ for Linux compatibility
+require_once __DIR__ . '/includes/menu_helper.php';
+require_once __DIR__ . '/includes/db_config.php';
+require_once __DIR__ . '/includes/fee_helper.php';
+require_once __DIR__ . '/includes/workflow_helper.php';
 
 // Get comprehensive fee statistics
 $stats = getFeeStatistics();
@@ -18,7 +23,10 @@ $workflow_notifications = [];
 $workflow_tables_exist = false;
 $conn_wf = getDBConnection();
 if ($conn_wf) {
-    $workflow_tables_exist = $conn_wf->query("SHOW TABLES LIKE 'workflow_notifications'")->num_rows > 0;
+    $table_check = $conn_wf->prepare("SHOW TABLES LIKE 'workflow_notifications'");
+    $table_check->execute();
+    $workflow_tables_exist = $table_check->get_result()->num_rows > 0;
+    $table_check->close();
     if ($workflow_tables_exist) {
         $notification_count = getNotificationCount('finance');
         $workflow_notifications = getUnreadNotifications('finance', 5);
@@ -33,7 +41,10 @@ $payment_mode_analysis = [];
 $invoice_receipt_analysis = [];
 
 if ($conn) {
-    $tables_exist = $conn->query("SHOW TABLES LIKE 'student_fees'")->num_rows > 0;
+    $table_check = $conn->prepare("SHOW TABLES LIKE 'student_fees'");
+    $table_check->execute();
+    $tables_exist = $table_check->get_result()->num_rows > 0;
+    $table_check->close();
     
     if ($tables_exist) {
         // Get top 10 outstanding fees

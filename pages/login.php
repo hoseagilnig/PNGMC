@@ -84,21 +84,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 $update_stmt->execute();
                                 $update_stmt->close();
                             
-                                // Redirect to role dashboard
-                                if ($user['role'] === 'admin') {
+                                // Redirect to role dashboard (using normalized role)
+                                $normalized_role = strtolower(trim($user['role']));
+                                // Handle aliases
+                                if ($normalized_role === 'sas' || $normalized_role === 'student_services' || $normalized_role === 'student services') {
+                                    $normalized_role = 'studentservices';
+                                }
+                                
+                                if ($normalized_role === 'admin') {
                                     header('Location: admin_dashboard.php');
                                     exit;
-                                } elseif ($user['role'] === 'finance') {
+                                } elseif ($normalized_role === 'finance') {
                                     header('Location: finance_dashboard.php');
                                     exit;
-                                } elseif ($user['role'] === 'studentservices') {
+                                } elseif ($normalized_role === 'studentservices') {
                                     header('Location: student_service_dashboard.php');
                                     exit;
-                                } elseif ($user['role'] === 'hod') {
+                                } elseif ($normalized_role === 'hod') {
                                     header('Location: hod_dashboard.php');
                                     exit;
                                 } else {
-                                    $error = 'Unknown role.';
+                                    $error = 'Unknown role: ' . htmlspecialchars($user['role']);
                                 }
                             } // Close successful login block (else from rate limit check)
                         } else {

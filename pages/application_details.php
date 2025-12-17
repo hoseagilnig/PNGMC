@@ -1,13 +1,17 @@
 <?php
-session_start();
-// Allow admin, studentservices, hod, and finance roles to view application details
-if (!isset($_SESSION['loggedin']) || !in_array($_SESSION['role'], ['admin', 'studentservices', 'hod', 'finance'])) {
-    header('Location: login.php');
-    exit;
-}
-require_once 'includes/menu_helper.php';
-require_once 'includes/db_config.php';
-require_once 'includes/workflow_helper.php';
+/**
+ * Application Details Page
+ * Standardized authentication and error handling
+ */
+
+// Use standardized auth guard
+require_once __DIR__ . '/includes/auth_guard.php';
+requireRole(['admin', 'studentservices', 'hod', 'finance']);
+
+// Load required files with __DIR__ for Linux compatibility
+require_once __DIR__ . '/includes/menu_helper.php';
+require_once __DIR__ . '/includes/db_config.php';
+require_once __DIR__ . '/includes/workflow_helper.php';
 
 $application_id = intval($_GET['id'] ?? 0);
 $conn = getDBConnection();

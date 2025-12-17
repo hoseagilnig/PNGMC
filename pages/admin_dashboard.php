@@ -1,49 +1,120 @@
 <?php
-session_start();
-if (!isset($_SESSION['loggedin']) || $_SESSION['role'] !== 'admin') {
-    header('Location: login.php');
-    exit;
-}
-require_once 'includes/menu_helper.php';
-require_once 'includes/db_config.php';
+/**
+ * Admin Dashboard
+ * Standardized authentication and error handling
+ */
 
-// Get statistics
+// Use standardized auth guard
+require_once __DIR__ . '/includes/auth_guard.php';
+requireRole('admin');
+
+// Load required files with __DIR__ for Linux compatibility
+require_once __DIR__ . '/includes/menu_helper.php';
+require_once __DIR__ . '/includes/db_config.php';
+
+// Get statistics with prepared statements and error handling
 $conn = getDBConnection();
-$stats = [];
+$stats = [
+    'pending_applications' => 0,
+    'hod_review' => 0,
+    'accepted' => 0,
+    'correspondence_pending' => 0,
+    'admins' => 0,
+    'student_services' => 0,
+    'finance_staff' => 0,
+    'active_students' => 0,
+    'enrolled' => 0,
+    'open_tickets' => 0
+];
+
 if ($conn) {
-    // Application Statistics
-    $result = $conn->query("SELECT COUNT(*) as count FROM applications WHERE status = 'submitted'");
-    $stats['pending_applications'] = $result->fetch_assoc()['count'];
-    
-    $result = $conn->query("SELECT COUNT(*) as count FROM applications WHERE status = 'hod_review'");
-    $stats['hod_review'] = $result->fetch_assoc()['count'];
-    
-    $result = $conn->query("SELECT COUNT(*) as count FROM applications WHERE status = 'accepted'");
-    $stats['accepted'] = $result->fetch_assoc()['count'];
-    
-    $result = $conn->query("SELECT COUNT(*) as count FROM applications WHERE status = 'correspondence_sent'");
-    $stats['correspondence_pending'] = $result->fetch_assoc()['count'];
-    
-    // Staff Statistics
-    $result = $conn->query("SELECT COUNT(*) as count FROM users WHERE role = 'admin'");
-    $stats['admins'] = $result->fetch_assoc()['count'];
-    
-    $result = $conn->query("SELECT COUNT(*) as count FROM users WHERE role = 'studentservices'");
-    $stats['student_services'] = $result->fetch_assoc()['count'];
-    
-    $result = $conn->query("SELECT COUNT(*) as count FROM users WHERE role = 'finance'");
-    $stats['finance_staff'] = $result->fetch_assoc()['count'];
-    
-    // Student Statistics
-    $result = $conn->query("SELECT COUNT(*) as count FROM students WHERE status = 'active'");
-    $stats['active_students'] = $result->fetch_assoc()['count'];
-    
-    $result = $conn->query("SELECT COUNT(*) as count FROM applications WHERE enrolled = TRUE");
-    $stats['enrolled'] = $result->fetch_assoc()['count'];
-    
-    // System Statistics
-    $result = $conn->query("SELECT COUNT(*) as count FROM support_tickets WHERE status = 'open'");
-    $stats['open_tickets'] = $result->fetch_assoc()['count'];
+    try {
+        // Application Statistics - using prepared statements
+        $stmt = $conn->prepare("SELECT COUNT(*) as count FROM applications WHERE status = ?");
+        $status = 'submitted';
+        $stmt->bind_param("s", $status);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $stats['pending_applications'] = $result->fetch_assoc()['count'] ?? 0;
+        $stmt->close();
+        
+        $status = 'hod_review';
+        $stmt = $conn->prepare("SELECT COUNT(*) as count FROM applications WHERE status = ?");
+        $stmt->bind_param("s", $status);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $stats['hod_review'] = $result->fetch_assoc()['count'] ?? 0;
+        $stmt->close();
+        
+        $status = 'accepted';
+        $stmt = $conn->prepare("SELECT COUNT(*) as count FROM applications WHERE status = ?");
+        $stmt->bind_param("s", $status);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $stats['accepted'] = $result->fetch_assoc()['count'] ?? 0;
+        $stmt->close();
+        
+        $status = 'correspondence_sent';
+        $stmt = $conn->prepare("SELECT COUNT(*) as count FROM applications WHERE status = ?");
+        $stmt->bind_param("s", $status);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $stats['correspondence_pending'] = $result->fetch_assoc()['count'] ?? 0;
+        $stmt->close();
+        
+        // Staff Statistics
+        $role = 'admin';
+        $stmt = $conn->prepare("SELECT COUNT(*) as count FROM users WHERE role = ?");
+        $stmt->bind_param("s", $role);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $stats['admins'] = $result->fetch_assoc()['count'] ?? 0;
+        $stmt->close();
+        
+        $role = 'studentservices';
+        $stmt = $conn->prepare("SELECT COUNT(*) as count FROM users WHERE role = ?");
+        $stmt->bind_param("s", $role);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $stats['student_services'] = $result->fetch_assoc()['count'] ?? 0;
+        $stmt->close();
+        
+        $role = 'finance';
+        $stmt = $conn->prepare("SELECT COUNT(*) as count FROM users WHERE role = ?");
+        $stmt->bind_param("s", $role);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $stats['finance_staff'] = $result->fetch_assoc()['count'] ?? 0;
+        $stmt->close();
+        
+        // Student Statistics
+        $status = 'active';
+        $stmt = $conn->prepare("SELECT COUNT(*) as count FROM students WHERE status = ?");
+        $stmt->bind_param("s", $status);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $stats['active_students'] = $result->fetch_assoc()['count'] ?? 0;
+        $stmt->close();
+        
+        $stmt = $conn->prepare("SELECT COUNT(*) as count FROM applications WHERE enrolled = TRUE");
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $stats['enrolled'] = $result->fetch_assoc()['count'] ?? 0;
+        $stmt->close();
+        
+        // System Statistics
+        $status = 'open';
+        $stmt = $conn->prepare("SELECT COUNT(*) as count FROM support_tickets WHERE status = ?");
+        $stmt->bind_param("s", $status);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $stats['open_tickets'] = $result->fetch_assoc()['count'] ?? 0;
+        $stmt->close();
+        
+    } catch (Exception $e) {
+        // Log error but don't expose to user
+        error_log("Admin Dashboard statistics error: " . $e->getMessage());
+    }
     
     $conn->close();
 }
@@ -300,7 +371,7 @@ if ($conn) {
     </div>
   </div>
 
-  <?php require_once 'includes/chatbot_simple.php'; ?>
+  <?php require_once __DIR__ . '/includes/chatbot_simple.php'; ?>
     <?php echo getMobileMenuScript(); ?>
 </body>
 </html>

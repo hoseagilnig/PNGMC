@@ -1,24 +1,37 @@
 <?php
-session_start();
-if (!isset($_SESSION['loggedin']) || $_SESSION['role'] !== 'studentservices') {
-    header('Location: login.php');
-    exit;
-}
-require_once 'includes/menu_helper.php';
-require_once 'includes/db_config.php';
-require_once 'includes/workflow_helper.php';
+/**
+ * Student Services Dashboard
+ * Standardized authentication and error handling
+ */
+
+// Use standardized auth guard
+require_once __DIR__ . '/includes/auth_guard.php';
+requireRole(['studentservices', 'sas']);
+
+// Load required files with __DIR__ for Linux compatibility
+require_once __DIR__ . '/includes/menu_helper.php';
+require_once __DIR__ . '/includes/db_config.php';
+require_once __DIR__ . '/includes/workflow_helper.php';
 
 // Get statistics
 $conn = getDBConnection();
 $stats = [];
 if ($conn) {
     // Check if application_type column exists
-    $col_check = $conn->query("SHOW COLUMNS FROM applications LIKE 'application_type'");
-    $has_application_type = $col_check->num_rows > 0;
+    $col_name = 'application_type';
+    $col_check = $conn->prepare("SHOW COLUMNS FROM applications LIKE ?");
+    $col_check->bind_param("s", $col_name);
+    $col_check->execute();
+    $has_application_type = $col_check->get_result()->num_rows > 0;
+    $col_check->close();
     
     // Check if requirements_met column exists
-    $req_check = $conn->query("SHOW COLUMNS FROM applications LIKE 'requirements_met'");
-    $has_requirements_met = $req_check->num_rows > 0;
+    $col_name = 'requirements_met';
+    $req_check = $conn->prepare("SHOW COLUMNS FROM applications LIKE ?");
+    $req_check->bind_param("s", $col_name);
+    $req_check->execute();
+    $has_requirements_met = $req_check->get_result()->num_rows > 0;
+    $req_check->close();
     
     if ($has_application_type) {
         // School Leaver Applications (new students - Grade 10/12)
