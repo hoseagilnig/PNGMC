@@ -235,9 +235,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $stmt->close();
             }
             $conn->close();
-        }
-    } // End CSRF check (closes else block from line 25)
-} // End POST check (closes if from line 10)
+        } // End else block from line 44 (table check)
+        } // End if ($conn) from line 37
+    } // End CSRF check (closes else block from line 35)
+} // End POST check (closes if from line 20)
 ?>
 <!DOCTYPE html>
 <html lang="en">
