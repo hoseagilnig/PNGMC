@@ -221,34 +221,43 @@ function secureFileName($filename) {
 
 /**
  * Check if user is authenticated
+ * Note: This function may be overridden by auth_guard.php
  */
-function isAuthenticated() {
-    return isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true;
+if (!function_exists('isAuthenticated')) {
+    function isAuthenticated() {
+        return isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true;
+    }
 }
 
 /**
  * Require authentication (redirect if not logged in)
+ * Note: This function may be overridden by auth_guard.php
  */
-function requireAuth() {
-    if (!isAuthenticated()) {
-        header('Location: login.php');
-        exit;
+if (!function_exists('requireAuth')) {
+    function requireAuth() {
+        if (!isAuthenticated()) {
+            header('Location: login.php');
+            exit;
+        }
     }
 }
 
 /**
  * Check if user has required role
+ * Note: This function may be overridden by auth_guard.php
  */
-function requireRole($required_roles) {
-    requireAuth();
-    
-    if (!is_array($required_roles)) {
-        $required_roles = [$required_roles];
-    }
-    
-    if (!isset($_SESSION['role']) || !in_array($_SESSION['role'], $required_roles)) {
-        header('Location: ../index.html');
-        exit;
+if (!function_exists('requireRole')) {
+    function requireRole($required_roles) {
+        requireAuth();
+        
+        if (!is_array($required_roles)) {
+            $required_roles = [$required_roles];
+        }
+        
+        if (!isset($_SESSION['role']) || !in_array($_SESSION['role'], $required_roles)) {
+            header('Location: ../index.html');
+            exit;
+        }
     }
 }
 
