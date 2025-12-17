@@ -8,15 +8,11 @@
  * requireRole('admin'); // or ['admin', 'hod']
  */
 
-// Ensure session is started
+// Initialize secure session settings BEFORE starting session
 if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
-// Initialize secure session on first load
-if (!isset($_SESSION['_auth_initialized'])) {
     require_once __DIR__ . '/security_helper.php';
     initSecureSession();
+    session_start();
     $_SESSION['_auth_initialized'] = true;
 }
 
@@ -140,11 +136,13 @@ function getCurrentUsername() {
 }
 
 /**
- * Get current user name
+ * Get current user name (full name)
  * @return string|null
  */
-function getCurrentUserName() {
-    return $_SESSION['name'] ?? null;
+if (!function_exists('getCurrentUserName')) {
+    function getCurrentUserName() {
+        return $_SESSION['name'] ?? null;
+    }
 }
 
 /**
