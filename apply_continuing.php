@@ -1,7 +1,17 @@
 <?php
-session_start();
-require_once 'pages/includes/db_config.php';
-require_once 'pages/includes/security_helper.php';
+/**
+ * Continuing Student Application Form
+ * Fixed for Linux compatibility with __DIR__ paths
+ */
+
+// Start session if not already started
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Use __DIR__ for Linux compatibility
+require_once __DIR__ . '/pages/includes/db_config.php';
+require_once __DIR__ . '/pages/includes/security_helper.php';
 
 $message = '';
 $message_type = '';
@@ -27,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($conn) {
             // Check if applications table exists
             $table_check = $conn->query("SHOW TABLES LIKE 'applications'");
-        if ($table_check->num_rows === 0) {
+            if ($table_check && $table_check->num_rows === 0) {
             $message = "Error: Application tables not found. <a href='database/create_app_tables.php' style='color: #1d4e89; text-decoration: underline; font-weight: bold;'>Click here to automatically create the tables</a> or import database/application_workflow_tables.sql manually.";
             $message_type = "error";
             $conn->close();
@@ -193,7 +203,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     
                     // Link to existing student account if found
                     if ($previous_student_id) {
-                        require_once 'pages/includes/student_account_helper.php';
+                        require_once __DIR__ . '/pages/includes/student_account_helper.php';
                         linkApplicationToStudentAccount($application_id, $previous_student_id);
                     }
                     
