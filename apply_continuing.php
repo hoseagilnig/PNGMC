@@ -207,6 +207,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         linkApplicationToStudentAccount($application_id, $previous_student_id);
                     }
                     
+                    // Save uploaded files to application_documents table
+                    require_once __DIR__ . '/pages/includes/document_helper.php';
+                    
+                    // Save NMSA approval letter if uploaded
+                    if ($nmsa_approval_path && isset($_FILES['nmsa_approval_letter'])) {
+                        $original_filename = $_FILES['nmsa_approval_letter']['name'];
+                        saveApplicationDocument($application_id, 'nmsa_approval_letter', $nmsa_approval_path, $original_filename);
+                    }
+                    
+                    // Save sea service record if uploaded
+                    if ($sea_service_record_path && isset($_FILES['sea_service_record'])) {
+                        $original_filename = $_FILES['sea_service_record']['name'];
+                        saveApplicationDocument($application_id, 'sea_service_record', $sea_service_record_path, $original_filename);
+                    }
+                    
                     // Create requirement records
                     if ($has_application_type) {
                         $req_sql = "INSERT INTO continuing_student_requirements (application_id, requirement_type, requirement_name, status) VALUES (?, ?, ?, 'pending')";
