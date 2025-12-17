@@ -33,12 +33,14 @@ if (!$conn) {
 
 // Check if table exists
 $table_check = $conn->query("SHOW TABLES LIKE 'continuing_student_requirements'");
-if ($table_check->num_rows === 0) {
+if (!$table_check || $table_check->num_rows === 0) {
+    // Table doesn't exist - return empty requirements list instead of error
+    // This allows the page to load without breaking
     $conn->close();
     echo json_encode([
-        'success' => false, 
-        'error' => 'Requirements table does not exist. Please run database migration.',
-        'requirements' => []
+        'success' => true, 
+        'requirements' => [],
+        'message' => 'Requirements table not found. Please import database/continuing_students_tables.sql to enable requirements tracking.'
     ]);
     exit;
 }
