@@ -9,7 +9,7 @@ USE sms2_db;
 -- ============================================
 ALTER TABLE applications 
 ADD COLUMN IF NOT EXISTS application_type ENUM('new_student', 'continuing_student_solas', 'continuing_student_next_level') DEFAULT 'new_student' AFTER program_interest,
-ADD COLUMN IF NOT EXISTS course_type ENUM('Nautical', 'Engineering', NULL) NULL AFTER application_type,
+ADD COLUMN IF NOT EXISTS course_type ENUM('Nautical', 'Engineering') NULL AFTER application_type,
 ADD COLUMN IF NOT EXISTS nmsa_approval_letter_path VARCHAR(500) NULL,
 ADD COLUMN IF NOT EXISTS sea_service_record_path VARCHAR(500) NULL,
 ADD COLUMN IF NOT EXISTS coc_number VARCHAR(100) NULL,
