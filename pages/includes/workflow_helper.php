@@ -93,22 +93,21 @@ function updateApplicationWorkflow($application_id, $new_status, $new_department
     if (!$conn) return false;
     
     // Get current status
-    $stmt = $conn->prepare("SELECT status, current_department, workflow_stage FROM applications WHERE application_id = ?");
+    // Note: current_department column doesn't exist, removed from SELECT
+    $stmt = $conn->prepare("SELECT status, workflow_stage FROM applications WHERE application_id = ?");
     $stmt->bind_param("i", $application_id);
     $stmt->execute();
     $result = $stmt->get_result();
     $current = $result->fetch_assoc();
     $stmt->close();
     $old_status = $current['status'] ?? null;
-    $old_department = $current['current_department'] ?? null;
+    $old_department = null; // Column doesn't exist
     
     // Update application
     $user_id = $_SESSION['user_id'] ?? null;
-    $updates = ["status = '$new_status'", "last_action_at = CURRENT_TIMESTAMP"];
+    $updates = ["status = '$new_status'", "updated_at = CURRENT_TIMESTAMP"];
     
-    if ($new_department) {
-        $updates[] = "current_department = '$new_department'";
-    }
+    // Note: current_department column doesn't exist, removed
     
     if ($workflow_stage) {
         $updates[] = "workflow_stage = '$workflow_stage'";
@@ -260,22 +259,23 @@ function getPendingApplicationsForDepartment($department, $status_filter = null)
     if (!$conn) return [];
     
     // Check if current_department column exists
+    // Note: Column doesn't exist in database, so always use status-based filtering
     $col_check = $conn->query("SHOW COLUMNS FROM applications LIKE 'current_department'");
-    $has_current_dept = $col_check->num_rows > 0;
+    $has_current_dept = false; // Force to false since column doesn't exist
     
     // Check if workflow_notifications table exists
     $table_check = $conn->query("SHOW TABLES LIKE 'workflow_notifications'");
     $has_notifications = $table_check->num_rows > 0;
     
     if (!$has_current_dept) {
-        // If column doesn't exist, return empty array or filter by status only
+        // If column doesn't exist, filter by status only (for HOD, show hod_review status)
         $sql = "SELECT a.*";
         if ($has_notifications) {
             $sql .= ", (SELECT COUNT(*) FROM workflow_notifications WHERE application_id = a.application_id AND to_department = '$department' AND status = 'unread') as unread_notifications";
         } else {
             $sql .= ", 0 as unread_notifications";
         }
-        $sql .= " FROM applications a WHERE 1=0"; // Return nothing if column doesn't exist
+        $sql .= " FROM applications a WHERE a.status = 'hod_review'"; // Filter by status instead
     } else {
         $sql = "SELECT a.*";
         if ($has_notifications) {
@@ -290,7 +290,8 @@ function getPendingApplicationsForDepartment($department, $status_filter = null)
         }
     }
     
-    $sql .= " ORDER BY a.last_action_at DESC, a.submitted_at DESC";
+    // Use updated_at instead of last_action_at (which doesn't exist)
+    $sql .= " ORDER BY a.updated_at DESC, a.submitted_at DESC";
     
     $result = $conn->query($sql);
     if (!$result) {
@@ -310,17 +311,20 @@ function forwardToDepartment($application_id, $to_department, $title, $message, 
     $conn = getDBConnection();
     if (!$conn) return false;
     
-    // Get current department
-    $stmt = $conn->prepare("SELECT current_department, status FROM applications WHERE application_id = ?");
+    // Get application status
+    // Note: current_department column doesn't exist, removed from SELECT
+    $stmt = $conn->prepare("SELECT status FROM applications WHERE application_id = ?");
     $stmt->bind_param("i", $application_id);
     $stmt->execute();
     $result = $stmt->get_result();
     $app = $result->fetch_assoc();
     $stmt->close();
-    $from_department = $app['current_department'] ?? $_SESSION['role'] ?? 'admin';
+    $from_department = $_SESSION['role'] ?? 'admin'; // Use session role since column doesn't exist
     
     // Update application
-    $updates = ["current_department = '$to_department'", "last_action_at = CURRENT_TIMESTAMP"];
+    $updates = ["updated_at = CURRENT_TIMESTAMP"];
+    
+    // Note: current_department column doesn't exist, removed
     
     if ($new_status) {
         $updates[] = "status = '$new_status'";
@@ -403,8 +407,9 @@ function initializeApplicationWorkflow($application_id) {
         return false;
     }
     
-    // Set current_department to studentservices if not already set
-    $conn->query("UPDATE applications SET current_department = 'studentservices', workflow_stage = 'submitted', last_action_at = CURRENT_TIMESTAMP WHERE application_id = $application_id");
+    // Update application workflow stage
+    // Note: current_department and last_action_at columns don't exist, removed
+    $conn->query("UPDATE applications SET workflow_stage = 'submitted', updated_at = CURRENT_TIMESTAMP WHERE application_id = $application_id");
     
     // Create notification to Student Admin Service
     $title = "New Application Received";
