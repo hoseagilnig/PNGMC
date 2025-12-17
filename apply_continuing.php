@@ -4,6 +4,9 @@
  * Fixed for Linux compatibility with __DIR__ paths
  */
 
+// Enable output buffering to catch any errors before headers
+ob_start();
+
 // Start session if not already started
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
