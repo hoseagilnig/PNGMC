@@ -161,12 +161,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Check if application_type column exists
             $check_col = $conn->query("SHOW COLUMNS FROM applications LIKE 'application_type'");
             $has_application_type = $check_col && $check_col->num_rows > 0;
+            error_log("Apply Continuing: has_application_type = " . ($has_application_type ? 'TRUE' : 'FALSE'));
+            error_log("Apply Continuing: File paths - NMSA: " . ($nmsa_approval_path ?? 'NULL') . ", Sea Service: " . ($sea_service_record_path ?? 'NULL'));
             
             // Prepare statement
             if ($has_application_type) {
                 $sql = "INSERT INTO applications (application_number, first_name, last_name, middle_name, date_of_birth, gender, email, phone, address, city, province, application_type, course_type, program_interest, nmsa_approval_letter_path, sea_service_record_path, coc_number, coc_expiry_date, previous_student_id, expression_date, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURDATE(), 'submitted')";
             } else {
-                $sql = "INSERT INTO applications (application_number, first_name, last_name, middle_name, date_of_birth, gender, email, phone, address, city, province, program_interest, expression_date, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURDATE(), 'submitted')";
+                // If application_type column doesn't exist, we still need to save file paths
+                // Check if file path columns exist
+                $check_nmsa_col = $conn->query("SHOW COLUMNS FROM applications LIKE 'nmsa_approval_letter_path'");
+                $check_sea_col = $conn->query("SHOW COLUMNS FROM applications LIKE 'sea_service_record_path'");
+                $has_file_path_cols = ($check_nmsa_col && $check_nmsa_col->num_rows > 0) && ($check_sea_col && $check_sea_col->num_rows > 0);
+                
+                if ($has_file_path_cols) {
+                    // Include file paths even if application_type doesn't exist
+                    $sql = "INSERT INTO applications (application_number, first_name, last_name, middle_name, date_of_birth, gender, email, phone, address, city, province, program_interest, nmsa_approval_letter_path, sea_service_record_path, expression_date, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURDATE(), 'submitted')";
+                    error_log("Apply Continuing: Using SQL with file paths (no application_type column)");
+                } else {
+                    $sql = "INSERT INTO applications (application_number, first_name, last_name, middle_name, date_of_birth, gender, email, phone, address, city, province, program_interest, expression_date, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURDATE(), 'submitted')";
+                    error_log("Apply Continuing: Using SQL without file paths (columns don't exist)");
+                }
             }
             
             $stmt = $conn->prepare($sql);
@@ -188,11 +203,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $nmsa_approval_path, $sea_service_record_path, $coc_number, $coc_expiry_date, $previous_student_id
                     ];
                 } else {
-                    $types = 'ssssssssssss';
-                    $params = [
-                        $application_number, $first_name, $last_name, $middle_name, $date_of_birth,
-                        $gender, $email, $phone, $address, $city, $province, 'Returning Student Application'
-                    ];
+                    // Check if we're including file paths
+                    $check_nmsa_col = $conn->query("SHOW COLUMNS FROM applications LIKE 'nmsa_approval_letter_path'");
+                    $check_sea_col = $conn->query("SHOW COLUMNS FROM applications LIKE 'sea_service_record_path'");
+                    $has_file_path_cols = ($check_nmsa_col && $check_nmsa_col->num_rows > 0) && ($check_sea_col && $check_sea_col->num_rows > 0);
+                    
+                    if ($has_file_path_cols && (strpos($sql, 'nmsa_approval_letter_path') !== false)) {
+                        // Include file paths
+                        $types = 'ssssssssssssss';
+                        $params = [
+                            $application_number, $first_name, $last_name, $middle_name, $date_of_birth,
+                            $gender, $email, $phone, $address, $city, $province, 'Returning Student Application',
+                            $nmsa_approval_path, $sea_service_record_path
+                        ];
+                        error_log("Apply Continuing: Including file paths in params");
+                    } else {
+                        $types = 'ssssssssssss';
+                        $params = [
+                            $application_number, $first_name, $last_name, $middle_name, $date_of_birth,
+                            $gender, $email, $phone, $address, $city, $province, 'Returning Student Application'
+                        ];
+                        error_log("Apply Continuing: NOT including file paths in params");
+                    }
                 }
                 
                 $refs = [];
