@@ -456,7 +456,6 @@ if ($conn) {
         <a class="menu-item <?php echo isActive('sas_received_data.php'); ?> <?php echo $finance_transfer_count > 0 ? 'highlight-menu-item' : ''; ?>" href="sas_received_data.php">
           💰 Received from Finance
         </a>
-        <a class="menu-item" href="test_finance_sas_workflow.php" style="font-size: 0.85rem; color: #17a2b8;">🧪 Test Workflow</a>
           <?php if ($finance_transfer_count > 0): ?>
             <span class="notification-badge" style="background: #dc3545; color: white; padding: 3px 8px; border-radius: 12px; font-size: 11px; font-weight: bold; margin-left: 8px; box-shadow: 0 2px 4px rgba(220, 53, 69, 0.3);"><?php echo $finance_transfer_count; ?> NEW</span>
           <?php endif; ?>

@@ -199,7 +199,6 @@ if ($conn) {
         <a class="menu-item <?php echo isActive('fees_monitor.php'); ?>" href="fees_monitor.php">Fees Monitor</a>
         <a class="menu-item <?php echo isActive('red_green_days.php'); ?>" href="red_green_days.php">Red & Green Days</a>
         <a class="menu-item <?php echo isActive('finance_to_sas.php'); ?>" href="finance_to_sas.php">Finance to SAS</a>
-        <a class="menu-item" href="test_finance_sas_workflow.php" style="font-size: 0.85rem; color: #17a2b8;">🧪 Test Workflow</a>
         <div class="menu-section">Reports</div>
         <a class="menu-item <?php echo isActive('financial_reports.php'); ?>" href="financial_reports.php">Financial Reports</a>
         <a class="menu-item <?php echo isActive('fee_reports.php'); ?>" href="fee_reports.php">Fee Reports & Analysis</a>
