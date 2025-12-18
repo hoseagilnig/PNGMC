@@ -797,14 +797,28 @@
   <script>
     // Custom Modal Functions
     function showCustomModal(title, message, type = 'success') {
-      const modal = document.getElementById('customModal');
-      const modalContent = document.getElementById('modalContent');
-      const modalIcon = document.getElementById('modalIcon');
-      const modalTitle = document.getElementById('modalTitle');
-      const modalBody = document.getElementById('modalBody');
+      try {
+        const modal = document.getElementById('customModal');
+        const modalContent = document.getElementById('modalContent');
+        const modalIcon = document.getElementById('modalIcon');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalBody = document.getElementById('modalBody');
 
-      // Set modal type (success or error)
-      modalContent.className = 'custom-modal ' + type;
+        if (!modal || !modalContent || !modalIcon || !modalTitle || !modalBody) {
+          console.error('Modal elements not found!', {
+            modal: !!modal,
+            modalContent: !!modalContent,
+            modalIcon: !!modalIcon,
+            modalTitle: !!modalTitle,
+            modalBody: !!modalBody
+          });
+          // Fallback to alert
+          alert(title + '\n\n' + message.replace(/\n/g, '\n'));
+          return;
+        }
+
+        // Set modal type (success or error)
+        modalContent.className = 'custom-modal ' + type;
 
       // Set icon based on type
       if (type === 'success') {
@@ -831,11 +845,19 @@
         })
         .join('');
 
-      modalBody.innerHTML = formattedMessage;
+        modalBody.innerHTML = formattedMessage;
 
-      // Show modal
-      modal.style.display = 'flex';
-      document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        // Show modal
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        
+        // Scroll to top to ensure modal is visible
+        window.scrollTo(0, 0);
+      } catch (error) {
+        console.error('Error in showCustomModal:', error);
+        // Fallback to alert
+        alert(title + '\n\n' + message.replace(/\n/g, '\n'));
+      }
     }
 
     function closeCustomModal() {
@@ -884,62 +906,112 @@
 
     // Update the existing DOMContentLoaded to use custom modal
     window.addEventListener('DOMContentLoaded', function() {
-      // Ensure page starts at top
-      window.scrollTo(0, 0);
-      
-      const urlParams = new URLSearchParams(window.location.search);
-      
-      // Check for upload size error
-      if (urlParams.get('error') === 'upload_size') {
-        const size = urlParams.get('size');
-        const limit = urlParams.get('limit');
-        const message = 'The total size of your uploaded files (' + (size || 'unknown') + ' MB) exceeds the maximum allowed size (' + (limit || '40') + ' MB).\n\n' +
-                      'Please reduce the file sizes or upload fewer files. Each file should be no more than 5 MB.\n\n' +
-                      'Tip: You can compress images or split large documents into smaller files.';
-        showCustomModal('File Upload Error!', message, 'error');
-        // Remove error parameters from URL
-        window.history.replaceState({}, document.title, window.location.pathname);
-        return;
-      }
-      
-      // Check for success message
-      if (urlParams.get('success') === '1') {
-        const type = urlParams.get('type');
-        const appNum = urlParams.get('app');
-        const course = urlParams.get('course');
+      try {
+        // Ensure page starts at top
+        window.scrollTo(0, 0);
         
-        let title = 'Application Submitted Successfully!';
-        let message = '';
+        const urlParams = new URLSearchParams(window.location.search);
         
-        if (type === 'enrollment') {
-          message = 'Your ' + (course ? decodeURIComponent(course) : 'enrollment') + ' application has been submitted successfully!\n\n' +
-                   'Application Registration Number: ' + (appNum ? decodeURIComponent(appNum) : '') + '\n\n' +
-                   'Please save this number for your records.\n\n' +
-                   'You will be notified of the status of your application through the email or phone number you provided. Please ensure your contact information is up to date.';
-        } else if (type === 'school_leaver') {
-          message = 'Your school leaver application has been submitted successfully!\n\n' +
-                   'Application Number: ' + (appNum ? decodeURIComponent(appNum) : '') + '\n\n' +
-                   'Please save this number for your records.\n\n' +
-                   'You will be notified of the status of your application through the email or phone number you provided. Please ensure your contact information is up to date.';
-        } else if (type === 'continuing') {
-          message = 'Your candidate returning application has been submitted successfully!\n\n' +
-                   'Application Number: ' + (appNum ? decodeURIComponent(appNum) : '') + '\n\n' +
-                   'Please save this number for your records.\n\n' +
-                   'You will be notified of the status of your application through the email or phone number you provided. Please ensure your contact information is up to date.';
-        } else if (type === 'expression') {
-          message = 'Your expression of interest has been submitted successfully!\n\n' +
-                   'Application Number: ' + (appNum ? decodeURIComponent(appNum) : '') + '\n\n' +
-                   'Please save this number for your records.\n\n' +
-                   'You will be notified of the status of your application through the email or phone number you provided. Please ensure your contact information is up to date.';
+        // Debug logging (remove in production)
+        console.log('URL Params:', {
+          success: urlParams.get('success'),
+          type: urlParams.get('type'),
+          app: urlParams.get('app')
+        });
+        
+        // Check for upload size error
+        if (urlParams.get('error') === 'upload_size') {
+          const size = urlParams.get('size');
+          const limit = urlParams.get('limit');
+          const message = 'The total size of your uploaded files (' + (size || 'unknown') + ' MB) exceeds the maximum allowed size (' + (limit || '40') + ' MB).\n\n' +
+                        'Please reduce the file sizes or upload fewer files. Each file should be no more than 5 MB.\n\n' +
+                        'Tip: You can compress images or split large documents into smaller files.';
+          showCustomModal('File Upload Error!', message, 'error');
+          // Remove error parameters from URL
+          window.history.replaceState({}, document.title, window.location.pathname);
+          return;
         }
         
-        if (message) {
-          showCustomModal(title, message, 'success');
-          // Remove success parameters from URL
-          window.history.replaceState({}, document.title, window.location.pathname);
+        // Check for success message
+        if (urlParams.get('success') === '1') {
+          const type = urlParams.get('type');
+          const appNum = urlParams.get('app');
+          const course = urlParams.get('course');
+          
+          let title = 'Application Submitted Successfully!';
+          let message = '';
+          
+          if (type === 'enrollment') {
+            message = 'Your ' + (course ? decodeURIComponent(course) : 'enrollment') + ' application has been submitted successfully!\n\n' +
+                     'Application Registration Number: ' + (appNum ? decodeURIComponent(appNum) : '') + '\n\n' +
+                     'Please save this number for your records.\n\n' +
+                     'You will be notified of the status of your application through the email or phone number you provided. Please ensure your contact information is up to date.';
+          } else if (type === 'school_leaver') {
+            message = 'Your school leaver application has been submitted successfully!\n\n' +
+                     'Application Number: ' + (appNum ? decodeURIComponent(appNum) : '') + '\n\n' +
+                     'Please save this number for your records.\n\n' +
+                     'You will be notified of the status of your application through the email or phone number you provided. Please ensure your contact information is up to date.';
+          } else if (type === 'continuing') {
+            message = 'Your candidate returning application has been submitted successfully!\n\n' +
+                     'Application Number: ' + (appNum ? decodeURIComponent(appNum) : '') + '\n\n' +
+                     'Please save this number for your records.\n\n' +
+                     'You will be notified of the status of your application through the email or phone number you provided. Please ensure your contact information is up to date.';
+          } else if (type === 'expression') {
+            message = 'Your expression of interest has been submitted successfully!\n\n' +
+                     'Application Number: ' + (appNum ? decodeURIComponent(appNum) : '') + '\n\n' +
+                     'Please save this number for your records.\n\n' +
+                     'You will be notified of the status of your application through the email or phone number you provided. Please ensure your contact information is up to date.';
+          }
+          
+          if (message) {
+            console.log('Showing success modal:', { title, type, appNum });
+            // Small delay to ensure DOM is ready
+            setTimeout(function() {
+              showCustomModal(title, message, 'success');
+            }, 100);
+            // Remove success parameters from URL
+            window.history.replaceState({}, document.title, window.location.pathname);
+          } else {
+            console.warn('Success message is empty for type:', type);
+          }
+        }
+      } catch (error) {
+        console.error('Error showing success message:', error);
+        // Fallback: Show alert if modal fails
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('success') === '1') {
+          const appNum = urlParams.get('app');
+          alert('Application submitted successfully! Application Number: ' + (appNum || 'N/A'));
         }
       }
     });
+    
+    // Also check on page load (in case DOMContentLoaded already fired)
+    if (document.readyState === 'loading') {
+      // DOMContentLoaded hasn't fired yet, wait for it
+    } else {
+      // DOMContentLoaded already fired, run immediately
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('success') === '1') {
+        const type = urlParams.get('type');
+        const appNum = urlParams.get('app');
+        if (type === 'continuing' && appNum) {
+          setTimeout(function() {
+            const title = 'Application Submitted Successfully!';
+            const message = 'Your candidate returning application has been submitted successfully!\n\n' +
+                           'Application Number: ' + decodeURIComponent(appNum) + '\n\n' +
+                           'Please save this number for your records.\n\n' +
+                           'You will be notified of the status of your application through the email or phone number you provided. Please ensure your contact information is up to date.';
+            if (typeof showCustomModal === 'function') {
+              showCustomModal(title, message, 'success');
+            } else {
+              alert('Application submitted successfully! Application Number: ' + decodeURIComponent(appNum));
+            }
+            window.history.replaceState({}, document.title, window.location.pathname);
+          }, 500);
+        }
+      }
+    }
   </script>
 
 </body>
