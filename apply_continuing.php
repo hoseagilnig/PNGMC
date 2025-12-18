@@ -5,7 +5,7 @@
  */
 
 // Enable error logging FIRST
-ini_set('display_errors', '0');
+ini_set('display_errors', '1'); // TEMPORARY: Show errors to debug blank page
 ini_set('log_errors', '1');
 error_reporting(E_ALL);
 error_log("Apply Continuing: Script started at " . date('Y-m-d H:i:s'));
