@@ -217,26 +217,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         }
                         
                         // Save uploaded files to application_documents table
-                        if (file_exists(__DIR__ . '/pages/includes/document_helper.php')) {
-                            require_once __DIR__ . '/pages/includes/document_helper.php';
+                        $doc_helper_path = __DIR__ . '/pages/includes/document_helper.php';
+                        error_log("Apply Continuing: Checking document_helper.php at: $doc_helper_path");
+                        
+                        if (file_exists($doc_helper_path)) {
+                            require_once $doc_helper_path;
+                            error_log("Apply Continuing: document_helper.php loaded");
                             
                             // Save NMSA approval letter if uploaded
                             if ($nmsa_approval_path && isset($_FILES['nmsa_approval_letter'])) {
                                 $original_filename = $_FILES['nmsa_approval_letter']['name'];
+                                error_log("Apply Continuing: Attempting to save NMSA document - app_id: $application_id, path: $nmsa_approval_path, filename: $original_filename");
+                                
                                 if (function_exists('saveApplicationDocument')) {
-                                    $doc_result = @saveApplicationDocument($application_id, 'nmsa_approval_letter', $nmsa_approval_path, $original_filename);
+                                    $doc_result = saveApplicationDocument($application_id, 'nmsa_approval_letter', $nmsa_approval_path, $original_filename);
                                     error_log("Apply Continuing: NMSA document saved - " . ($doc_result ? "Success" : "Failed"));
+                                } else {
+                                    error_log("Apply Continuing: ERROR - saveApplicationDocument function not found!");
                                 }
+                            } else {
+                                error_log("Apply Continuing: NMSA document not saved - path: " . ($nmsa_approval_path ?? 'NULL') . ", file exists: " . (isset($_FILES['nmsa_approval_letter']) ? 'YES' : 'NO'));
                             }
                             
                             // Save sea service record if uploaded
                             if ($sea_service_record_path && isset($_FILES['sea_service_record'])) {
                                 $original_filename = $_FILES['sea_service_record']['name'];
+                                error_log("Apply Continuing: Attempting to save Sea service document - app_id: $application_id, path: $sea_service_record_path, filename: $original_filename");
+                                
                                 if (function_exists('saveApplicationDocument')) {
-                                    $doc_result = @saveApplicationDocument($application_id, 'sea_service_record', $sea_service_record_path, $original_filename);
+                                    $doc_result = saveApplicationDocument($application_id, 'sea_service_record', $sea_service_record_path, $original_filename);
                                     error_log("Apply Continuing: Sea service document saved - " . ($doc_result ? "Success" : "Failed"));
+                                } else {
+                                    error_log("Apply Continuing: ERROR - saveApplicationDocument function not found!");
                                 }
+                            } else {
+                                error_log("Apply Continuing: Sea service document not saved - path: " . ($sea_service_record_path ?? 'NULL') . ", file exists: " . (isset($_FILES['sea_service_record']) ? 'YES' : 'NO'));
                             }
+                        } else {
+                            error_log("Apply Continuing: ERROR - document_helper.php not found at: $doc_helper_path");
                         }
                         
                         // Create requirement records (non-critical, continue even if fails)
