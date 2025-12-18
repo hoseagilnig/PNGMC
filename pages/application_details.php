@@ -64,6 +64,26 @@ if ($conn && $application_id) {
         // Get requirements for all application types (continuing students and school leavers)
         $table_check = $conn->query("SHOW TABLES LIKE 'continuing_student_requirements'");
         if ($table_check->num_rows > 0) {
+            // First check if requirements exist, if not create them automatically
+            $check_req = $conn->prepare("SELECT COUNT(*) as count FROM continuing_student_requirements WHERE application_id = ?");
+            $check_req->bind_param("i", $application_id);
+            $check_req->execute();
+            $check_result = $check_req->get_result();
+            $check_row = $check_result->fetch_assoc();
+            $check_req->close();
+            
+            // If no requirements exist, create them automatically
+            if ($check_row['count'] == 0) {
+                if (file_exists(__DIR__ . '/includes/workflow_helper.php')) {
+                    require_once __DIR__ . '/includes/workflow_helper.php';
+                    if (function_exists('createApplicationRequirements')) {
+                        $app_type = $application['application_type'] ?? null;
+                        createApplicationRequirements($application_id, $app_type);
+                    }
+                }
+            }
+            
+            // Now fetch requirements
             $result = $conn->query("SELECT csr.*, u.full_name as verified_by_name 
                                      FROM continuing_student_requirements csr 
                                      LEFT JOIN users u ON csr.verified_by = u.user_id 
@@ -92,19 +112,38 @@ if (!$application) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Application Details - Admin</title>
   <link rel="stylesheet" href="../css/d_styles.css">
+  <link rel="stylesheet" href="../css/responsive.css">
   <style>
-    .detail-section { background: var(--card-bg); padding: 20px; border-radius: 10px; margin-bottom: 20px; }
-    .detail-row { display: grid; grid-template-columns: 1fr 2fr; gap: 15px; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #eee; }
-    .detail-label { font-weight: 600; color: var(--primary); }
+    .detail-section { background: var(--card-bg); padding: 15px; border-radius: 10px; margin-bottom: 15px; }
+    @media (min-width: 768px) {
+      .detail-section { padding: 20px; margin-bottom: 20px; }
+    }
+    .detail-row { display: block; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #eee; }
+    @media (min-width: 768px) {
+      .detail-row { display: grid; grid-template-columns: 1fr 2fr; gap: 15px; margin-bottom: 10px; padding-bottom: 10px; }
+    }
+    .detail-label { font-weight: 600; color: var(--primary); margin-bottom: 5px; display: block; }
+    @media (min-width: 768px) {
+      .detail-label { margin-bottom: 0; }
+    }
     .badge { padding: 4px 8px; border-radius: 3px; font-size: 0.85rem; }
     .badge-pending { background: #ffc107; color: #000; }
     .badge-completed { background: #28a745; color: white; }
     .badge-failed { background: #dc3545; color: white; }
-    .btn { padding: 8px 15px; border: none; border-radius: 5px; cursor: pointer; font-weight: 600; }
+    .btn { padding: 8px 15px; border: none; border-radius: 5px; cursor: pointer; font-weight: 600; width: 100%; margin-bottom: 10px; }
+    @media (min-width: 768px) {
+      .btn { width: auto; margin-bottom: 0; }
+    }
     .btn-primary { background: var(--primary); color: white; }
-    table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-    th, td { padding: 10px; text-align: left; border-bottom: 1px solid #ddd; }
-    th { background: var(--primary); color: white; }
+    table { width: 100%; border-collapse: collapse; margin-top: 15px; display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    @media (min-width: 768px) {
+      table { display: table; overflow-x: visible; }
+    }
+    th, td { padding: 8px; text-align: left; border-bottom: 1px solid #ddd; white-space: nowrap; font-size: 0.9rem; }
+    @media (min-width: 768px) {
+      th, td { padding: 10px; font-size: 1rem; }
+    }
+    th { background: var(--primary); color: white; position: sticky; top: 0; z-index: 10; }
     .modal { 
       display: none; 
       position: fixed; 
@@ -115,17 +154,23 @@ if (!$application) {
       background: rgba(0,0,0,0.5); 
       z-index: 10000; 
       overflow-y: auto;
+      padding: 20px;
+      box-sizing: border-box;
     }
     .modal-content { 
       background: white; 
-      margin: 50px auto; 
-      padding: 25px; 
-      width: 90%; 
+      margin: 20px auto; 
+      padding: 20px; 
+      width: 100%; 
       max-width: 600px; 
       border-radius: 10px; 
-      max-height: 80vh; 
+      max-height: 90vh; 
       overflow-y: auto;
       position: relative;
+      box-sizing: border-box;
+    }
+    @media (min-width: 768px) {
+      .modal-content { margin: 50px auto; padding: 25px; max-height: 80vh; }
     }
     .form-group { margin-bottom: 15px; }
     .form-group label { display: block; margin-bottom: 5px; font-weight: 600; color: var(--primary); }

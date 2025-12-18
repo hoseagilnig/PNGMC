@@ -342,23 +342,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         error_log("Apply Continuing: Redirecting to: $redirect_url");
                         
                         // Clear any output before redirect
-                        if (ob_get_level() > 0) {
+                        while (ob_get_level() > 0) {
                             ob_end_clean();
                         }
                         
-                        if (!headers_sent()) {
-                            header('Location: ' . $redirect_url);
-                            exit;
-                        } else {
-                            error_log("Apply Continuing: ERROR - Headers already sent! Cannot redirect. Output: " . ob_get_contents());
-                            // Output success message directly
-                            echo "<!DOCTYPE html><html><head><meta charset='UTF-8'><title>Success</title></head><body>";
-                            echo "<h1>Application Submitted Successfully!</h1>";
-                            echo "<p>Application Number: <strong>" . htmlspecialchars($application_number) . "</strong></p>";
-                            echo "<p><a href='index.html'>Return to Home</a></p>";
-                            echo "</body></html>";
-                            exit;
-                        }
+                        // Output success message directly instead of redirecting (to debug)
+                        echo "<!DOCTYPE html><html><head><meta charset='UTF-8'><title>Success</title><meta http-equiv='refresh' content='3;url=" . htmlspecialchars($redirect_url) . "'></head><body style='font-family: Arial; padding: 50px; text-align: center;'>";
+                        echo "<h1 style='color: #28a745;'>✓ Application Submitted Successfully!</h1>";
+                        echo "<p style='font-size: 1.2em;'>Application Number: <strong>" . htmlspecialchars($application_number) . "</strong></p>";
+                        echo "<p>Redirecting to home page in 3 seconds...</p>";
+                        echo "<p><a href='" . htmlspecialchars($redirect_url) . "' style='color: #1d4e89; text-decoration: underline;'>Click here if not redirected</a></p>";
+                        echo "<script>console.log('Application submitted: " . htmlspecialchars($application_number) . "');</script>";
+                        echo "</body></html>";
+                        exit;
                     } else {
                         error_log("Apply Continuing Error: " . $stmt->error);
                         $message = "Error submitting application: " . htmlspecialchars($stmt->error);
@@ -384,20 +380,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Candidate Returning Application - PNG Maritime College</title>
   <link rel="stylesheet" href="css/sms_styles.css">
+  <link rel="stylesheet" href="css/responsive.css">
   <style>
     .apply-section {
       max-width: 900px;
-      margin: 40px auto;
-      padding: 40px;
+      margin: 20px auto;
+      padding: 20px;
       background: white;
       border-radius: 10px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
+    @media (min-width: 768px) {
+      .apply-section {
+        margin: 40px auto;
+        padding: 40px;
+      }
+    }
     .message { padding: 15px; margin: 20px 0; border-radius: 5px; }
     .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
     .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
-    .form-row.full { grid-template-columns: 1fr; }
+    .form-row { display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px; }
+    @media (min-width: 768px) {
+      .form-row { grid-template-columns: 1fr 1fr; }
+      .form-row.full { grid-template-columns: 1fr; }
+    }
     label { display: block; margin-bottom: 5px; font-weight: 600; color: #1d4e89; }
     input, select, textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem; box-sizing: border-box; }
     input[type="file"] { padding: 8px; }

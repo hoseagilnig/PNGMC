@@ -138,6 +138,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login - PNG Maritime College SMS</title>
   <link rel="stylesheet" href="../css/sms_styles.css">
+  <link rel="stylesheet" href="../css/responsive.css">
   <style>
     body {
       background: linear-gradient(135deg, #1d4e89 0%, #163c6a 50%, #0f2a4a 100%);

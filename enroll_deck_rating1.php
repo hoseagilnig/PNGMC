@@ -488,14 +488,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><?php echo htmlspecialchars($course['display_name']); ?> Enrollment - PNG Maritime College</title>
   <link rel="stylesheet" href="css/sms_styles.css">
+  <link rel="stylesheet" href="css/responsive.css">
   <style>
     .enroll-section {
       max-width: 1000px;
       margin: 20px auto;
-      padding: 30px;
+      padding: 20px;
       background: white;
       border-radius: 10px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    @media (min-width: 768px) {
+      .enroll-section {
+        padding: 30px;
+      }
     }
     .form-header {
       text-align: center;
@@ -574,18 +580,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     .form-row {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr;
       gap: 15px;
       margin-bottom: 15px;
     }
-    .form-row.full {
-      grid-template-columns: 1fr;
+    @media (min-width: 768px) {
+      .form-row {
+        grid-template-columns: 1fr 1fr;
+      }
+      .form-row.full {
+        grid-template-columns: 1fr;
+      }
     }
-    .form-row.three {
-      grid-template-columns: 1fr 1fr 1fr;
+    @media (min-width: 992px) {
+      .form-row.three {
+        grid-template-columns: 1fr 1fr 1fr;
+      }
     }
-    .form-row.five {
-      grid-template-columns: repeat(5, 1fr);
+    @media (min-width: 1200px) {
+      .form-row.five {
+        grid-template-columns: repeat(5, 1fr);
+      }
     }
     label {
       display: block;

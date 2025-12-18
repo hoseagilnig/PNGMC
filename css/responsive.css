@@ -1,0 +1,732 @@
+/* ============================================
+   COMPREHENSIVE RESPONSIVE STYLES
+   For all forms, tables, modals, and components
+   ============================================ */
+
+/* ============================================
+   FORM RESPONSIVE STYLES
+   ============================================ */
+
+/* Form containers */
+.apply-section,
+.enroll-section {
+  max-width: 100%;
+  margin: 20px auto;
+  padding: 20px;
+}
+
+/* Form rows - responsive grid */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+/* Two column layout for tablets and up */
+@media (min-width: 768px) {
+  .form-row {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .form-row.full {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Three column layout for larger screens */
+@media (min-width: 992px) {
+  .form-row.three {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+/* Five column layout for very large screens */
+@media (min-width: 1200px) {
+  .form-row.five {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+/* Form inputs - always full width on mobile */
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="date"],
+input[type="number"],
+input[type="password"],
+input[type="file"],
+select,
+textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+/* File inputs - better mobile experience */
+input[type="file"] {
+  padding: 8px;
+  background: white;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+/* Textarea */
+textarea {
+  resize: vertical;
+  min-height: 80px;
+  font-family: inherit;
+}
+
+/* Labels */
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #1d4e89;
+  font-size: 0.95rem;
+}
+
+/* Form sections */
+.form-section {
+  margin: 20px 0;
+  padding: 15px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+@media (min-width: 768px) {
+  .form-section {
+    padding: 20px;
+  }
+}
+
+/* Section titles */
+.section-title {
+  color: #1d4e89;
+  margin: 0 0 15px 0;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #1d4e89;
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+@media (min-width: 768px) {
+  .section-title {
+    font-size: 1.2rem;
+  }
+}
+
+/* Checkbox and radio groups */
+.checkbox-group,
+.radio-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.checkbox-group input[type="checkbox"],
+.radio-group input[type="radio"] {
+  width: auto;
+  margin: 0;
+}
+
+.checkbox-group label,
+.radio-group label {
+  margin: 0;
+  font-weight: normal;
+  font-size: 0.9rem;
+}
+
+/* Buttons */
+.btn-submit,
+.cta-btn,
+.btn {
+  width: 100%;
+  padding: 14px 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+  .btn-submit,
+  .cta-btn,
+  .btn {
+    width: auto;
+    min-width: 150px;
+  }
+}
+
+/* ============================================
+   TABLE RESPONSIVE STYLES
+   ============================================ */
+
+/* Tables - make scrollable on mobile */
+table,
+.data-table,
+.archive-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 15px 0;
+  display: block;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (min-width: 768px) {
+  table,
+  .data-table,
+  .archive-table {
+    display: table;
+    overflow-x: visible;
+  }
+}
+
+/* Table headers and cells */
+th,
+td {
+  padding: 10px 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  white-space: nowrap;
+  font-size: 0.9rem;
+}
+
+@media (min-width: 768px) {
+  th,
+  td {
+    padding: 12px;
+    font-size: 1rem;
+  }
+}
+
+/* Table headers */
+th {
+  background: var(--primary, #1d4e89);
+  color: white;
+  font-weight: 700;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+/* Responsive table wrapper */
+.table-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 15px 0;
+}
+
+@media (min-width: 768px) {
+  .table-wrapper {
+    overflow-x: visible;
+  }
+}
+
+/* Card-based table for mobile (alternative approach) */
+@media (max-width: 767px) {
+  .table-responsive-cards {
+    display: block;
+  }
+  
+  .table-responsive-cards thead {
+    display: none;
+  }
+  
+  .table-responsive-cards tbody,
+  .table-responsive-cards tr,
+  .table-responsive-cards td {
+    display: block;
+    width: 100%;
+  }
+  
+  .table-responsive-cards tr {
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    background: white;
+  }
+  
+  .table-responsive-cards td {
+    border: none;
+    padding: 8px 0;
+    text-align: left;
+    white-space: normal;
+  }
+  
+  .table-responsive-cards td:before {
+    content: attr(data-label) ": ";
+    font-weight: 700;
+    color: var(--primary, #1d4e89);
+    display: inline-block;
+    min-width: 120px;
+  }
+}
+
+/* ============================================
+   MODAL RESPONSIVE STYLES
+   ============================================ */
+
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 10000;
+  overflow-y: auto;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.modal-content {
+  background: white;
+  margin: 20px auto;
+  padding: 20px;
+  width: 100%;
+  max-width: 600px;
+  border-radius: 10px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+  .modal-content {
+    margin: 50px auto;
+    padding: 25px;
+    max-height: 80vh;
+  }
+}
+
+/* Modal close button */
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #999;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-close:hover {
+  color: #333;
+}
+
+/* ============================================
+   CARD AND DETAIL SECTION RESPONSIVE
+   ============================================ */
+
+.detail-section,
+.main-card,
+.side-card {
+  background: var(--card-bg, white);
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+@media (min-width: 768px) {
+  .detail-section,
+  .main-card,
+  .side-card {
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+}
+
+/* Detail rows */
+.detail-row {
+  display: block;
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+@media (min-width: 768px) {
+  .detail-row {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 15px;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+  }
+}
+
+.detail-label {
+  font-weight: 600;
+  color: var(--primary, #1d4e89);
+  margin-bottom: 5px;
+  display: block;
+}
+
+@media (min-width: 768px) {
+  .detail-label {
+    margin-bottom: 0;
+  }
+}
+
+/* ============================================
+   HEADER RESPONSIVE STYLES
+   ============================================ */
+
+header {
+  padding: 12px 16px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+@media (min-width: 768px) {
+  header {
+    padding: 18px 36px;
+    flex-wrap: nowrap;
+  }
+}
+
+.logo {
+  font-size: 1rem;
+}
+
+@media (min-width: 768px) {
+  .logo {
+    font-size: 1.25rem;
+  }
+}
+
+.logo-img {
+  height: 32px;
+  margin-right: 8px;
+}
+
+@media (min-width: 768px) {
+  .logo-img {
+    height: 40px;
+    margin-right: 12px;
+  }
+}
+
+.login-btn {
+  padding: 10px 20px;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+@media (min-width: 768px) {
+  .login-btn {
+    padding: 12px 28px;
+    font-size: 1rem;
+  }
+}
+
+/* ============================================
+   DASHBOARD GRID RESPONSIVE
+   ============================================ */
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+@media (min-width: 992px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr 320px;
+    gap: 24px;
+  }
+}
+
+/* ============================================
+   COURSE DETAILS GRID
+   ============================================ */
+
+.course-details {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 15px;
+  padding: 15px;
+}
+
+@media (min-width: 600px) {
+  .course-details {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 992px) {
+  .course-details {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+}
+
+/* ============================================
+   INFO BOXES AND ALERTS
+   ============================================ */
+
+.info-box,
+.message {
+  padding: 12px 15px;
+  margin: 15px 0;
+  border-radius: 5px;
+  line-height: 1.6;
+  font-size: 0.9rem;
+}
+
+@media (min-width: 768px) {
+  .info-box,
+  .message {
+    padding: 15px 20px;
+    font-size: 1rem;
+  }
+}
+
+/* ============================================
+   STATS AND STAT CARDS
+   ============================================ */
+
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+@media (min-width: 600px) {
+  .stat-row {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 992px) {
+  .stat-row {
+    display: flex;
+    gap: 12px;
+  }
+  
+  .stat {
+    flex: 1 1 140px;
+  }
+}
+
+/* ============================================
+   HERO SECTION RESPONSIVE
+   ============================================ */
+
+.hero {
+  padding: 20px 20px 60px;
+  min-height: 70vh;
+}
+
+@media (min-width: 768px) {
+  .hero {
+    padding: 20px 20px 120px;
+    min-height: 85vh;
+  }
+}
+
+.hero-title {
+  font-size: 1.8rem;
+  line-height: 1.2;
+}
+
+@media (min-width: 768px) {
+  .hero-title {
+    font-size: 2.2rem;
+  }
+}
+
+@media (min-width: 992px) {
+  .hero-title {
+    font-size: 3.5rem;
+  }
+}
+
+.hero-description {
+  font-size: 1rem;
+}
+
+@media (min-width: 768px) {
+  .hero-description {
+    font-size: 1.1rem;
+  }
+}
+
+@media (min-width: 992px) {
+  .hero-description {
+    font-size: 1.3rem;
+  }
+}
+
+.hero-buttons {
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+@media (min-width: 768px) {
+  .hero-buttons {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1200px) {
+  .hero-buttons {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* ============================================
+   FEATURES GRID
+   ============================================ */
+
+.features-grid {
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+@media (min-width: 600px) {
+  .features-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 992px) {
+  .features-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+  }
+}
+
+/* ============================================
+   QUICK LINKS GRID
+   ============================================ */
+
+.links-grid {
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+@media (min-width: 768px) {
+  .links-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 992px) {
+  .links-grid {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+  }
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+
+/* Hide on mobile */
+.hide-mobile {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .hide-mobile {
+    display: block;
+  }
+}
+
+/* Show only on mobile */
+.show-mobile {
+  display: block;
+}
+
+@media (min-width: 768px) {
+  .show-mobile {
+    display: none;
+  }
+}
+
+/* Full width on mobile */
+.mobile-full {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .mobile-full {
+    width: auto;
+  }
+}
+
+/* Text alignment */
+@media (max-width: 767px) {
+  .text-center-mobile {
+    text-align: center;
+  }
+}
+
+/* Spacing adjustments */
+@media (max-width: 767px) {
+  .mobile-mt-0 {
+    margin-top: 0;
+  }
+  
+  .mobile-mb-0 {
+    margin-bottom: 0;
+  }
+  
+  .mobile-p-0 {
+    padding: 0;
+  }
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+
+@media print {
+  header,
+  .sidebar,
+  .menu-toggle,
+  .btn,
+  .cta-btn {
+    display: none !important;
+  }
+  
+  body {
+    margin: 0;
+    padding: 20px;
+  }
+  
+  .apply-section,
+  .enroll-section,
+  .detail-section {
+    box-shadow: none;
+    border: 1px solid #ddd;
+  }
+}
+

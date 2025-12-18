@@ -147,6 +147,7 @@ if ($conn) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Student Services Dashboard</title>
   <link rel="stylesheet" href="../css/d_styles.css">
+  <link rel="stylesheet" href="../css/responsive.css">
   <style>
     @keyframes pulse {
       0%, 100% { opacity: 1; transform: scale(1); }

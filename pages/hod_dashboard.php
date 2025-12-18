@@ -93,6 +93,7 @@ $pending_applications = getPendingApplicationsForDepartment('hod', 'hod_review')
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HOD Dashboard - PNG Maritime College</title>
   <link rel="stylesheet" href="../css/d_styles.css">
+  <link rel="stylesheet" href="../css/responsive.css">
   <style>
     .user-dropdown {
       animation: fadeIn 0.2s ease-in;
