@@ -401,6 +401,63 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if ($stmt) {
                     
                     if ($stmt->execute()) {
+                        $application_id = $conn->insert_id;
+                        
+                        // Save uploaded documents to application_documents table
+                        if (file_exists('pages/includes/document_helper.php')) {
+                            require_once 'pages/includes/document_helper.php';
+                            
+                            if (function_exists('saveApplicationDocument')) {
+                                // Save Character Reference
+                                if (!empty($uploaded_files['character_reference'])) {
+                                    saveApplicationDocument($application_id, 'character_reference', $uploaded_files['character_reference'], 'Character Reference');
+                                }
+                                
+                                // Save Disciplinary History Report
+                                if (!empty($uploaded_files['disciplinary_report'])) {
+                                    saveApplicationDocument($application_id, 'disciplinary_report', $uploaded_files['disciplinary_report'], 'Disciplinary History Report');
+                                }
+                                
+                                // Save Prerequisite Certificate(s)
+                                if (!empty($uploaded_files['prerequisite_certificate'])) {
+                                    saveApplicationDocument($application_id, 'prerequisite_certificate', $uploaded_files['prerequisite_certificate'], 'Prerequisite Certificate');
+                                }
+                                
+                                // Save Educational Certificates (multiple files)
+                                if (!empty($uploaded_files['educational_certificates'])) {
+                                    $edu_files = explode('|', $uploaded_files['educational_certificates']);
+                                    foreach ($edu_files as $edu_file) {
+                                        if (!empty($edu_file)) {
+                                            saveApplicationDocument($application_id, 'educational_certificates', $edu_file, 'Educational Certificate');
+                                        }
+                                    }
+                                }
+                                
+                                // Save Other Supporting Documents (multiple files)
+                                if (!empty($uploaded_files['other_documents'])) {
+                                    $other_files = explode('|', $uploaded_files['other_documents']);
+                                    foreach ($other_files as $other_file) {
+                                        if (!empty($other_file)) {
+                                            saveApplicationDocument($application_id, 'other_documents', $other_file, 'Other Supporting Document');
+                                        }
+                                    }
+                                }
+                                
+                                // Save Sea Time Records
+                                if (!empty($uploaded_files['sea_time_records'])) {
+                                    saveApplicationDocument($application_id, 'sea_time_records', $uploaded_files['sea_time_records'], 'Sea Time Records');
+                                }
+                            }
+                        }
+                        
+                        // Create requirements for this application
+                        if (file_exists('pages/includes/workflow_helper.php')) {
+                            require_once 'pages/includes/workflow_helper.php';
+                            if (function_exists('createApplicationRequirements')) {
+                                createApplicationRequirements($application_id, 'continuing_student_next_level');
+                            }
+                        }
+                        
                         $app_num = htmlspecialchars($application_number) . "/" . date('Y');
                         $course_name = htmlspecialchars($selected_course['display_name']);
                         header('Location: index.html?success=1&type=enrollment&app=' . urlencode($app_num) . '&course=' . urlencode($course_name));

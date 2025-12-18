@@ -289,25 +289,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             error_log("Apply Continuing: ERROR - document_helper.php not found at: $doc_helper_path");
                         }
                         
-                        // Create requirement records (non-critical, continue even if fails)
-                        if ($has_application_type) {
-                            $table_check_req = $conn->query("SHOW TABLES LIKE 'continuing_student_requirements'");
-                            if ($table_check_req && $table_check_req->num_rows > 0) {
-                                $req_sql = "INSERT INTO continuing_student_requirements (application_id, requirement_type, requirement_name, status) VALUES (?, ?, ?, 'pending')";
-                                $req_stmt = $conn->prepare($req_sql);
-                                
-                                if ($req_stmt) {
-                                    $requirements = [
-                                        ['nmsa_approval', 'NMSA Approval Letter'],
-                                        ['sea_service_record', 'Record of Sea Service'],
-                                        ['expression_of_interest', 'Expression of Interest Application']
-                                    ];
-                                    
-                                    foreach ($requirements as $req) {
-                                        $req_stmt->bind_param('iss', $application_id, $req[0], $req[1]);
-                                        @$req_stmt->execute();
+                        // Create requirement records using workflow_helper function
+                        if (file_exists(__DIR__ . '/pages/includes/workflow_helper.php')) {
+                            require_once __DIR__ . '/pages/includes/workflow_helper.php';
+                            if (function_exists('createApplicationRequirements')) {
+                                $req_result = createApplicationRequirements($application_id, $application_type ?? null);
+                                error_log("Apply Continuing: Requirements created - " . ($req_result ? "Success" : "Failed"));
+                            } else {
+                                error_log("Apply Continuing: createApplicationRequirements function not found");
+                                // Fallback: Create requirements manually
+                                if ($has_application_type) {
+                                    $table_check_req = $conn->query("SHOW TABLES LIKE 'continuing_student_requirements'");
+                                    if ($table_check_req && $table_check_req->num_rows > 0) {
+                                        $req_sql = "INSERT INTO continuing_student_requirements (application_id, requirement_type, requirement_name, status) VALUES (?, ?, ?, 'pending')";
+                                        $req_stmt = $conn->prepare($req_sql);
+                                        
+                                        if ($req_stmt) {
+                                            $requirements = [
+                                                ['nmsa_approval', 'NMSA Approval Letter'],
+                                                ['sea_service_record', 'Record of Sea Service'],
+                                                ['expression_of_interest', 'Expression of Interest Application']
+                                            ];
+                                            
+                                            foreach ($requirements as $req) {
+                                                $req_stmt->bind_param('iss', $application_id, $req[0], $req[1]);
+                                                @$req_stmt->execute();
+                                            }
+                                            $req_stmt->close();
+                                        }
                                     }
-                                    $req_stmt->close();
                                 }
                             }
                         }

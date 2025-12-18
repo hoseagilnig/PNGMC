@@ -40,10 +40,18 @@ function saveApplicationDocument($application_id, $document_type, $file_path, $o
             $type_map = [
                 'nmsa_approval' => 'nmsa_approval_letter',
                 'sea_service' => 'sea_service_record',
-                'coc' => 'coc_certificate'
+                'coc' => 'coc_certificate',
+                'character_reference' => 'other',
+                'disciplinary_report' => 'other',
+                'disciplinary_history_report' => 'other',
+                'prerequisite_certificate' => 'previous_certificates',
+                'prerequisite_certificates' => 'previous_certificates',
+                'educational_certificates' => 'grade_12_certificate',
+                'other_documents' => 'other',
+                'sea_time_records' => 'other'
             ];
             $document_type = $type_map[$document_type] ?? 'other';
-            error_log("Document Helper: Mapped document_type to: $document_type");
+            error_log("Document Helper: Mapped document_type from '$document_type' to: " . ($type_map[$document_type] ?? 'other'));
         }
         
         // Validate inputs

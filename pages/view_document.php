@@ -79,8 +79,14 @@ if ($conn && $document_id) {
             header('Content-Type: ' . $content_type);
             header('Content-Disposition: attachment; filename="' . htmlspecialchars($file_name) . '"');
         } else {
-            header('Content-Type: ' . $content_type);
-            header('Content-Disposition: inline; filename="' . htmlspecialchars($file_name) . '"');
+            // For PDFs, always use inline to display in browser
+            if ($file_ext === 'pdf') {
+                header('Content-Type: application/pdf');
+                header('Content-Disposition: inline; filename="' . htmlspecialchars($file_name) . '"');
+            } else {
+                header('Content-Type: ' . $content_type);
+                header('Content-Disposition: inline; filename="' . htmlspecialchars($file_name) . '"');
+            }
         }
         header('Content-Length: ' . filesize($file_path));
         header('Cache-Control: private, max-age=0, must-revalidate');

@@ -403,8 +403,20 @@ if (!$application) {
           <div class="detail-row">
             <div class="detail-label">NMSA Approval Letter:</div>
             <div>
-              <?php if (file_exists($application['nmsa_approval_letter_path'])): ?>
-                <a href="<?php echo htmlspecialchars($application['nmsa_approval_letter_path']); ?>" target="_blank" style="color: var(--primary);">View Document</a>
+              <?php 
+              // Find document in application_documents table
+              $nmsa_doc = null;
+              foreach ($documents as $doc) {
+                  if ($doc['document_type'] === 'nmsa_approval_letter' || $doc['file_path'] === $application['nmsa_approval_letter_path']) {
+                      $nmsa_doc = $doc;
+                      break;
+                  }
+              }
+              if ($nmsa_doc): ?>
+                <button onclick="viewPDFInModal(<?php echo $nmsa_doc['document_id']; ?>, '<?php echo htmlspecialchars($nmsa_doc['document_name'], ENT_QUOTES); ?>')" style="border: none; cursor: pointer; padding: 5px 10px; background: #dc3545; color: white; border-radius: 3px; font-size: 0.9rem; display: inline-block; margin-right: 5px;">📄 View PDF</button>
+                <a href="view_document.php?id=<?php echo $nmsa_doc['document_id']; ?>&download=1" style="color: var(--primary); text-decoration: none; padding: 5px 10px; background: #28a745; color: white; border-radius: 3px; font-size: 0.9rem; display: inline-block;">⬇️ Download</a>
+              <?php elseif (file_exists($application['nmsa_approval_letter_path'])): ?>
+                <a href="<?php echo htmlspecialchars($application['nmsa_approval_letter_path']); ?>" target="_blank" style="color: var(--primary); text-decoration: none; padding: 5px 10px; background: #dc3545; color: white; border-radius: 3px; font-size: 0.9rem; display: inline-block;">📄 View PDF</a>
               <?php else: ?>
                 <span style="color: #999;">File path: <?php echo htmlspecialchars($application['nmsa_approval_letter_path']); ?></span>
               <?php endif; ?>
@@ -415,8 +427,20 @@ if (!$application) {
           <div class="detail-row">
             <div class="detail-label">Sea Service Record:</div>
             <div>
-              <?php if (file_exists($application['sea_service_record_path'])): ?>
-                <a href="<?php echo htmlspecialchars($application['sea_service_record_path']); ?>" target="_blank" style="color: var(--primary);">View Document</a>
+              <?php 
+              // Find document in application_documents table
+              $sea_doc = null;
+              foreach ($documents as $doc) {
+                  if ($doc['document_type'] === 'sea_service_record' || $doc['file_path'] === $application['sea_service_record_path']) {
+                      $sea_doc = $doc;
+                      break;
+                  }
+              }
+              if ($sea_doc): ?>
+                <button onclick="viewPDFInModal(<?php echo $sea_doc['document_id']; ?>, '<?php echo htmlspecialchars($sea_doc['document_name'], ENT_QUOTES); ?>')" style="border: none; cursor: pointer; padding: 5px 10px; background: #dc3545; color: white; border-radius: 3px; font-size: 0.9rem; display: inline-block; margin-right: 5px;">📄 View PDF</button>
+                <a href="view_document.php?id=<?php echo $sea_doc['document_id']; ?>&download=1" style="color: var(--primary); text-decoration: none; padding: 5px 10px; background: #28a745; color: white; border-radius: 3px; font-size: 0.9rem; display: inline-block;">⬇️ Download</a>
+              <?php elseif (file_exists($application['sea_service_record_path'])): ?>
+                <a href="<?php echo htmlspecialchars($application['sea_service_record_path']); ?>" target="_blank" style="color: var(--primary); text-decoration: none; padding: 5px 10px; background: #dc3545; color: white; border-radius: 3px; font-size: 0.9rem; display: inline-block;">📄 View PDF</a>
               <?php else: ?>
                 <span style="color: #999;">File path: <?php echo htmlspecialchars($application['sea_service_record_path']); ?></span>
               <?php endif; ?>
@@ -603,7 +627,20 @@ if (!$application) {
                       }
                       ?>
                       <?php if ($file_exists): ?>
-                        <a href="view_document.php?id=<?php echo $doc['document_id']; ?>" target="_blank" class="btn btn-primary" style="text-decoration: none; padding: 5px 10px; font-size: 0.85rem;">📄 View</a>
+                        <?php 
+                        // Determine if it's a PDF
+                        $doc_ext = strtolower(pathinfo($doc['file_path'], PATHINFO_EXTENSION));
+                        $is_pdf = ($doc_ext === 'pdf');
+                        ?>
+                        <?php if ($is_pdf): ?>
+                          <button onclick="viewPDFInModal(<?php echo $doc['document_id']; ?>, '<?php echo htmlspecialchars($doc['document_name'], ENT_QUOTES); ?>')" class="btn btn-primary" style="text-decoration: none; padding: 5px 10px; font-size: 0.85rem; background: #dc3545; border: none; cursor: pointer; color: white;">
+                            📄 View PDF
+                          </button>
+                        <?php else: ?>
+                          <a href="view_document.php?id=<?php echo $doc['document_id']; ?>" target="_blank" class="btn btn-primary" style="text-decoration: none; padding: 5px 10px; font-size: 0.85rem;">
+                            📄 View
+                          </a>
+                        <?php endif; ?>
                         <a href="view_document.php?id=<?php echo $doc['document_id']; ?>&download=1" class="btn btn-primary" style="text-decoration: none; padding: 5px 10px; font-size: 0.85rem; background: #28a745;">⬇️ Download</a>
                       <?php else: ?>
                         <span style="color: #999; font-size: 0.85rem;">File not found</span>
@@ -902,6 +939,20 @@ if (!$application) {
     </div>
   </div>
 
+  <!-- PDF Viewer Modal -->
+  <div id="pdfViewerModal" class="modal" style="display: none; z-index: 10000;">
+    <div class="modal-content" style="max-width: 95%; width: 95%; height: 90vh; padding: 20px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 2px solid #ddd; padding-bottom: 10px;">
+        <h2 id="pdfViewerTitle" style="margin: 0; color: #1d4e89;">Document Viewer</h2>
+        <div style="display: flex; gap: 10px;">
+          <a id="pdfDownloadLink" href="#" download class="btn btn-primary" style="text-decoration: none; padding: 8px 15px; background: #28a745; color: white; border-radius: 4px; font-size: 0.9rem;">⬇️ Download</a>
+          <button onclick="closePDFViewer()" class="btn" style="background: #dc3545; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; font-size: 0.9rem;">✕ Close</button>
+        </div>
+      </div>
+      <iframe id="pdfViewerFrame" src="" style="width: 100%; height: calc(90vh - 100px); border: 1px solid #ddd; border-radius: 4px;" frameborder="0"></iframe>
+    </div>
+  </div>
+
   <script>
     function forwardToFinance(appId) {
       document.getElementById('modalTitle').textContent = 'Forward to Finance';
@@ -963,8 +1014,33 @@ if (!$application) {
       document.getElementById('workflowNotes').value = '';
     }
     
-    // Close modals when clicking outside
+    // PDF Viewer Functions
+    function viewPDFInModal(documentId, documentName) {
+      const pdfUrl = 'view_document.php?id=' + documentId;
+      const downloadUrl = 'view_document.php?id=' + documentId + '&download=1';
+      
+      document.getElementById('pdfViewerTitle').textContent = documentName || 'Document Viewer';
+      document.getElementById('pdfViewerFrame').src = pdfUrl;
+      document.getElementById('pdfDownloadLink').href = downloadUrl;
+      document.getElementById('pdfViewerModal').style.display = 'block';
+      
+      // Prevent body scroll when modal is open
+      document.body.style.overflow = 'hidden';
+    }
+    
+    function closePDFViewer() {
+      document.getElementById('pdfViewerModal').style.display = 'none';
+      document.getElementById('pdfViewerFrame').src = '';
+      document.body.style.overflow = 'auto';
+    }
+    
+    // Close PDF viewer when clicking outside
     window.onclick = function(event) {
+      const pdfViewerModal = document.getElementById('pdfViewerModal');
+      if (event.target === pdfViewerModal) {
+        closePDFViewer();
+      }
+      
       const workflowModal = document.getElementById('workflowModal');
       const hodModal = document.getElementById('hodDecisionModal');
       if (event.target === workflowModal) {
