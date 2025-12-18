@@ -4,13 +4,14 @@
  * Fixed for Linux compatibility with __DIR__ paths
  */
 
-// Enable output buffering to catch any errors before headers
-ob_start();
-
-// Enable error logging (but don't display errors to user)
+// Enable error logging FIRST
 ini_set('display_errors', '0');
 ini_set('log_errors', '1');
 error_reporting(E_ALL);
+error_log("Apply Continuing: Script started at " . date('Y-m-d H:i:s'));
+
+// Enable output buffering to catch any errors before headers
+ob_start();
 
 // Start session if not already started
 if (session_status() === PHP_SESSION_NONE) {
@@ -25,7 +26,9 @@ $message = '';
 $message_type = '';
 
 // Handle form submission
+error_log("Apply Continuing: Request method: " . $_SERVER['REQUEST_METHOD']);
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    error_log("Apply Continuing: POST request received");
     // Check if POST data was truncated due to size limit (check before CSRF to avoid issues)
     if (empty($_POST) && empty($_FILES) && isset($_SERVER['CONTENT_LENGTH']) && $_SERVER['CONTENT_LENGTH'] > 0) {
         $content_length = intval($_SERVER['CONTENT_LENGTH']);
