@@ -72,6 +72,14 @@ function generateCSRFToken() {
 }
 
 /**
+ * Generate CSRF token as hidden input field (for forms)
+ */
+function generateCSRFTokenInput() {
+    $token = generateCSRFToken();
+    return '<input type="hidden" name="csrf_token" value="' . htmlspecialchars($token, ENT_QUOTES, 'UTF-8') . '">';
+}
+
+/**
  * Verify CSRF token
  */
 function verifyCSRFToken($token) {

@@ -178,7 +178,7 @@ if ($conn) {
         <div class="form-section">
           <h2>Create New Invoice</h2>
           <form method="POST">
-            <?php echo generateCSRFToken(); ?>
+            <?php echo generateCSRFTokenInput(); ?>
             <input type="hidden" name="action" value="create">
             <div class="form-row">
               <div>
@@ -290,7 +290,7 @@ if ($conn) {
         <span class="close" onclick="closeArchiveModal()">&times;</span>
       </div>
       <form method="POST" id="archiveForm">
-        <?php echo generateCSRFToken(); ?>
+        <?php echo generateCSRFTokenInput(); ?>
         <input type="hidden" name="action" value="archive">
         <input type="hidden" name="invoice_id" id="archive_invoice_id">
         <div style="margin-bottom: 15px;">

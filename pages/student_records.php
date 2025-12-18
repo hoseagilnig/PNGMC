@@ -177,7 +177,7 @@ if ($conn) {
         <div class="form-section">
           <h2>Add New Student</h2>
           <form method="POST">
-            <?php echo generateCSRFToken(); ?>
+            <?php echo generateCSRFTokenInput(); ?>
             <input type="hidden" name="action" value="add">
             <div class="form-row">
               <div>

@@ -451,7 +451,7 @@ $conn->close();
                 <div class="settings-form">
                     <h2>Auto-Archive Settings</h2>
                     <form method="POST">
-                        <?php echo generateCSRFToken(); ?>
+                        <?php echo generateCSRFTokenInput(); ?>
                         <input type="hidden" name="action" value="update_settings">
                         
                         <div class="form-group">
