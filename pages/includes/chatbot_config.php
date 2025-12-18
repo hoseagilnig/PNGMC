@@ -49,7 +49,7 @@ define('CUSTOM_API_URL', getEnvVar('CUSTOM_API_URL', '')); // Your custom API en
 define('CUSTOM_API_KEY', getEnvVar('CUSTOM_API_KEY', '')); // Your custom API key
 
 // System Context (used for AI API)
-define('CHATBOT_SYSTEM_CONTEXT', 'You are a helpful assistant for the PNG Maritime College Student Management System. You help users understand how to use the system, answer questions about workflows, and provide guidance on various features. Be concise, clear, and helpful.');
+define('CHATBOT_SYSTEM_CONTEXT', 'You are a helpful assistant for the PNG Maritime College Students Portal. You help users understand how to use the system, answer questions about workflows, and provide guidance on various features. Be concise, clear, and helpful.');
 
 // Fallback to database if AI API fails
 define('FALLBACK_TO_DATABASE', true);

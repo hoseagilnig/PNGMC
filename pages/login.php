@@ -136,7 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login - PNG Maritime College SMS</title>
+  <title>Login - PNG Maritime College Students Portal</title>
   <link rel="stylesheet" href="../css/sms_styles.css">
   <link rel="stylesheet" href="../css/responsive.css">
   <style>

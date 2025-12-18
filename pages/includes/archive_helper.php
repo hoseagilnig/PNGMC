@@ -1,7 +1,7 @@
 <?php
 /**
  * Archive Helper Functions
- * PNG Maritime College - Student Management System
+ * PNG Maritime College - Students Portal
  * 
  * Functions for archiving and restoring records
  */

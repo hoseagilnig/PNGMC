@@ -1,7 +1,7 @@
 <?php
 /**
  * PDO Database Configuration File
- * PNG Maritime College - Student Management System
+ * PNG Maritime College - Students Portal
  * 
  * PDO database connection using environment variables (.env file)
  * Works on both local (XAMPP/Windows) and DigitalOcean (Linux) environments

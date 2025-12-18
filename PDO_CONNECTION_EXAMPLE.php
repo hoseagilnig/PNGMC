@@ -1,7 +1,7 @@
 <?php
 /**
  * PDO Database Connection Example
- * PNG Maritime College - Student Management System
+ * PNG Maritime College - Students Portal
  * 
  * This example shows how to use the PDO connection that works on both
  * local (XAMPP/Windows) and DigitalOcean (Linux) environments

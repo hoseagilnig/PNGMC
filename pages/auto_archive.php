@@ -1,7 +1,7 @@
 <?php
 /**
  * Automatic Archiving Script
- * PNG Maritime College - Student Management System
+ * PNG Maritime College - Students Portal
  * 
  * This script automatically archives records based on configured settings.
  * Can be run via cron job or manually.

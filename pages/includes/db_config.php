@@ -1,7 +1,7 @@
 <?php
 /**
  * Database Configuration File
- * PNG Maritime College - Student Management System
+ * PNG Maritime College - Students Portal
  * 
  * Database settings can be configured via environment variables (.env file)
  * or by modifying the default values below.
