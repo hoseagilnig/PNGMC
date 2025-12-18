@@ -7,6 +7,11 @@
 // Enable output buffering to catch any errors before headers
 ob_start();
 
+// Enable error logging (but don't display errors to user)
+ini_set('display_errors', '0');
+ini_set('log_errors', '1');
+error_reporting(E_ALL);
+
 // Start session if not already started
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -289,52 +294,67 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             error_log("Apply Continuing: ERROR - document_helper.php not found at: $doc_helper_path");
                         }
                         
-                        // Create requirement records using workflow_helper function
-                        if (file_exists(__DIR__ . '/pages/includes/workflow_helper.php')) {
-                            require_once __DIR__ . '/pages/includes/workflow_helper.php';
-                            if (function_exists('createApplicationRequirements')) {
-                                $req_result = createApplicationRequirements($application_id, $application_type ?? null);
-                                error_log("Apply Continuing: Requirements created - " . ($req_result ? "Success" : "Failed"));
-                            } else {
-                                error_log("Apply Continuing: createApplicationRequirements function not found");
-                                // Fallback: Create requirements manually
-                                if ($has_application_type) {
-                                    $table_check_req = $conn->query("SHOW TABLES LIKE 'continuing_student_requirements'");
-                                    if ($table_check_req && $table_check_req->num_rows > 0) {
-                                        $req_sql = "INSERT INTO continuing_student_requirements (application_id, requirement_type, requirement_name, status) VALUES (?, ?, ?, 'pending')";
-                                        $req_stmt = $conn->prepare($req_sql);
-                                        
-                                        if ($req_stmt) {
-                                            $requirements = [
-                                                ['nmsa_approval', 'NMSA Approval Letter'],
-                                                ['sea_service_record', 'Record of Sea Service'],
-                                                ['expression_of_interest', 'Expression of Interest Application']
-                                            ];
+                        // Create requirement records using workflow_helper function (non-critical, continue even if fails)
+                        try {
+                            if (file_exists(__DIR__ . '/pages/includes/workflow_helper.php')) {
+                                require_once __DIR__ . '/pages/includes/workflow_helper.php';
+                                if (function_exists('createApplicationRequirements')) {
+                                    $req_result = @createApplicationRequirements($application_id, $application_type ?? null);
+                                    error_log("Apply Continuing: Requirements created - " . ($req_result ? "Success" : "Failed"));
+                                } else {
+                                    error_log("Apply Continuing: createApplicationRequirements function not found");
+                                    // Fallback: Create requirements manually
+                                    if ($has_application_type) {
+                                        $table_check_req = $conn->query("SHOW TABLES LIKE 'continuing_student_requirements'");
+                                        if ($table_check_req && $table_check_req->num_rows > 0) {
+                                            $req_sql = "INSERT INTO continuing_student_requirements (application_id, requirement_type, requirement_name, status) VALUES (?, ?, ?, 'pending')";
+                                            $req_stmt = $conn->prepare($req_sql);
                                             
-                                            foreach ($requirements as $req) {
-                                                $req_stmt->bind_param('iss', $application_id, $req[0], $req[1]);
-                                                @$req_stmt->execute();
+                                            if ($req_stmt) {
+                                                $requirements = [
+                                                    ['nmsa_approval', 'NMSA Approval Letter'],
+                                                    ['sea_service_record', 'Record of Sea Service'],
+                                                    ['expression_of_interest', 'Expression of Interest Application']
+                                                ];
+                                                
+                                                foreach ($requirements as $req) {
+                                                    $req_stmt->bind_param('iss', $application_id, $req[0], $req[1]);
+                                                    @$req_stmt->execute();
+                                                }
+                                                $req_stmt->close();
                                             }
-                                            $req_stmt->close();
                                         }
                                     }
                                 }
                             }
+                        } catch (Exception $req_e) {
+                            // Don't let requirements creation failure stop the application submission
+                            error_log("Apply Continuing: Requirements creation error (non-critical): " . $req_e->getMessage());
                         }
                         
                         // Success - redirect to confirmation page
-                        ob_end_clean(); // Clear any output before redirect
                         $app_num = htmlspecialchars($application_number);
                         $redirect_url = 'index.html?success=1&type=continuing&app=' . urlencode($app_num);
+                        error_log("Apply Continuing: Application submitted successfully - ID: $application_id, Number: $application_number");
                         error_log("Apply Continuing: Redirecting to: $redirect_url");
+                        
+                        // Clear any output before redirect
+                        if (ob_get_level() > 0) {
+                            ob_end_clean();
+                        }
                         
                         if (!headers_sent()) {
                             header('Location: ' . $redirect_url);
                             exit;
                         } else {
-                            error_log("Apply Continuing: ERROR - Headers already sent! Cannot redirect.");
-                            $message = "Application submitted successfully! Application Number: " . htmlspecialchars($application_number);
-                            $message_type = "success";
+                            error_log("Apply Continuing: ERROR - Headers already sent! Cannot redirect. Output: " . ob_get_contents());
+                            // Output success message directly
+                            echo "<!DOCTYPE html><html><head><meta charset='UTF-8'><title>Success</title></head><body>";
+                            echo "<h1>Application Submitted Successfully!</h1>";
+                            echo "<p>Application Number: <strong>" . htmlspecialchars($application_number) . "</strong></p>";
+                            echo "<p><a href='index.html'>Return to Home</a></p>";
+                            echo "</body></html>";
+                            exit;
                         }
                     } else {
                         error_log("Apply Continuing Error: " . $stmt->error);
