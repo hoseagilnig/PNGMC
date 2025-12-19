@@ -139,8 +139,20 @@ if ($conn) {
   <script>
     function toggleUserDropdown() {
       const dropdown = document.getElementById('userDropdown');
+      const trigger = document.querySelector('.user-dropdown-trigger');
+      
       if (dropdown.style.display === 'none' || dropdown.style.display === '') {
         dropdown.style.display = 'block';
+        
+        // On mobile, position dropdown relative to viewport
+        if (window.innerWidth <= 767 && trigger) {
+          const rect = trigger.getBoundingClientRect();
+          dropdown.style.position = 'fixed';
+          dropdown.style.right = '10px';
+          dropdown.style.top = (rect.bottom + 8) + 'px';
+          dropdown.style.left = 'auto';
+          dropdown.style.bottom = 'auto';
+        }
       } else {
         dropdown.style.display = 'none';
       }
