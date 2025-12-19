@@ -40,6 +40,7 @@ if ($conn) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Reports - Admin</title>
   <link rel="stylesheet" href="../css/d_styles.css">
+  <link rel="stylesheet" href="../css/responsive.css">
   <style>
     .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin: 20px 0; }
     .stat-card { background: var(--card-bg); padding: 20px; border-radius: 10px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }

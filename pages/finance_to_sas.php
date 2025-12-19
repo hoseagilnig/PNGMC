@@ -131,6 +131,7 @@ if ($conn_for_display) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Finance to SAS Data Transfer - Finance</title>
   <link rel="stylesheet" href="../css/d_styles.css">
+  <link rel="stylesheet" href="../css/responsive.css">
   <style>
     .form-grid {
       display: grid;

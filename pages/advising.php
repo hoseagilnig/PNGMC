@@ -78,6 +78,7 @@ if ($conn) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Advising - Student Services</title>
   <link rel="stylesheet" href="../css/d_styles.css">
+  <link rel="stylesheet" href="../css/responsive.css">
   <style>
     .message { padding: 12px; margin: 10px 0; border-radius: 5px; }
     .success { background: #d4edda; color: #155724; }

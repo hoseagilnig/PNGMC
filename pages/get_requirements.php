@@ -45,6 +45,36 @@ if (!$table_check || $table_check->num_rows === 0) {
     exit;
 }
 
+// First, check if requirements exist, if not, create them automatically
+$check_sql = "SELECT COUNT(*) as count FROM continuing_student_requirements WHERE application_id = ?";
+$check_stmt = $conn->prepare($check_sql);
+$check_stmt->bind_param('i', $application_id);
+$check_stmt->execute();
+$check_result = $check_stmt->get_result();
+$check_row = $check_result->fetch_assoc();
+$check_stmt->close();
+
+// If no requirements exist, try to create them automatically
+if ($check_row['count'] == 0) {
+    require_once __DIR__ . '/includes/workflow_helper.php';
+    
+    // Get application type
+    $app_sql = "SELECT application_type FROM applications WHERE application_id = ?";
+    $app_stmt = $conn->prepare($app_sql);
+    $app_stmt->bind_param('i', $application_id);
+    $app_stmt->execute();
+    $app_result = $app_stmt->get_result();
+    $app_row = $app_result->fetch_assoc();
+    $app_stmt->close();
+    
+    $application_type = $app_row['application_type'] ?? null;
+    
+    // Try to create requirements
+    if (function_exists('createApplicationRequirements')) {
+        createApplicationRequirements($application_id, $application_type);
+    }
+}
+
 // Fetch requirements
 $sql = "SELECT requirement_id, requirement_type, requirement_name, status, notes, verified_date 
         FROM continuing_student_requirements 

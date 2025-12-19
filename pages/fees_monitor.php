@@ -30,6 +30,7 @@ if ($conn) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Fees Monitor - Finance/SAS</title>
   <link rel="stylesheet" href="../css/d_styles.css">
+  <link rel="stylesheet" href="../css/responsive.css">
 </head>
 <body>
     <div class="dashboard-wrap container">
