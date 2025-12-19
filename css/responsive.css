@@ -4,15 +4,55 @@
    ============================================ */
 
 /* ============================================
+   BASE RESPONSIVE STYLES
+   ============================================ */
+
+/* Prevent horizontal overflow */
+html, body {
+  overflow-x: hidden !important;
+  max-width: 100% !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box !important;
+}
+
+/* Ensure all containers respect viewport width */
+body > * {
+  max-width: 100vw !important;
+  overflow-x: hidden !important;
+}
+
+/* ============================================
    FORM RESPONSIVE STYLES
    ============================================ */
 
 /* Form containers */
 .apply-section,
 .enroll-section {
-  max-width: 100%;
+  max-width: 100% !important;
+  width: 100% !important;
   margin: 20px auto;
   padding: 20px;
+  box-sizing: border-box !important;
+  overflow-x: hidden !important;
+}
+
+@media (max-width: 767px) {
+  .apply-section,
+  .enroll-section {
+    padding: 15px !important;
+    margin: 10px auto !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .apply-section,
+  .enroll-section {
+    max-width: 1000px !important;
+  }
 }
 
 /* Form rows - responsive grid */
@@ -45,6 +85,93 @@
 @media (min-width: 1200px) {
   .form-row.five {
     grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+/* ============================================
+   ENROLLMENT FORM SPECIFIC FIXES
+   ============================================ */
+
+/* Prevent text from being cut off */
+.form-header h1,
+.course-title,
+.contact-info {
+  word-wrap: break-word !important;
+  overflow-wrap: break-word !important;
+  hyphens: auto !important;
+  max-width: 100% !important;
+}
+
+@media (max-width: 767px) {
+  .form-header h1 {
+    font-size: 1.1rem !important;
+    line-height: 1.3 !important;
+    padding: 0 5px !important;
+  }
+  
+  .course-title {
+    font-size: 0.85rem !important;
+    line-height: 1.4 !important;
+    padding: 0 5px !important;
+    word-break: break-word !important;
+  }
+  
+  .contact-info {
+    font-size: 0.75rem !important;
+    line-height: 1.5 !important;
+    padding: 0 5px !important;
+  }
+  
+  .course-details {
+    padding: 10px !important;
+  }
+  
+  .course-details div {
+    padding: 5px !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+  }
+  
+  .course-details strong {
+    font-size: 0.85rem !important;
+    line-height: 1.4 !important;
+  }
+  
+  .form-section {
+    padding: 12px !important;
+    margin: 15px 0 !important;
+  }
+  
+  .section-title {
+    font-size: 1rem !important;
+    padding: 0 5px 8px 5px !important;
+  }
+}
+
+/* Ensure all text elements wrap properly */
+label,
+input,
+select,
+textarea,
+small,
+div,
+span,
+p {
+  max-width: 100% !important;
+  word-wrap: break-word !important;
+  overflow-wrap: break-word !important;
+}
+
+/* Fix for long course names and titles */
+@media (max-width: 767px) {
+  .course-title {
+    text-align: center !important;
+  }
+  
+  /* Break long words in course titles */
+  .form-header .course-title {
+    word-break: break-word !important;
+    hyphens: auto !important;
   }
 }
 

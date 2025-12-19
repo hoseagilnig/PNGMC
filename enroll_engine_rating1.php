@@ -425,17 +425,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <link rel="stylesheet" href="css/sms_styles.css">
   <link rel="stylesheet" href="css/responsive.css">
   <style>
+    /* Prevent horizontal overflow */
+    html, body {
+      overflow-x: hidden !important;
+      max-width: 100% !important;
+      width: 100% !important;
+    }
+    
+    * {
+      box-sizing: border-box !important;
+    }
+    
     .enroll-section {
-      max-width: 1000px;
+      max-width: 100% !important;
+      width: 100% !important;
       margin: 20px auto;
       padding: 20px;
       background: white;
       border-radius: 10px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      box-sizing: border-box !important;
+      overflow-x: hidden !important;
+    }
+    @media (max-width: 767px) {
+      .enroll-section {
+        padding: 15px !important;
+        margin: 10px auto !important;
+      }
     }
     @media (min-width: 768px) {
       .enroll-section {
         padding: 30px;
+        max-width: 1000px !important;
       }
     }
     .form-header {
@@ -449,6 +470,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       margin: 10px 0;
       font-size: 1.3rem;
       text-transform: uppercase;
+      word-wrap: break-word !important;
+      overflow-wrap: break-word !important;
+      max-width: 100% !important;
+    }
+    @media (max-width: 767px) {
+      .form-header h1 {
+        font-size: 1.1rem !important;
+        line-height: 1.3 !important;
+        padding: 0 5px !important;
+      }
     }
     @media (min-width: 768px) {
       .form-header h1 {
@@ -462,6 +493,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       margin: 15px 0;
       text-transform: uppercase;
       line-height: 1.4;
+      word-wrap: break-word !important;
+      overflow-wrap: break-word !important;
+      max-width: 100% !important;
+      hyphens: auto !important;
+    }
+    @media (max-width: 767px) {
+      .form-header .course-title {
+        font-size: 0.85rem !important;
+        line-height: 1.4 !important;
+        padding: 0 5px !important;
+        word-break: break-word !important;
+        text-align: center !important;
+      }
     }
     @media (min-width: 768px) {
       .form-header .course-title {
@@ -474,6 +518,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       color: #666;
       margin: 15px 0;
       line-height: 1.6;
+      word-wrap: break-word !important;
+      overflow-wrap: break-word !important;
+      max-width: 100% !important;
+    }
+    @media (max-width: 767px) {
+      .contact-info {
+        font-size: 0.75rem !important;
+        line-height: 1.5 !important;
+        padding: 0 5px !important;
+      }
     }
     @media (min-width: 768px) {
       .contact-info {
@@ -489,6 +543,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       display: grid;
       grid-template-columns: 1fr;
       gap: 15px;
+      box-sizing: border-box !important;
+      max-width: 100% !important;
+      overflow-x: hidden !important;
+    }
+    @media (max-width: 767px) {
+      .course-details {
+        padding: 10px !important;
+        margin: 15px 0 !important;
+      }
+      .course-details div {
+        padding: 5px !important;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
+        max-width: 100% !important;
+      }
+      .course-details strong {
+        font-size: 0.85rem !important;
+        line-height: 1.4 !important;
+      }
+      .course-details div > div {
+        font-size: 0.9rem !important;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
+      }
     }
     @media (min-width: 600px) {
       .course-details {
@@ -502,11 +580,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     .course-details div {
       text-align: center;
+      word-wrap: break-word !important;
+      overflow-wrap: break-word !important;
+      max-width: 100% !important;
+      box-sizing: border-box !important;
     }
     .course-details strong {
       display: block;
       color: #1d4e89;
       margin-bottom: 5px;
+      word-wrap: break-word !important;
+      overflow-wrap: break-word !important;
     }
     .message {
       padding: 15px 20px;
