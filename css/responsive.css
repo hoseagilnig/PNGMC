@@ -527,17 +527,21 @@ th {
 
 header {
   padding: 12px 16px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap !important;
+  justify-content: space-between !important;
   gap: 10px;
 }
 
 /* Ensure logo stays on right, login on left on all screen sizes */
 header .login-btn {
   order: 1 !important;
+  flex-shrink: 0;
 }
 
 header .logo {
   order: 2 !important;
+  flex-shrink: 0;
+  margin-left: auto;
 }
 
 @media (min-width: 768px) {
@@ -1056,11 +1060,7 @@ header .logo {
 
 /* Header responsive adjustments for user-info */
 @media (max-width: 767px) {
-  header {
-    flex-wrap: wrap;
-    justify-content: space-between;
-  }
-  
+  /* For dashboard pages with user-info */
   header .user-info {
     order: 3;
     width: 100%;
@@ -1072,18 +1072,27 @@ header .logo {
     order: 2;
   }
   
-  /* Keep logo on right side, login on left */
+  /* For landing page - keep logo on right, login on left */
+  /* When no user-info, ensure space-between layout */
   header .login-btn {
     order: 1 !important;
+    flex-shrink: 0;
   }
   
   header .logo {
     order: 2 !important;
-    flex: 1;
+    flex-shrink: 0;
+    margin-left: auto;
   }
   
+  /* Hide logo text on mobile for landing page */
   header .logo span {
     display: none;
+  }
+  
+  /* Only wrap if user-info exists */
+  header:has(.user-info) {
+    flex-wrap: wrap;
   }
 }
 
