@@ -532,13 +532,13 @@ header {
   gap: 10px;
 }
 
-/* Ensure logo stays on right, login on left on all screen sizes */
-header .login-btn {
+/* Ensure logo stays on left, login on right on all screen sizes */
+header .logo {
   order: 1 !important;
   flex-shrink: 0;
 }
 
-header .logo {
+header .login-btn {
   order: 2 !important;
   flex-shrink: 0;
   margin-left: auto;
@@ -1072,14 +1072,14 @@ header .logo {
     order: 2;
   }
   
-  /* For landing page - keep logo on right, login on left */
+  /* For landing page - keep logo on left, login on right */
   /* When no user-info, ensure space-between layout */
-  header .login-btn {
+  header .logo {
     order: 1 !important;
     flex-shrink: 0;
   }
   
-  header .logo {
+  header .login-btn {
     order: 2 !important;
     flex-shrink: 0;
     margin-left: auto;

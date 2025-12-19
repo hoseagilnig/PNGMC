@@ -37,12 +37,12 @@ header {
   flex-wrap: nowrap;
 }
 
-/* Ensure logo is on the right side */
-header .login-btn {
+/* Ensure logo is on the left side, login on the right */
+header .logo {
   order: 1;
 }
 
-header .logo {
+header .login-btn {
   order: 2;
 }
 
