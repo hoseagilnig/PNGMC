@@ -1063,8 +1063,13 @@ header {
     order: 2;
   }
   
+  /* Keep logo on right side, login on left */
+  header .login-btn {
+    order: 1 !important;
+  }
+  
   header .logo {
-    order: 1;
+    order: 2 !important;
     flex: 1;
   }
   
