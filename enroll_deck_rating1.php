@@ -512,22 +512,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     .form-header h1 {
       color: #1d4e89;
       margin: 10px 0;
-      font-size: 1.8rem;
+      font-size: 1.3rem;
       text-transform: uppercase;
+    }
+    @media (min-width: 768px) {
+      .form-header h1 {
+        font-size: 1.8rem;
+      }
     }
     .form-header .course-title {
       color: #1d4e89;
-      font-size: 1.3rem;
+      font-size: 1rem;
       font-weight: bold;
       margin: 15px 0;
       text-transform: uppercase;
+      line-height: 1.4;
+    }
+    @media (min-width: 768px) {
+      .form-header .course-title {
+        font-size: 1.3rem;
+      }
     }
     .contact-info {
       text-align: center;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       color: #666;
       margin: 15px 0;
       line-height: 1.6;
+    }
+    @media (min-width: 768px) {
+      .contact-info {
+        font-size: 0.9rem;
+      }
     }
     .course-details {
       background: #e7f3ff;
@@ -536,8 +552,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       margin: 20px 0;
       border-left: 4px solid #1d4e89;
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-template-columns: 1fr;
       gap: 15px;
+    }
+    @media (min-width: 600px) {
+      .course-details {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    @media (min-width: 992px) {
+      .course-details {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      }
     }
     .course-details div {
       text-align: center;
@@ -564,11 +590,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       border: 1px solid #f5c6cb;
     }
     .form-section {
-      margin: 25px 0;
-      padding: 20px;
+      margin: 20px 0;
+      padding: 15px;
       background: #f9f9f9;
       border-radius: 8px;
       border: 1px solid #ddd;
+    }
+    @media (min-width: 768px) {
+      .form-section {
+        margin: 25px 0;
+        padding: 20px;
+      }
     }
     .section-title {
       color: #1d4e89;
@@ -668,9 +700,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     .checkbox-container {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-template-columns: 1fr;
       gap: 10px;
       margin: 15px 0;
+    }
+    @media (min-width: 600px) {
+      .checkbox-container {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    @media (min-width: 992px) {
+      .checkbox-container {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      }
     }
     .btn-submit {
       width: 100%;
@@ -690,18 +732,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     .info-box {
       background: #fff3cd;
-      padding: 15px;
+      padding: 12px;
       border-radius: 5px;
-      margin: 20px 0;
+      margin: 15px 0;
       border-left: 4px solid #ffc107;
-      font-size: 0.95rem;
+      font-size: 0.85rem;
+      line-height: 1.5;
+    }
+    @media (min-width: 768px) {
+      .info-box {
+        padding: 15px;
+        margin: 20px 0;
+        font-size: 0.95rem;
+      }
     }
     .selection-criteria {
       background: #e7f3ff;
-      padding: 20px;
+      padding: 15px;
       border-radius: 5px;
-      margin: 20px 0;
+      margin: 15px 0;
       border-left: 4px solid #1d4e89;
+    }
+    @media (min-width: 768px) {
+      .selection-criteria {
+        padding: 20px;
+        margin: 20px 0;
+      }
     }
     .selection-criteria h3 {
       color: #1d4e89;
@@ -713,10 +769,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     .declaration-box {
       background: #fff;
-      padding: 20px;
+      padding: 15px;
       border: 2px solid #1d4e89;
       border-radius: 5px;
-      margin: 20px 0;
+      margin: 15px 0;
+    }
+    @media (min-width: 768px) {
+      .declaration-box {
+        padding: 20px;
+        margin: 20px 0;
+      }
     }
     .declaration-box p {
       line-height: 1.8;
