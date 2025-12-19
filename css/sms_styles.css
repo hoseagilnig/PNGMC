@@ -36,6 +36,15 @@ header {
   transition: all 0.3s ease;
 }
 
+/* Ensure logo is on the right side */
+header .login-btn {
+  order: 1;
+}
+
+header .logo {
+  order: 2;
+}
+
 header:hover {
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.12);
 }
