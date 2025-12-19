@@ -531,6 +531,15 @@ header {
   gap: 10px;
 }
 
+/* Ensure logo stays on right, login on left on all screen sizes */
+header .login-btn {
+  order: 1 !important;
+}
+
+header .logo {
+  order: 2 !important;
+}
+
 @media (min-width: 768px) {
   header {
     padding: 18px 36px;
