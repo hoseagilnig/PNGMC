@@ -60,15 +60,22 @@ $user_name = $_SESSION['name'] ?? 'User';
 <style>
 .chatbot-container {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
+    bottom: 15px;
+    right: 15px;
     z-index: 99999;
     font-family: Arial, sans-serif;
 }
 
+@media (min-width: 768px) {
+    .chatbot-container {
+        bottom: 20px;
+        right: 20px;
+    }
+}
+
 .chatbot-toggle {
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
     background: linear-gradient(135deg, #1d4e89 0%, #163c6a 100%);
     border-radius: 50%;
     display: flex;
@@ -79,6 +86,13 @@ $user_name = $_SESSION['name'] ?? 'User';
     transition: all 0.3s ease;
     color: white;
     position: relative;
+}
+
+@media (min-width: 768px) {
+    .chatbot-toggle {
+        width: 60px;
+        height: 60px;
+    }
 }
 
 .chatbot-toggle:hover {
@@ -93,23 +107,32 @@ $user_name = $_SESSION['name'] ?? 'User';
     background: #dc3545;
     color: white;
     border-radius: 50%;
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 12px;
+    font-size: 10px;
     font-weight: bold;
     border: 2px solid white;
 }
 
+@media (min-width: 768px) {
+    .chatbot-badge {
+        width: 24px;
+        height: 24px;
+        font-size: 12px;
+    }
+}
+
 .chatbot-window {
-    position: absolute;
-    bottom: 80px;
-    right: 0;
-    width: 380px;
-    height: 600px;
-    max-height: 80vh;
+    position: fixed;
+    bottom: 70px;
+    right: 15px;
+    left: 15px;
+    width: auto;
+    height: calc(100vh - 100px);
+    max-height: 600px;
     background: white;
     border-radius: 15px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
@@ -117,6 +140,18 @@ $user_name = $_SESSION['name'] ?? 'User';
     flex-direction: column;
     overflow: hidden;
     z-index: 99999;
+}
+
+@media (min-width: 768px) {
+    .chatbot-window {
+        position: absolute;
+        bottom: 80px;
+        right: 0;
+        left: auto;
+        width: 380px;
+        height: 600px;
+        max-height: 80vh;
+    }
 }
 
 .chatbot-window.active {
@@ -143,38 +178,68 @@ $user_name = $_SESSION['name'] ?? 'User';
 .chatbot-header {
     background: linear-gradient(135deg, #1d4e89 0%, #163c6a 100%);
     color: white;
-    padding: 20px;
+    padding: 15px;
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+@media (min-width: 768px) {
+    .chatbot-header {
+        padding: 20px;
+        flex-wrap: nowrap;
+    }
 }
 
 .chatbot-header-content h3 {
     margin: 0 0 5px 0;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 700;
+}
+
+@media (min-width: 768px) {
+    .chatbot-header-content h3 {
+        font-size: 18px;
+    }
 }
 
 .chatbot-subtitle {
     margin: 0;
-    font-size: 12px;
+    font-size: 11px;
     opacity: 0.9;
+}
+
+@media (min-width: 768px) {
+    .chatbot-subtitle {
+        font-size: 12px;
+    }
 }
 
 .chatbot-close {
     background: none;
     border: none;
     color: white;
-    font-size: 28px;
+    font-size: 24px;
     cursor: pointer;
     padding: 0;
-    width: 30px;
-    height: 30px;
+    width: 28px;
+    height: 28px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
     transition: background 0.2s;
+    flex-shrink: 0;
+}
+
+@media (min-width: 768px) {
+    .chatbot-close {
+        font-size: 28px;
+        width: 30px;
+        height: 30px;
+    }
 }
 
 .chatbot-close:hover {
@@ -184,8 +249,15 @@ $user_name = $_SESSION['name'] ?? 'User';
 .chatbot-messages {
     flex: 1;
     overflow-y: auto;
-    padding: 20px;
+    padding: 15px;
     background: #f8f9fa;
+    -webkit-overflow-scrolling: touch;
+}
+
+@media (min-width: 768px) {
+    .chatbot-messages {
+        padding: 20px;
+    }
 }
 
 .chatbot-message {
@@ -210,11 +282,20 @@ $user_name = $_SESSION['name'] ?? 'User';
 }
 
 .message-content {
-    max-width: 80%;
-    padding: 12px 16px;
+    max-width: 85%;
+    padding: 10px 14px;
     border-radius: 12px;
     line-height: 1.5;
-    font-size: 14px;
+    font-size: 13px;
+    word-wrap: break-word;
+}
+
+@media (min-width: 768px) {
+    .message-content {
+        max-width: 80%;
+        padding: 12px 16px;
+        font-size: 14px;
+    }
 }
 
 .bot-message .message-content {
@@ -244,24 +325,41 @@ $user_name = $_SESSION['name'] ?? 'User';
 }
 
 .chatbot-quick-topics {
-    padding: 15px 20px;
+    padding: 12px 15px;
     background: white;
     border-top: 1px solid #e0e0e0;
-    max-height: 120px;
+    max-height: 100px;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+@media (min-width: 768px) {
+    .chatbot-quick-topics {
+        padding: 15px 20px;
+        max-height: 120px;
+    }
 }
 
 .quick-topic {
     display: inline-block;
     background: #f0f7ff;
     color: #1d4e89;
-    padding: 6px 12px;
+    padding: 5px 10px;
     border-radius: 20px;
-    font-size: 12px;
-    margin: 5px 5px 5px 0;
+    font-size: 11px;
+    margin: 4px 4px 4px 0;
     cursor: pointer;
     transition: all 0.2s;
     border: 1px solid #d0e5ff;
+    white-space: nowrap;
+}
+
+@media (min-width: 768px) {
+    .quick-topic {
+        padding: 6px 12px;
+        font-size: 12px;
+        margin: 5px 5px 5px 0;
+    }
 }
 
 .quick-topic:hover {
@@ -272,20 +370,34 @@ $user_name = $_SESSION['name'] ?? 'User';
 
 .chatbot-input-area {
     display: flex;
-    padding: 15px;
+    padding: 12px;
     background: white;
     border-top: 1px solid #e0e0e0;
-    gap: 10px;
+    gap: 8px;
+}
+
+@media (min-width: 768px) {
+    .chatbot-input-area {
+        padding: 15px;
+        gap: 10px;
+    }
 }
 
 .chatbot-input {
     flex: 1;
-    padding: 12px 15px;
+    padding: 10px 12px;
     border: 2px solid #e0e0e0;
     border-radius: 25px;
     font-size: 14px;
     outline: none;
     transition: all 0.3s;
+    min-width: 0;
+}
+
+@media (min-width: 768px) {
+    .chatbot-input {
+        padding: 12px 15px;
+    }
 }
 
 .chatbot-input:focus {
@@ -294,8 +406,8 @@ $user_name = $_SESSION['name'] ?? 'User';
 }
 
 .chatbot-send {
-    width: 45px;
-    height: 45px;
+    width: 40px;
+    height: 40px;
     background: linear-gradient(135deg, #1d4e89 0%, #163c6a 100%);
     border: none;
     border-radius: 50%;
@@ -306,6 +418,14 @@ $user_name = $_SESSION['name'] ?? 'User';
     justify-content: center;
     transition: all 0.3s;
     box-shadow: 0 2px 10px rgba(29, 78, 137, 0.3);
+    flex-shrink: 0;
+}
+
+@media (min-width: 768px) {
+    .chatbot-send {
+        width: 45px;
+        height: 45px;
+    }
 }
 
 .chatbot-send:hover {
