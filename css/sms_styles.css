@@ -576,6 +576,7 @@ header .login-btn:hover {
   .hero {
     padding: 120px 60px;
     min-height: 85vh;
+    background: linear-gradient(135deg, #a8c8f0 0%, #b8a8d0 50%, #e8b8d0 100%) !important;
   }
   
   .hero-container {
@@ -644,6 +645,10 @@ header .login-btn:hover {
 }
 
 @media (max-width: 1023px) {
+  .hero {
+    background: linear-gradient(135deg, #a8c8f0 0%, #b8a8d0 50%, #e8b8d0 100%) !important;
+  }
+  
   .hero-container {
     grid-template-columns: 1fr;
     gap: 50px;
@@ -963,6 +968,7 @@ header .login-btn:hover {
   .hero {
     padding: 80px 60px 160px;
     min-height: 95vh;
+    background: linear-gradient(135deg, #a8c8f0 0%, #b8a8d0 50%, #e8b8d0 100%) !important;
   }
   
   .hero-content {
