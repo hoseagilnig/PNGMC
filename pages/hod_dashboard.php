@@ -129,14 +129,23 @@ $pending_applications = getPendingApplicationsForDepartment('hod', 'hod_review')
       if (dropdown.style.display === 'none' || dropdown.style.display === '') {
         dropdown.style.display = 'block';
         
-        // On mobile, position dropdown relative to viewport
+        // On mobile, position dropdown relative to viewport at bottom
         if (window.innerWidth <= 767 && trigger) {
-          const rect = trigger.getBoundingClientRect();
           dropdown.style.position = 'fixed';
           dropdown.style.right = '10px';
-          dropdown.style.top = (rect.bottom + 8) + 'px';
+          dropdown.style.bottom = '80px';
+          dropdown.style.top = 'auto';
           dropdown.style.left = 'auto';
+          dropdown.style.zIndex = '99999';
+          dropdown.style.maxHeight = (window.innerHeight - 100) + 'px';
+          dropdown.style.overflow = 'visible';
+        } else {
+          // Desktop: position normally
+          dropdown.style.position = 'absolute';
+          dropdown.style.top = '100%';
+          dropdown.style.right = '0';
           dropdown.style.bottom = 'auto';
+          dropdown.style.left = 'auto';
         }
       } else {
         dropdown.style.display = 'none';
