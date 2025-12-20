@@ -135,10 +135,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login - PNG Maritime College Students Portal</title>
+  
+  <!-- Cross-browser compatibility CSS -->
+  <link rel="stylesheet" href="../css/browser-compat.css">
   <link rel="stylesheet" href="../css/sms_styles.css">
   <link rel="stylesheet" href="../css/responsive.css">
+  
+  <!-- Polyfill for older browsers -->
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=default,es5,es6,es2015,es2016,es2017,Array.prototype.includes,Object.assign,Promise,fetch,Element.prototype.closest,Element.prototype.matches"></script>
   <style>
     body {
       background: linear-gradient(135deg, #1d4e89 0%, #163c6a 50%, #0f2a4a 100%);
