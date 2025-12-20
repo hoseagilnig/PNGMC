@@ -304,21 +304,40 @@ header .login-btn:hover {
   margin: 0 auto 50px;
   line-height: 1.85;
   text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35), 0 1px 6px rgba(0, 0, 0, 0.25);
-  animation: descriptionFadeIn 1.5s ease-out;
   font-weight: 400;
   letter-spacing: 0.4px;
   position: relative;
+  min-height: 80px;
 }
 
-@keyframes descriptionFadeIn {
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  100% {
+/* Typewriter cursor (pen/pencil effect) */
+.hero-description::after {
+  content: '|';
+  color: #ffd700;
+  font-weight: 300;
+  animation: cursorBlink 1s infinite;
+  margin-left: 3px;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.8), 0 0 20px rgba(255, 215, 0, 0.5);
+  display: inline-block;
+}
+
+.hero-description.typing-complete::after {
+  animation: none;
+  opacity: 0;
+}
+
+@keyframes cursorBlink {
+  0%, 50% {
     opacity: 1;
-    transform: translateY(0);
   }
+  51%, 100% {
+    opacity: 0.3;
+  }
+}
+
+/* Pen/pencil writing effect */
+.hero-description .typewriter-text {
+  display: inline;
 }
 
 .hero-description strong {
