@@ -606,6 +606,79 @@ header .login-btn:hover {
   }
 }
 
+@media (max-width: 1023px) {
+  .hero-container {
+    grid-template-columns: 1fr;
+    gap: 50px;
+    text-align: center;
+  }
+  
+  .hero-content {
+    text-align: center;
+  }
+  
+  .hero-description {
+    margin: 0 auto 40px;
+    max-width: 700px;
+  }
+  
+  .hero-cta {
+    align-items: center;
+  }
+  
+  .hero-main-cta {
+    max-width: 320px;
+  }
+  
+  .hero-secondary-actions {
+    align-items: center;
+  }
+  
+  .secondary-btn {
+    max-width: 320px;
+  }
+}
+
+@media (max-width: 767px) {
+  .hero {
+    padding: 60px 20px 80px;
+    min-height: auto;
+  }
+  
+  .hero-container {
+    gap: 40px;
+  }
+
+  .hero-title {
+    font-size: 2.2rem;
+    margin-bottom: 20px;
+  }
+
+  .hero-description {
+    font-size: 1rem;
+    margin-bottom: 30px;
+  }
+
+  .hero-main-cta {
+    padding: 16px 40px;
+    font-size: 1.05rem;
+    width: 100%;
+    max-width: 100%;
+  }
+  
+  .hero-secondary-actions {
+    gap: 12px;
+    width: 100%;
+  }
+  
+  .secondary-btn {
+    width: 100%;
+    max-width: 100%;
+    padding: 14px 24px;
+    font-size: 0.95rem;
+  }
+}
+
 .hero .cta-btn {
   padding: 16px 35px;
   font-size: 1.05rem;
