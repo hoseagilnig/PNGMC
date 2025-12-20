@@ -493,14 +493,14 @@ if ($conn) {
   </style>
 </head>
 <body>
-    <header style="overflow: visible !important; z-index: 1000; padding-right: 20px !important; gap: 10px !important;">
-        <div class="logo" style="flex-shrink: 1; min-width: 0; overflow: hidden;">
+    <header style="overflow: visible !important; z-index: 1000; padding-right: 20px !important; display: flex; justify-content: space-between; align-items: center;">
+        <div class="logo" style="flex-shrink: 0; order: 1;">
             <a href="student_service_dashboard.php" style="display: flex; align-items: center; text-decoration: none; color: inherit;">
                 <img src="../images/pnmc.png" alt="PNG Maritime College Logo" class="logo-img">
-                <span style="margin-left: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Student Services Dashboard</span>
+                <span style="margin-left: 10px; white-space: nowrap;">Student Services Dashboard</span>
             </a>
         </div>
-        <div class="user-info" style="position: relative; display: flex; align-items: center; gap: 10px; overflow: visible !important; z-index: 10000; flex-shrink: 0; margin-left: auto;">
+        <div class="user-info" style="position: relative; display: flex; align-items: center; gap: 10px; overflow: visible !important; z-index: 10000; flex-shrink: 0; order: 3; margin-left: auto;">
             <!-- Notification Indicators -->
             <?php if ($finance_transfer_count > 0 || $notification_count > 0): ?>
               <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
