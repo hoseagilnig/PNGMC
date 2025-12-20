@@ -177,15 +177,43 @@ if ($conn) {
     /* Ensure dropdown and logout button are always visible */
     header {
       overflow: visible !important;
+      padding-right: 20px !important;
+      gap: 10px !important;
     }
     
     .user-info {
       overflow: visible !important;
+      flex-shrink: 0 !important;
+      min-width: 0 !important;
+      margin-left: auto !important;
     }
     
+    /* Prevent notification bubbles from taking too much space */
+    .user-info > div:first-child {
+      flex-shrink: 0 !important;
+    }
+    
+    .notification-bubble {
+      flex-shrink: 0 !important;
+      width: 40px !important;
+      height: 40px !important;
+    }
+    
+    /* Ensure dropdown has space and doesn't overlap */
     .user-dropdown {
       overflow: visible !important;
       z-index: 99999 !important;
+      right: 0 !important;
+      left: auto !important;
+    }
+    
+    /* On smaller screens, position dropdown to the left if needed */
+    @media (max-width: 1200px) {
+      .user-dropdown {
+        right: auto !important;
+        left: 0 !important;
+        transform: translateX(-100%) !important;
+      }
     }
     
     .user-dropdown a[href*="logout"] {
@@ -196,6 +224,12 @@ if ($conn) {
       z-index: 100000 !important;
       min-height: 44px !important;
       padding: 14px 16px !important;
+    }
+    
+    /* Ensure menu toggle doesn't overlap */
+    .menu-toggle {
+      flex-shrink: 0 !important;
+      margin-left: 10px !important;
     }
     
     @keyframes fadeIn {
@@ -441,17 +475,17 @@ if ($conn) {
   </style>
 </head>
 <body>
-    <header style="overflow: visible !important; z-index: 1000;">
-        <div class="logo">
+    <header style="overflow: visible !important; z-index: 1000; padding-right: 20px !important; gap: 10px !important;">
+        <div class="logo" style="flex-shrink: 1; min-width: 0; overflow: hidden;">
             <a href="student_service_dashboard.php" style="display: flex; align-items: center; text-decoration: none; color: inherit;">
                 <img src="../images/pnmc.png" alt="PNG Maritime College Logo" class="logo-img">
-                <span style="margin-left: 10px;">Student Services Dashboard</span>
+                <span style="margin-left: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Student Services Dashboard</span>
             </a>
         </div>
-        <div class="user-info" style="position: relative; display: flex; align-items: center; gap: 15px; overflow: visible !important; z-index: 10000;">
+        <div class="user-info" style="position: relative; display: flex; align-items: center; gap: 10px; overflow: visible !important; z-index: 10000; flex-shrink: 0; margin-left: auto;">
             <!-- Notification Indicators -->
             <?php if ($finance_transfer_count > 0 || $notification_count > 0): ?>
-              <div style="display: flex; align-items: center; gap: 10px;">
+              <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
                 <?php if ($finance_transfer_count > 0): ?>
                   <a href="sas_received_data.php" class="notification-bubble finance-bubble" style="position: relative; display: flex; align-items: center; justify-content: center; width: 45px; height: 45px; background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%); border-radius: 50%; text-decoration: none; box-shadow: 0 4px 12px rgba(25, 118, 210, 0.4), 0 2px 4px rgba(0,0,0,0.2); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); animation: pulse-bubble 2s infinite;" onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='0 6px 20px rgba(25, 118, 210, 0.6), 0 2px 6px rgba(0,0,0,0.3)';" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(25, 118, 210, 0.4), 0 2px 4px rgba(0,0,0,0.2)';">
                     <span style="font-size: 1.5rem; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2));">💰</span>
@@ -468,7 +502,7 @@ if ($conn) {
             <?php endif; ?>
             
             <!-- User Profile Dropdown -->
-            <div style="position: relative; z-index: 10000; overflow: visible;">
+            <div style="position: relative; z-index: 10000; overflow: visible; flex-shrink: 0;">
                 <div class="user-dropdown-trigger" style="cursor: pointer; display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 5px; transition: background 0.2s;" onclick="toggleUserDropdown()" onmouseover="this.style.background='#e9ecef'" onmouseout="this.style.background='transparent'">
                     <span>👤</span>
                     <span>Logged in as <strong><?php echo htmlspecialchars($_SESSION['name']); ?></strong></span>
