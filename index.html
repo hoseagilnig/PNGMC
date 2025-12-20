@@ -708,6 +708,19 @@
           // Add typing-complete class to parent .hero-description element
           if (heroDescription) {
             heroDescription.classList.add('typing-complete');
+            // Force buttons and stats to show after typing completes
+            setTimeout(function() {
+              const buttons = document.querySelector('.hero-buttons');
+              const stats = document.querySelector('.hero-stats');
+              if (buttons) {
+                buttons.style.opacity = '1';
+                buttons.style.visibility = 'visible';
+              }
+              if (stats) {
+                stats.style.opacity = '1';
+                stats.style.visibility = 'visible';
+              }
+            }, 100);
           }
         }
       }
