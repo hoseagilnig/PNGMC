@@ -425,9 +425,20 @@ header .login-btn:hover {
 
 /* Show buttons immediately if typing is already complete */
 .hero-description.typing-complete ~ .hero-buttons {
-  opacity: 1;
-  visibility: visible;
+  opacity: 1 !important;
+  visibility: visible !important;
   animation: buttonsFadeIn 0.8s ease-out forwards;
+}
+
+/* Fallback: Show buttons after 5 seconds (in case JS fails) */
+@media (min-width: 1024px) {
+  .hero-buttons {
+    animation-delay: 5s;
+  }
+  
+  .hero-description.typing-complete ~ .hero-buttons {
+    animation-delay: 0s;
+  }
 }
 
 /* Desktop Button Layout Enhancements */
@@ -637,9 +648,21 @@ header .login-btn:hover {
 /* Show stats immediately if typing is already complete */
 .hero-description.typing-complete ~ .hero-buttons ~ .hero-stats,
 .hero-description.typing-complete ~ .hero-stats {
-  opacity: 1;
-  visibility: visible;
+  opacity: 1 !important;
+  visibility: visible !important;
   animation: statsFadeIn 0.8s ease-out 0.3s forwards;
+}
+
+/* Fallback: Show stats after 6 seconds (in case JS fails) */
+@media (min-width: 1024px) {
+  .hero-stats {
+    animation-delay: 6s;
+  }
+  
+  .hero-description.typing-complete ~ .hero-buttons ~ .hero-stats,
+  .hero-description.typing-complete ~ .hero-stats {
+    animation-delay: 0.3s;
+  }
 }
 
 /* Desktop Stats Enhancements */
