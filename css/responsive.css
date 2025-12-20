@@ -763,6 +763,7 @@ header .login-btn {
   box-sizing: border-box !important;
   overflow: visible !important;
   position: relative !important;
+  background: linear-gradient(135deg, #a8c8f0 0%, #b8a8d0 50%, #e8b8d0 100%) !important;
 }
 
 @media (min-width: 768px) {

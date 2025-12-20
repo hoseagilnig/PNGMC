@@ -116,7 +116,8 @@ header .login-btn:hover {
 .hero {
   position: relative;
   padding: 80px 40px;
-  background: linear-gradient(135deg, #a8c8f0 0%, #b8a8d0 50%, #e8b8d0 100%);
+  background: linear-gradient(135deg, #a8c8f0 0%, #b8a8d0 50%, #e8b8d0 100%) !important;
+  background-attachment: fixed;
   overflow: hidden;
   min-height: 90vh;
   display: flex;
@@ -683,6 +684,7 @@ header .login-btn:hover {
   .hero {
     padding: 60px 20px 80px;
     min-height: auto;
+    background: linear-gradient(135deg, #a8c8f0 0%, #b8a8d0 50%, #e8b8d0 100%) !important;
   }
   
   .hero-container {
