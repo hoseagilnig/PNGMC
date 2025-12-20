@@ -708,19 +708,26 @@
           // Add typing-complete class to parent .hero-description element
           if (heroDescription) {
             heroDescription.classList.add('typing-complete');
-            // Force buttons and stats to show after typing completes
+            
+            // Force buttons to show immediately after typing completes
             setTimeout(function() {
               const buttons = document.querySelector('.hero-buttons');
-              const stats = document.querySelector('.hero-stats');
               if (buttons) {
                 buttons.style.opacity = '1';
                 buttons.style.visibility = 'visible';
               }
+            }, 100);
+            
+            // Force stats to show AFTER pencil disappears (wait for pencil fade-out)
+            // Pencil disappears immediately, so wait a bit longer to ensure it's gone
+            setTimeout(function() {
+              const stats = document.querySelector('.hero-stats');
               if (stats) {
                 stats.style.opacity = '1';
                 stats.style.visibility = 'visible';
+                stats.style.animation = 'statsFadeIn 0.8s ease-out forwards';
               }
-            }, 100);
+            }, 600); // Wait 600ms after typing completes to ensure pencil is gone
           }
         }
       }

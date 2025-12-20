@@ -627,9 +627,9 @@ header .login-btn:hover {
   flex-wrap: wrap;
   opacity: 0;
   visibility: hidden;
-  animation: statsFadeIn 0.8s ease-out 1s forwards;
   position: relative;
   z-index: 5;
+  /* No initial animation - will be triggered by JavaScript after pencil disappears */
 }
 
 @keyframes statsFadeIn {
@@ -645,23 +645,21 @@ header .login-btn:hover {
   }
 }
 
-/* Show stats immediately if typing is already complete */
+/* Show stats only after typing is complete (pencil has disappeared) */
 .hero-description.typing-complete ~ .hero-buttons ~ .hero-stats,
 .hero-description.typing-complete ~ .hero-stats {
-  opacity: 1 !important;
-  visibility: visible !important;
-  animation: statsFadeIn 0.8s ease-out 0.3s forwards;
+  animation: statsFadeIn 0.8s ease-out forwards;
 }
 
 /* Fallback: Show stats after 6 seconds (in case JS fails) */
 @media (min-width: 1024px) {
   .hero-stats {
-    animation-delay: 6s;
+    animation: statsFadeIn 0.8s ease-out 6s forwards;
   }
   
   .hero-description.typing-complete ~ .hero-buttons ~ .hero-stats,
   .hero-description.typing-complete ~ .hero-stats {
-    animation-delay: 0.3s;
+    animation: statsFadeIn 0.8s ease-out forwards;
   }
 }
 
