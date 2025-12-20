@@ -684,8 +684,11 @@
     // Typewriter Effect for Hero Description
     function typeWriter(element, text, speed = 50) {
       let i = 0;
+      const heroDescription = document.querySelector('.hero-description');
       element.innerHTML = '';
-      element.classList.remove('typing-complete');
+      if (heroDescription) {
+        heroDescription.classList.remove('typing-complete');
+      }
       
       function type() {
         if (i < text.length) {
@@ -702,7 +705,10 @@
           }
           setTimeout(type, speed);
         } else {
-          element.classList.add('typing-complete');
+          // Add typing-complete class to parent .hero-description element
+          if (heroDescription) {
+            heroDescription.classList.add('typing-complete');
+          }
         }
       }
       
