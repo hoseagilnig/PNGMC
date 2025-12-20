@@ -354,6 +354,10 @@ if ($conn) {
       if (dropdown.style.display === 'none' || dropdown.style.display === '') {
         dropdown.style.display = 'block';
         
+        // Always ensure high z-index and visible overflow
+        dropdown.style.zIndex = '99999';
+        dropdown.style.overflow = 'visible';
+        
         // On mobile, position dropdown relative to viewport at bottom
         if (window.innerWidth <= 767 && trigger) {
           dropdown.style.position = 'fixed';
@@ -361,16 +365,25 @@ if ($conn) {
           dropdown.style.bottom = '80px';
           dropdown.style.top = 'auto';
           dropdown.style.left = 'auto';
-          dropdown.style.zIndex = '99999';
           dropdown.style.maxHeight = (window.innerHeight - 100) + 'px';
-          dropdown.style.overflow = 'visible';
         } else {
-          // Desktop: position normally
+          // Desktop: position absolutely but ensure it's visible
           dropdown.style.position = 'absolute';
           dropdown.style.top = '100%';
           dropdown.style.right = '0';
           dropdown.style.bottom = 'auto';
           dropdown.style.left = 'auto';
+          dropdown.style.marginTop = '8px';
+        }
+        
+        // Force logout button to be visible
+        const logoutLink = dropdown.querySelector('a[href*="logout"]');
+        if (logoutLink) {
+          logoutLink.style.display = 'block';
+          logoutLink.style.visibility = 'visible';
+          logoutLink.style.opacity = '1';
+          logoutLink.style.pointerEvents = 'auto';
+          logoutLink.style.zIndex = '100000';
         }
       } else {
         dropdown.style.display = 'none';
