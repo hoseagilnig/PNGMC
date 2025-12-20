@@ -229,6 +229,17 @@ header .login-btn:hover {
   animation: fadeIn 1.4s ease-out;
 }
 
+/* Desktop Description Enhancements */
+@media (min-width: 1024px) {
+  .hero-description {
+    font-size: 1.5rem;
+    max-width: 900px;
+    margin: 0 auto 60px;
+    line-height: 1.8;
+    letter-spacing: 0.3px;
+  }
+}
+
 .hero-buttons {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -238,10 +249,32 @@ header .login-btn:hover {
   animation: fadeIn 1.6s ease-out;
 }
 
-@media (min-width: 1200px) {
+/* Desktop Button Layout Enhancements */
+@media (min-width: 1024px) {
+  .hero-buttons {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    max-width: 900px;
+    margin: 0 auto 80px;
+  }
+  
+  .hero .cta-btn {
+    padding: 18px 40px;
+    font-size: 1.1rem;
+    border-radius: 60px;
+  }
+}
+
+@media (min-width: 1400px) {
   .hero-buttons {
     grid-template-columns: repeat(4, 1fr);
-    max-width: 1000px;
+    max-width: 1200px;
+    gap: 25px;
+  }
+  
+  .hero .cta-btn {
+    padding: 20px 35px;
+    font-size: 1.15rem;
   }
 }
 
@@ -330,6 +363,243 @@ header .login-btn:hover {
   flex-wrap: wrap;
   opacity: 1;
   animation: none;
+}
+
+/* Desktop Stats Enhancements */
+@media (min-width: 1024px) {
+  .hero-stats {
+    gap: 80px;
+    margin-top: 40px;
+  }
+  
+  .stat-item {
+    padding: 20px 40px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+    min-width: 180px;
+  }
+  
+  .stat-item:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  }
+  
+  .stat-number {
+    font-size: 3.5rem;
+    margin-bottom: 10px;
+  }
+  
+  .stat-label {
+    font-size: 1.1rem;
+    letter-spacing: 2px;
+  }
+}
+
+/* ============================================
+   DESKTOP ENHANCEMENTS (1024px and above)
+   ============================================ */
+
+@media (min-width: 1024px) {
+  /* Hero Section Desktop Enhancements */
+  .hero {
+    padding: 80px 60px 160px;
+    min-height: 95vh;
+  }
+  
+  .hero-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  
+  .hero-badge {
+    font-size: 1.1rem;
+    padding: 12px 30px;
+    margin-bottom: 30px;
+  }
+  
+  .hero-title {
+    font-size: 5.5rem;
+    margin: 40px 0 50px;
+    letter-spacing: -2px;
+    line-height: 1.1;
+  }
+  
+  .hero-description {
+    font-size: 1.6rem;
+    max-width: 950px;
+    margin: 0 auto 70px;
+    line-height: 1.9;
+    letter-spacing: 0.5px;
+  }
+  
+  .hero-buttons {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+    max-width: 1000px;
+    margin: 0 auto 90px;
+  }
+  
+  .hero .cta-btn {
+    padding: 20px 45px;
+    font-size: 1.15rem;
+    border-radius: 60px;
+  }
+  
+  /* Features Section Desktop */
+  .features {
+    padding: 120px 60px;
+  }
+  
+  .features-header {
+    margin-bottom: 80px;
+  }
+  
+  .section-title {
+    font-size: 3.5rem;
+    margin-bottom: 25px;
+  }
+  
+  .section-subtitle {
+    font-size: 1.3rem;
+    max-width: 700px;
+  }
+  
+  .features-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    max-width: 1400px;
+  }
+  
+  .feature-card {
+    padding: 50px 40px;
+    border-radius: 25px;
+  }
+  
+  .feature-icon {
+    font-size: 4.5rem;
+    margin-bottom: 25px;
+  }
+  
+  .feature-card h3 {
+    font-size: 1.7rem;
+    margin-bottom: 20px;
+  }
+  
+  .feature-card p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 25px;
+  }
+  
+  /* Quick Links Desktop */
+  .quick-links {
+    padding: 120px 60px;
+  }
+  
+  .links-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    max-width: 1400px;
+  }
+  
+  .quick-link-card {
+    padding: 50px 40px;
+    border-radius: 25px;
+  }
+  
+  .link-icon {
+    font-size: 4rem;
+    margin-bottom: 25px;
+  }
+  
+  .quick-link-card h3 {
+    font-size: 1.7rem;
+    margin-bottom: 15px;
+  }
+  
+  .quick-link-card p {
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+  }
+  
+  /* Slideshow Desktop */
+  .slideshow-section {
+    padding: 120px 60px;
+  }
+  
+  .slideshow-container {
+    max-width: 1200px;
+    border-radius: 25px;
+  }
+  
+  .slideshow-wrapper {
+    height: 500px;
+  }
+  
+  .slideshow-header {
+    margin-bottom: 60px;
+  }
+  
+  /* Footer Desktop */
+  footer {
+    padding: 40px 60px;
+    font-size: 1.1rem;
+  }
+}
+
+/* Large Desktop Enhancements (1400px and above) */
+@media (min-width: 1400px) {
+  .hero-title {
+    font-size: 6.5rem;
+    margin: 50px 0 60px;
+  }
+  
+  .hero-description {
+    font-size: 1.8rem;
+    max-width: 1100px;
+  }
+  
+  .hero-buttons {
+    grid-template-columns: repeat(4, 1fr);
+    max-width: 1400px;
+    gap: 30px;
+  }
+  
+  .hero .cta-btn {
+    padding: 22px 40px;
+    font-size: 1.2rem;
+  }
+  
+  .features-grid {
+    gap: 50px;
+    max-width: 1600px;
+  }
+  
+  .feature-card {
+    padding: 60px 50px;
+  }
+  
+  .links-grid {
+    gap: 50px;
+    max-width: 1600px;
+  }
+  
+  .quick-link-card {
+    padding: 60px 50px;
+  }
+  
+  .slideshow-container {
+    max-width: 1400px;
+  }
+  
+  .slideshow-wrapper {
+    height: 600px;
+  }
 }
 
 .stat-item {
