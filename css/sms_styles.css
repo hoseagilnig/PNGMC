@@ -552,6 +552,7 @@ header .login-btn:hover {
 }
 
 /* Show CTA immediately if typing is already complete */
+.hero-content:has(.hero-description.typing-complete) ~ .hero-cta,
 .hero-description.typing-complete ~ .hero-cta {
   opacity: 1 !important;
   visibility: visible !important;
