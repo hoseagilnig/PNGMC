@@ -403,14 +403,14 @@ if ($conn) {
   </style>
 </head>
 <body>
-    <header>
+    <header style="overflow: visible !important; z-index: 1000;">
         <div class="logo">
             <a href="student_service_dashboard.php" style="display: flex; align-items: center; text-decoration: none; color: inherit;">
                 <img src="../images/pnmc.png" alt="PNG Maritime College Logo" class="logo-img">
                 <span style="margin-left: 10px;">Student Services Dashboard</span>
             </a>
         </div>
-        <div class="user-info" style="position: relative; display: flex; align-items: center; gap: 15px;">
+        <div class="user-info" style="position: relative; display: flex; align-items: center; gap: 15px; overflow: visible !important; z-index: 10000;">
             <!-- Notification Indicators -->
             <?php if ($finance_transfer_count > 0 || $notification_count > 0): ?>
               <div style="display: flex; align-items: center; gap: 10px;">
@@ -430,18 +430,18 @@ if ($conn) {
             <?php endif; ?>
             
             <!-- User Profile Dropdown -->
-            <div style="position: relative;">
+            <div style="position: relative; z-index: 10000; overflow: visible;">
                 <div class="user-dropdown-trigger" style="cursor: pointer; display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 5px; transition: background 0.2s;" onclick="toggleUserDropdown()" onmouseover="this.style.background='#e9ecef'" onmouseout="this.style.background='transparent'">
                     <span>👤</span>
                     <span>Logged in as <strong><?php echo htmlspecialchars($_SESSION['name']); ?></strong></span>
                     <span style="font-size: 0.8rem;">▼</span>
                 </div>
-                <div id="userDropdown" class="user-dropdown" style="display: none; position: absolute; top: 100%; right: 0; margin-top: 8px; background: white; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); min-width: 180px; z-index: 1000;">
+                <div id="userDropdown" class="user-dropdown" style="display: none; position: absolute; top: 100%; right: 0; margin-top: 8px; background: white; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.25); min-width: 200px; z-index: 99999; overflow: visible;">
                     <div style="padding: 12px 16px; border-bottom: 1px solid #eee;">
                         <div style="font-weight: 600; color: #333;"><?php echo htmlspecialchars($_SESSION['name']); ?></div>
                         <div style="font-size: 0.85rem; color: #666; margin-top: 4px;"><?php echo ucfirst($_SESSION['role']); ?> User</div>
                     </div>
-                    <a href="logout.php" style="display: block; padding: 12px 16px; color: #dc3545; text-decoration: none; transition: background 0.2s;" onmouseover="this.style.background='#f8f9fa'" onmouseout="this.style.background='white'">
+                    <a href="logout.php" style="display: block; padding: 14px 16px; color: #dc3545; text-decoration: none; transition: background 0.2s; min-height: 44px; line-height: 1.4; position: relative; z-index: 1;" onmouseover="this.style.background='#f8f9fa'" onmouseout="this.style.background='white'">
                         🚪 Logout
                     </a>
                 </div>
