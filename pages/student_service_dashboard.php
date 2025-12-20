@@ -178,14 +178,27 @@ if ($conn) {
     header {
       overflow: visible !important;
       padding-right: 20px !important;
-      gap: 10px !important;
+      display: flex !important;
+      justify-content: space-between !important;
+      align-items: center !important;
     }
     
-    .user-info {
+    header .logo {
+      order: 1 !important;
+      flex-shrink: 0 !important;
+      margin-right: auto !important;
+    }
+    
+    header .user-info {
       overflow: visible !important;
       flex-shrink: 0 !important;
-      min-width: 0 !important;
+      order: 3 !important;
       margin-left: auto !important;
+    }
+    
+    header .menu-toggle {
+      order: 2 !important;
+      flex-shrink: 0 !important;
     }
     
     /* Prevent notification bubbles from taking too much space */
