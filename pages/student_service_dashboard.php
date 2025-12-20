@@ -173,6 +173,31 @@ if ($conn) {
     .user-dropdown {
       animation: fadeIn 0.2s ease-in;
     }
+    
+    /* Ensure dropdown and logout button are always visible */
+    header {
+      overflow: visible !important;
+    }
+    
+    .user-info {
+      overflow: visible !important;
+    }
+    
+    .user-dropdown {
+      overflow: visible !important;
+      z-index: 99999 !important;
+    }
+    
+    .user-dropdown a[href*="logout"] {
+      display: block !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+      pointer-events: auto !important;
+      z-index: 100000 !important;
+      min-height: 44px !important;
+      padding: 14px 16px !important;
+    }
+    
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(-10px); }
       to { opacity: 1; transform: translateY(0); }
