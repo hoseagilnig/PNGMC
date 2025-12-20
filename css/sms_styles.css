@@ -544,16 +544,25 @@ header .login-btn:hover {
 
 @media (min-width: 1400px) {
   .hero-title {
-    font-size: 6.5rem;
+    font-size: 5rem;
   }
   
   .hero-description {
-    font-size: 1.8rem;
+    font-size: 1.4rem;
   }
   
   .hero-main-cta {
-    padding: 26px 70px;
-    font-size: 1.4rem;
+    padding: 20px 50px;
+    font-size: 1.2rem;
+  }
+  
+  .hero-illustration {
+    min-height: 650px;
+  }
+  
+  .illustration-wrapper {
+    max-width: 750px;
+    height: 650px;
   }
 }
 
