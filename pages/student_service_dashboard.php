@@ -400,14 +400,32 @@ if ($conn) {
           dropdown.style.top = 'auto';
           dropdown.style.left = 'auto';
           dropdown.style.maxHeight = (window.innerHeight - 100) + 'px';
+          dropdown.style.transform = 'none';
         } else {
           // Desktop: position absolutely but ensure it's visible
-          dropdown.style.position = 'absolute';
-          dropdown.style.top = '100%';
-          dropdown.style.right = '0';
-          dropdown.style.bottom = 'auto';
-          dropdown.style.left = 'auto';
-          dropdown.style.marginTop = '8px';
+          // Check if there's enough space on the right, otherwise position to the left
+          const rect = trigger.getBoundingClientRect();
+          const dropdownWidth = 200; // min-width of dropdown
+          const spaceOnRight = window.innerWidth - rect.right;
+          
+          if (spaceOnRight < dropdownWidth) {
+            // Not enough space on right, position to the left
+            dropdown.style.position = 'absolute';
+            dropdown.style.top = '100%';
+            dropdown.style.right = 'auto';
+            dropdown.style.left = '0';
+            dropdown.style.transform = 'translateX(-100%)';
+            dropdown.style.marginTop = '8px';
+          } else {
+            // Enough space, position normally to the right
+            dropdown.style.position = 'absolute';
+            dropdown.style.top = '100%';
+            dropdown.style.right = '0';
+            dropdown.style.bottom = 'auto';
+            dropdown.style.left = 'auto';
+            dropdown.style.transform = 'none';
+            dropdown.style.marginTop = '8px';
+          }
         }
         
         // Force logout button to be visible
