@@ -681,6 +681,47 @@
   </footer>
 
   <script>
+    // Typewriter Effect for Hero Description
+    function typeWriter(element, text, speed = 50) {
+      let i = 0;
+      element.innerHTML = '';
+      element.classList.remove('typing-complete');
+      
+      function type() {
+        if (i < text.length) {
+          // Handle HTML tags (for <strong> tags)
+          if (text.substring(i, i + 8) === '<strong>') {
+            element.innerHTML += '<strong>';
+            i += 8;
+          } else if (text.substring(i, i + 9) === '</strong>') {
+            element.innerHTML += '</strong>';
+            i += 9;
+          } else {
+            element.innerHTML += text.charAt(i);
+            i++;
+          }
+          setTimeout(type, speed);
+        } else {
+          element.classList.add('typing-complete');
+        }
+      }
+      
+      type();
+    }
+    
+    // Initialize typewriter effect when page loads
+    window.addEventListener('DOMContentLoaded', function() {
+      const descriptionElement = document.querySelector('.hero-description .typewriter-text');
+      if (descriptionElement) {
+        const fullText = '<strong>Streamline</strong> admissions, <strong>enrollments</strong>, and <strong>student services</strong> with our comprehensive, secure platform designed specifically for <strong>PNG Maritime College</strong>.';
+        
+        // Start typing after a short delay
+        setTimeout(function() {
+          typeWriter(descriptionElement, fullText, 30);
+        }, 800);
+      }
+    });
+    
     let currentSlide = 0;
     const slides = document.querySelectorAll('.slide');
     const totalSlides = slides.length;
