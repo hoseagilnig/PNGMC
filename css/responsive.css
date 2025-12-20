@@ -962,8 +962,6 @@ header .login-btn {
 /* Hero Stats - 1000+ Students, 50+ Programs, 24/7 Support */
 .hero-stats {
   display: flex !important;
-  visibility: visible !important;
-  opacity: 1 !important;
   flex-wrap: wrap !important;
   justify-content: center !important;
   align-items: center !important;
@@ -973,19 +971,28 @@ header .login-btn {
   margin: 0 auto !important;
   padding: 20px 10px !important;
   box-sizing: border-box !important;
+  /* Initial state - hidden until typing completes */
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+/* Show stats when typing is complete or show-stats class is added */
+.hero-stats.show-stats,
+.hero-description.typing-complete ~ .hero-stats {
+  opacity: 1 !important;
+  visibility: visible !important;
 }
 
 .stat-item {
   display: flex !important;
   flex-direction: column !important;
-  visibility: visible !important;
-  opacity: 1 !important;
   align-items: center !important;
   justify-content: center !important;
   text-align: center !important;
   min-width: 80px !important;
   padding: 15px 20px !important;
   box-sizing: border-box !important;
+  /* Visibility controlled by parent .hero-stats */
 }
 
 .stat-number {
