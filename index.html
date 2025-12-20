@@ -706,12 +706,12 @@
           if (heroDescription) {
             heroDescription.classList.add('typing-complete');
             
-            // Force buttons to show immediately after typing completes
+            // Force CTA to show immediately after typing completes
             setTimeout(function() {
-              const buttons = document.querySelector('.hero-buttons');
-              if (buttons) {
-                buttons.style.opacity = '1';
-                buttons.style.visibility = 'visible';
+              const cta = document.querySelector('.hero-cta');
+              if (cta) {
+                cta.style.opacity = '1';
+                cta.style.visibility = 'visible';
               }
             }, 100);
             
