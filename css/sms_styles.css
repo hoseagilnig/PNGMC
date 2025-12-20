@@ -647,8 +647,11 @@ header .login-btn:hover {
 
 /* Show stats only after typing is complete (pencil has disappeared) */
 .hero-description.typing-complete ~ .hero-buttons ~ .hero-stats,
-.hero-description.typing-complete ~ .hero-stats {
-  animation: statsFadeIn 0.8s ease-out forwards;
+.hero-description.typing-complete ~ .hero-stats,
+.hero-stats.show-stats {
+  opacity: 1 !important;
+  visibility: visible !important;
+  animation: statsFadeIn 0.8s ease-out forwards !important;
 }
 
 /* Fallback: Show stats after 6 seconds (in case JS fails) */
@@ -658,8 +661,11 @@ header .login-btn:hover {
   }
   
   .hero-description.typing-complete ~ .hero-buttons ~ .hero-stats,
-  .hero-description.typing-complete ~ .hero-stats {
-    animation: statsFadeIn 0.8s ease-out forwards;
+  .hero-description.typing-complete ~ .hero-stats,
+  .hero-stats.show-stats {
+    opacity: 1 !important;
+    visibility: visible !important;
+    animation: statsFadeIn 0.8s ease-out forwards !important;
   }
 }
 

@@ -723,11 +723,19 @@
             setTimeout(function() {
               const stats = document.querySelector('.hero-stats');
               if (stats) {
+                // Add class to trigger CSS animation
+                stats.classList.add('show-stats');
+                // Force visibility with inline styles as backup
                 stats.style.opacity = '1';
                 stats.style.visibility = 'visible';
+                stats.style.display = 'flex';
                 stats.style.animation = 'statsFadeIn 0.8s ease-out forwards';
+                // Log for debugging
+                console.log('Stats should now be visible');
+              } else {
+                console.error('Stats element not found');
               }
-            }, 600); // Wait 600ms after typing completes to ensure pencil is gone
+            }, 800); // Wait 800ms after typing completes to ensure pencil is gone
           }
         }
       }
