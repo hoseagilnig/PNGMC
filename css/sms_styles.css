@@ -293,16 +293,17 @@ header .login-btn:hover {
 }
 
 .hero-description {
-  font-size: 1.3rem;
-  color: rgba(255, 255, 255, 0.98);
-  max-width: 750px;
-  margin: 0 auto 50px;
-  line-height: 1.85;
-  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35), 0 1px 6px rgba(0, 0, 0, 0.25);
+  font-size: 1.2rem;
+  color: rgba(107, 91, 149, 0.85);
+  max-width: 550px;
+  margin: 0 0 35px 0;
+  line-height: 1.7;
   font-weight: 400;
-  letter-spacing: 0.4px;
+  letter-spacing: 0.2px;
   position: relative;
-  min-height: 80px;
+  min-height: 50px;
+  z-index: 3;
+  animation: fadeInUp 1s ease-out 0.3s backwards;
 }
 
 /* Typewriter cursor (pencil icon effect) */
@@ -374,23 +375,6 @@ header .login-btn:hover {
   text-shadow: 0 0 25px rgba(255, 215, 0, 0.6), 0 4px 12px rgba(255, 215, 0, 0.4);
 }
 
-/* Desktop Description Enhancements */
-@media (min-width: 1024px) {
-  .hero-description {
-    font-size: 1.6rem;
-    max-width: 950px;
-    margin: 0 auto 70px;
-    line-height: 2;
-    letter-spacing: 0.6px;
-    font-weight: 300;
-  }
-  
-  .hero-description strong {
-    font-size: 1.08em;
-    letter-spacing: 0.8px;
-    font-weight: 600;
-  }
-}
 
 /* Hero CTA Section */
 .hero-cta {
@@ -507,38 +491,59 @@ header .login-btn:hover {
   }
 }
 
-/* Desktop CTA Enhancements */
+/* Desktop Enhancements */
 @media (min-width: 1024px) {
   .hero {
-    padding: 100px 40px 120px;
+    padding: 100px 60px;
     min-height: 95vh;
   }
   
+  .hero-container {
+    gap: 80px;
+  }
+  
   .hero-title {
-    font-size: 5.5rem;
-    margin-bottom: 40px;
-    letter-spacing: -2px;
+    font-size: 4.5rem;
+    margin-bottom: 30px;
   }
   
   .hero-description {
-    font-size: 1.6rem;
-    max-width: 800px;
-    margin: 0 auto 50px;
-    line-height: 1.7;
-    letter-spacing: 0.4px;
+    font-size: 1.3rem;
+    margin-bottom: 40px;
   }
   
   .hero-main-cta {
-    padding: 24px 60px;
-    font-size: 1.3rem;
+    padding: 18px 45px;
+    font-size: 1.15rem;
   }
   
-  .hero-secondary-actions {
-    gap: 35px;
+  .hero-illustration {
+    min-height: 600px;
   }
   
-  .secondary-link {
-    font-size: 1rem;
+  .illustration-wrapper {
+    max-width: 700px;
+    height: 600px;
+  }
+  
+  .illustration-character {
+    width: 350px;
+    height: 450px;
+  }
+  
+  .character-head {
+    width: 90px;
+    height: 90px;
+  }
+  
+  .character-body {
+    width: 140px;
+    height: 160px;
+  }
+  
+  .character-laptop {
+    width: 160px;
+    height: 100px;
   }
 }
 
