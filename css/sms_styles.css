@@ -130,20 +130,23 @@ header .login-btn:hover {
 }
 
 .hero-container {
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 60px;
+  display: flex;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
   width: 100%;
+  text-align: center;
 }
 
 .hero-content {
   position: relative;
   z-index: 2;
-  text-align: left;
+  text-align: center;
   animation: fadeInUp 0.5s ease-out;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 @keyframes fadeInUp {
@@ -295,8 +298,8 @@ header .login-btn:hover {
 .hero-description {
   font-size: 1.2rem;
   color: rgba(107, 91, 149, 0.85);
-  max-width: 550px;
-  margin: 0 0 35px 0;
+  max-width: 700px;
+  margin: 0 auto 35px;
   line-height: 1.7;
   font-weight: 400;
   letter-spacing: 0.2px;
@@ -495,11 +498,7 @@ header .login-btn:hover {
 @media (min-width: 1024px) {
   .hero {
     padding: 100px 60px;
-    min-height: 95vh;
-  }
-  
-  .hero-container {
-    gap: 80px;
+    min-height: 85vh;
   }
   
   .hero-title {
@@ -516,35 +515,6 @@ header .login-btn:hover {
     padding: 18px 45px;
     font-size: 1.15rem;
   }
-  
-  .hero-illustration {
-    min-height: 600px;
-  }
-  
-  .illustration-wrapper {
-    max-width: 700px;
-    height: 600px;
-  }
-  
-  .illustration-character {
-    width: 350px;
-    height: 450px;
-  }
-  
-  .character-head {
-    width: 90px;
-    height: 90px;
-  }
-  
-  .character-body {
-    width: 140px;
-    height: 160px;
-  }
-  
-  .character-laptop {
-    width: 160px;
-    height: 100px;
-  }
 }
 
 @media (min-width: 1400px) {
@@ -559,15 +529,6 @@ header .login-btn:hover {
   .hero-main-cta {
     padding: 20px 50px;
     font-size: 1.2rem;
-  }
-  
-  .hero-illustration {
-    min-height: 650px;
-  }
-  
-  .illustration-wrapper {
-    max-width: 750px;
-    height: 650px;
   }
 }
 
