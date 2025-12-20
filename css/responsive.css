@@ -770,6 +770,7 @@ header .login-btn {
   .hero {
     padding: 40px 40px 120px !important;
     min-height: 85vh !important;
+    background: linear-gradient(135deg, #a8c8f0 0%, #b8a8d0 50%, #e8b8d0 100%) !important;
   }
 }
 
@@ -777,6 +778,7 @@ header .login-btn {
   .hero {
     padding: 80px 60px 160px !important;
     min-height: 95vh !important;
+    background: linear-gradient(135deg, #a8c8f0 0%, #b8a8d0 50%, #e8b8d0 100%) !important;
   }
 }
 
