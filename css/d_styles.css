@@ -112,6 +112,40 @@ table {
   box-sizing: border-box !important;
 }
 
+/* Prevent any element from causing horizontal overflow */
+* {
+  max-width: 100% !important;
+}
+
+/* Allow tables to scroll horizontally but contain them */
+table, .data-table {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow-x: auto !important;
+  overflow-y: visible !important;
+}
+
+/* Ensure all dashboard elements respect viewport */
+.dashboard-wrap,
+.dashboard-wrap *,
+.content,
+.content *,
+.main-card,
+.main-card *,
+.side-card,
+.side-card * {
+  box-sizing: border-box !important;
+}
+
+/* Force no horizontal scroll on body and html */
+html, body {
+  overflow-x: hidden !important;
+  max-width: 100vw !important;
+  width: 100% !important;
+  position: relative !important;
+}
+
 /* Accessibility focus */
 a:focus, button:focus, input:focus{outline:3px solid rgba(29,78,137,0.12);outline-offset:2px}
 
