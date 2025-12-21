@@ -12,62 +12,50 @@ html {
 }
 
 body {
-  /* Dark sea blue background with bubbles for landing page only - animated color change */
-  background: linear-gradient(to bottom, 
-    #051a26 0%, 
-    #062533 15%, 
-    #073040 30%, 
-    #083b4d 45%, 
-    #0a4d68 60%, 
-    #0b5a7a 75%, 
-    #0d678c 90%, 
-    #0e749e 100%);
-  animation: colorShift 12s ease-in-out infinite;
-}
+  /* Professional sea blue background for landing page only */
+  background: linear-gradient(135deg, 
+    #0a1e2e 0%, 
+    #0d2538 20%, 
+    #102c42 40%, 
+    #13334c 60%, 
+    #163a56 80%, 
+    #1a4160 100%);
   background-image: 
-    /* Ocean depth layers */
-    radial-gradient(ellipse at top, rgba(10, 77, 104, 0.6) 0%, transparent 50%),
-    radial-gradient(ellipse at bottom, rgba(30, 156, 199, 0.4) 0%, transparent 60%),
-    /* Light rays from surface */
-    linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, transparent 30%),
-    linear-gradient(120deg, transparent 0%, rgba(255, 255, 255, 0.05) 50%, transparent 100%),
-    /* Large bubbles at various depths */
-    radial-gradient(circle at 15% 80%, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.1) 30%, transparent 60%),
-    radial-gradient(circle at 35% 70%, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.08) 25%, transparent 55%),
-    radial-gradient(circle at 55% 85%, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.09) 28%, transparent 58%),
-    radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.13) 0%, rgba(255, 255, 255, 0.08) 27%, transparent 57%),
-    radial-gradient(circle at 90% 65%, rgba(255, 255, 255, 0.11) 0%, rgba(255, 255, 255, 0.07) 26%, transparent 56%),
-    radial-gradient(circle at 25% 90%, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.1) 32%, transparent 62%),
-    radial-gradient(circle at 45% 95%, rgba(255, 255, 255, 0.13) 0%, rgba(255, 255, 255, 0.08) 29%, transparent 59%),
-    radial-gradient(circle at 65% 88%, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.09) 31%, transparent 61%),
-    radial-gradient(circle at 85% 82%, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.07) 28%, transparent 58%),
-    /* Medium bubbles */
-    radial-gradient(circle at 20% 60%, rgba(255, 255, 255, 0.1) 0%, transparent 40%),
-    radial-gradient(circle at 40% 55%, rgba(255, 255, 255, 0.09) 0%, transparent 38%),
-    radial-gradient(circle at 60% 50%, rgba(255, 255, 255, 0.11) 0%, transparent 42%),
-    radial-gradient(circle at 80% 58%, rgba(255, 255, 255, 0.1) 0%, transparent 40%),
-    radial-gradient(circle at 30% 45%, rgba(255, 255, 255, 0.08) 0%, transparent 36%),
-    radial-gradient(circle at 70% 48%, rgba(255, 255, 255, 0.09) 0%, transparent 39%),
-    /* Small bubbles */
-    radial-gradient(circle at 10% 40%, rgba(255, 255, 255, 0.08) 0%, transparent 30%),
-    radial-gradient(circle at 50% 35%, rgba(255, 255, 255, 0.07) 0%, transparent 28%),
-    radial-gradient(circle at 90% 42%, rgba(255, 255, 255, 0.08) 0%, transparent 32%);
+    /* Subtle geometric grid pattern */
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    /* Professional depth layers */
+    radial-gradient(ellipse 1200px 800px at 0% 0%, rgba(26, 65, 96, 0.3) 0%, transparent 50%),
+    radial-gradient(ellipse 1000px 700px at 100% 100%, rgba(19, 51, 76, 0.25) 0%, transparent 50%),
+    /* Subtle wave pattern */
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(255, 255, 255, 0.01) 2px,
+      rgba(255, 255, 255, 0.01) 4px
+    ),
+    /* Professional accent gradients */
+    linear-gradient(135deg, rgba(22, 58, 86, 0.4) 0%, transparent 50%),
+    linear-gradient(225deg, rgba(19, 51, 76, 0.3) 0%, transparent 50%);
   background-size: 
-    100% 100%, 100% 100%,
-    100% 100%, 100% 100%,
-    250px 250px, 220px 220px, 240px 240px, 230px 230px, 210px 210px,
-    260px 260px, 235px 235px, 245px 245px, 225px 225px,
-    120px 120px, 110px 110px, 130px 130px, 115px 115px, 105px 105px, 125px 125px,
-    60px 60px, 55px 55px, 65px 65px;
+    60px 60px,
+    60px 60px,
+    1200px 800px,
+    1000px 700px,
+    100% 40px,
+    100% 100%,
+    100% 100%;
   background-position: 
-    0% 0%, 0% 100%,
-    0% 0%, 0% 0%,
-    15% 80%, 35% 70%, 55% 85%, 75% 75%, 90% 65%,
-    25% 90%, 45% 95%, 65% 88%, 85% 82%,
-    20% 60%, 40% 55%, 60% 50%, 80% 58%, 30% 45%, 70% 48%,
-    10% 40%, 50% 35%, 90% 42%;
-  background-repeat: no-repeat;
+    0 0,
+    0 0,
+    0% 0%,
+    100% 100%,
+    0 0,
+    0% 0%,
+    100% 0%;
   background-attachment: fixed;
+  background-repeat: no-repeat;
   color: #333;
   min-height: 100vh;
   display: flex;
