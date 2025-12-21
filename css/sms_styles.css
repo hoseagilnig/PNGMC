@@ -1328,14 +1328,14 @@ header .login-btn:hover {
 }
 
 .hero .cta-btn.tertiary {
-  background: linear-gradient(135deg, #28a745 0%, #20c997 50%, #17a2b8 100%);
-  color: white;
+  background: linear-gradient(135deg, #ffd700 0%, #ffed4e 50%, #ffc107 100%);
+  color: #1a2d47;
   border: 2px solid rgba(255, 255, 255, 0.2);
 }
 
 .hero .cta-btn.tertiary:hover {
-  background: linear-gradient(135deg, #20c997 0%, #28a745 50%, #17a2b8 100%);
-  box-shadow: 0 8px 30px rgba(40, 167, 69, 0.5), 0 4px 15px rgba(32, 201, 151, 0.3);
+  background: linear-gradient(135deg, #ffed4e 0%, #ffd700 50%, #ffc107 100%);
+  box-shadow: 0 8px 30px rgba(255, 215, 0, 0.5), 0 4px 15px rgba(255, 237, 78, 0.3);
   border-color: rgba(255, 255, 255, 0.4);
 }
 
