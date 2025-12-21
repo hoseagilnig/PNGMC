@@ -365,15 +365,38 @@ header .login-btn:hover {
 
 .hero-badge {
   display: inline-block;
-  padding: 10px 25px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.35) 100%);
-  text-shadow: 0 3px 15px rgba(0, 0, 0, 0.6), 0 2px 8px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 255, 255, 0.3);
+  padding: 12px 28px;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.25) 0%, rgba(37, 99, 235, 0.2) 50%, rgba(29, 78, 216, 0.25) 100%);
+  text-shadow: 0 3px 15px rgba(0, 0, 0, 0.6), 0 2px 8px rgba(0, 0, 0, 0.5), 0 0 25px rgba(59, 130, 246, 0.5);
   backdrop-filter: blur(15px);
   border-radius: 50px;
   color: #ffffff;
   font-size: 0.95rem;
   font-weight: 700;
   margin: 0 0 25px 0;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: badgeGlow 3s ease-in-out infinite;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-badge:hover {
+  transform: translateY(-3px) scale(1.05);
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.35) 0%, rgba(37, 99, 235, 0.3) 50%, rgba(29, 78, 216, 0.35) 100%);
+  box-shadow: 0 8px 30px rgba(59, 130, 246, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  border-color: rgba(59, 130, 246, 0.5);
+}
+
+@keyframes badgeGlow {
+  0%, 100% {
+    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  }
+  50% {
+    box-shadow: 0 6px 25px rgba(59, 130, 246, 0.5), 0 0 30px rgba(59, 130, 246, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  }
+}
   border: 2px solid rgba(255, 255, 255, 0.5);
   animation: badgePulse 2s ease-in-out infinite, fadeIn 0.5s ease-out;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.4);
@@ -425,15 +448,35 @@ header .login-btn:hover {
 }
 
 .hero-title .title-line-1 {
-  color: #ffffff;
+  background: linear-gradient(135deg, #ffffff 0%, #e0e7ff 50%, #c7d2fe 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   display: block;
   text-shadow: 0 5px 25px rgba(0, 0, 0, 0.7), 0 3px 15px rgba(0, 0, 0, 0.5), 0 0 40px rgba(255, 255, 255, 0.4), 0 0 60px rgba(255, 255, 255, 0.2);
-  animation: slideInLeft 0.8s ease-out 0.2s backwards;
+  animation: slideInLeft 0.8s ease-out 0.2s backwards, titleShimmer 4s ease-in-out infinite 1s;
   position: relative;
-  transition: transform 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   font-weight: 900;
   letter-spacing: -1px;
   filter: brightness(1.1);
+}
+
+.hero-title .title-line-1:hover {
+  transform: translateX(5px);
+  background: linear-gradient(135deg, #ffffff 0%, #f0f4ff 50%, #e0e7ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@keyframes titleShimmer {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
 }
 
 .hero-title .title-line-1::after {
@@ -448,15 +491,36 @@ header .login-btn:hover {
 }
 
 .hero-title .title-line-2 {
-  color: #d4e4ff;
+  background: linear-gradient(135deg, #93c5fd 0%, #60a5fa 50%, #3b82f6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  background-size: 200% 200%;
   display: block;
   font-weight: 800;
-  text-shadow: 0 5px 20px rgba(212, 228, 255, 0.7), 0 3px 12px rgba(212, 228, 255, 0.6), 0 0 40px rgba(212, 228, 255, 0.5), 0 0 60px rgba(212, 228, 255, 0.3);
-  animation: slideInRight 0.8s ease-out 0.4s backwards;
+  text-shadow: 0 5px 20px rgba(147, 197, 253, 0.7), 0 3px 12px rgba(96, 165, 250, 0.6), 0 0 40px rgba(59, 130, 246, 0.5), 0 0 60px rgba(59, 130, 246, 0.3);
+  animation: slideInRight 0.8s ease-out 0.4s backwards, gradientFlow 5s ease-in-out infinite 1.2s;
   letter-spacing: -0.5px;
   position: relative;
-  transition: transform 0.3s ease, text-shadow 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   filter: brightness(1.15);
+}
+
+.hero-title .title-line-2:hover {
+  transform: translateX(-5px);
+  background: linear-gradient(135deg, #bfdbfe 0%, #93c5fd 50%, #60a5fa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@keyframes gradientFlow {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
 }
 
 .hero-title .title-line-2::before {
