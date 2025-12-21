@@ -12,17 +12,29 @@ html {
 }
 
 body {
-  /* Modern professional background - clean and sophisticated */
-  background: #0f172a;
+  /* Marine/ocean background - perfect for maritime college and seafarers theme */
+  background: linear-gradient(180deg, 
+    #0a4d68 0%,      /* Deep ocean blue */
+    #0d5f7f 15%,    /* Ocean blue */
+    #0e749e 30%,    /* Medium ocean blue */
+    #0f8bb8 50%,    /* Bright ocean blue */
+    #10a3d1 70%,    /* Light ocean blue */
+    #0d8bb8 85%,    /* Medium ocean teal */
+    #0a6b8a 100%    /* Deep ocean teal */
+  );
   background-image: 
-    /* Subtle radial gradients for depth */
-    radial-gradient(circle at 0% 0%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
-    radial-gradient(circle at 100% 0%, rgba(99, 102, 241, 0.12) 0%, transparent 50%),
-    radial-gradient(circle at 50% 100%, rgba(37, 99, 235, 0.1) 0%, transparent 50%),
-    /* Modern mesh gradient effect */
-    linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
-    linear-gradient(225deg, rgba(99, 102, 241, 0.08) 0%, transparent 50%);
+    /* Ocean wave patterns */
+    radial-gradient(ellipse 1200px 400px at 20% 30%, rgba(14, 165, 233, 0.2) 0%, transparent 60%),
+    radial-gradient(ellipse 1000px 350px at 80% 20%, rgba(20, 184, 166, 0.15) 0%, transparent 55%),
+    radial-gradient(ellipse 1100px 300px at 50% 70%, rgba(14, 165, 233, 0.18) 0%, transparent 58%),
+    radial-gradient(ellipse 900px 400px at 10% 80%, rgba(6, 182, 212, 0.12) 0%, transparent 52%),
+    radial-gradient(ellipse 1050px 350px at 90% 60%, rgba(20, 184, 166, 0.16) 0%, transparent 56%),
+    /* Ocean depth layers */
+    linear-gradient(180deg, rgba(14, 165, 233, 0.1) 0%, transparent 40%),
+    linear-gradient(90deg, transparent 0%, rgba(20, 184, 166, 0.08) 50%, transparent 100%);
   background-size: 
+    100% 100%,
+    100% 100%,
     100% 100%,
     100% 100%,
     100% 100%,
@@ -32,6 +44,8 @@ body {
     0% 0%,
     100% 0%,
     50% 100%,
+    0% 100%,
+    100% 100%,
     0% 0%,
     100% 100%;
   background-attachment: fixed;
@@ -43,7 +57,7 @@ body {
   overflow-x: hidden;
 }
 
-/* Modern dot grid pattern overlay */
+/* Ocean bubble pattern overlay - marine theme */
 body::before {
   content: '';
   position: fixed;
@@ -52,12 +66,25 @@ body::before {
   width: 100%;
   height: 100%;
   background-image: 
-    radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-  background-size: 40px 40px;
-  background-position: 0 0, 20px 20px;
+    radial-gradient(circle, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+    radial-gradient(circle, rgba(173, 216, 230, 0.06) 2px, transparent 2px);
+  background-size: 50px 50px, 80px 80px;
+  background-position: 0 0, 25px 25px;
   pointer-events: none;
   z-index: 0;
-  opacity: 0.4;
+  opacity: 0.5;
+  animation: oceanBubbles 20s ease-in-out infinite;
+}
+
+@keyframes oceanBubbles {
+  0%, 100% {
+    transform: translateY(0);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translateY(-20px);
+    opacity: 0.6;
+  }
 }
 
 /* Professional subtle pulse animation */
@@ -72,7 +99,7 @@ body::before {
   }
 }
 
-/* Professional light accent overlay */
+/* Ocean light rays overlay - marine depth effect */
 body::after {
   content: '';
   position: fixed;
@@ -81,11 +108,12 @@ body::after {
   width: 100%;
   height: 100%;
   background: 
-    linear-gradient(180deg, rgba(59, 130, 246, 0.08) 0%, transparent 40%),
-    linear-gradient(90deg, transparent 0%, rgba(99, 102, 241, 0.06) 50%, transparent 100%);
+    linear-gradient(180deg, rgba(14, 165, 233, 0.12) 0%, transparent 50%),
+    linear-gradient(90deg, transparent 0%, rgba(20, 184, 166, 0.08) 50%, transparent 100%),
+    radial-gradient(ellipse 800px 200px at 50% 0%, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
   pointer-events: none;
   z-index: 0;
-  opacity: 0.6;
+  opacity: 0.7;
 }
 
 /* Color changing animation - dark to darker to light */
