@@ -9,7 +9,7 @@ $user_role = $_SESSION['role'] ?? 'admin';
 $user_name = $_SESSION['name'] ?? 'User';
 ?>
 <div id="chatbot-container" class="chatbot-container">
-    <div id="chatbot-toggle" class="chatbot-toggle" style="cursor: pointer;">
+    <div id="chatbot-toggle" class="chatbot-toggle" style="cursor: pointer;" onclick="if(typeof window.toggleChatbot==='function'){window.toggleChatbot();}else{var w=document.getElementById('chatbot-window');if(w){w.style.display=w.style.display==='flex'?'none':'flex';w.style.visibility=w.style.display==='flex'?'visible':'hidden';w.classList.toggle('active');}}">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
         </svg>
@@ -22,7 +22,7 @@ $user_name = $_SESSION['name'] ?? 'User';
                 <h3>💬 System Help Assistant</h3>
                 <p class="chatbot-subtitle">Ask me anything about using the system</p>
             </div>
-            <button class="chatbot-close">×</button>
+            <button class="chatbot-close" onclick="if(typeof window.toggleChatbot==='function'){window.toggleChatbot();}else{var w=document.getElementById('chatbot-window');if(w){w.style.display='none';w.style.visibility='hidden';w.classList.remove('active');}}">×</button>
         </div>
         
         <div class="chatbot-messages" id="chatbot-messages">
@@ -162,7 +162,7 @@ $user_name = $_SESSION['name'] ?? 'User';
 }
 
 .chatbot-window {
-    position: fixed;
+    position: fixed !important;
     bottom: 70px;
     right: 10px;
     left: 10px;
@@ -173,11 +173,14 @@ $user_name = $_SESSION['name'] ?? 'User';
     background: white;
     border-radius: 15px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-    display: none;
+    display: none !important;
     flex-direction: column;
     overflow: hidden;
-    z-index: 99999;
+    z-index: 99999 !important;
     box-sizing: border-box;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
 @media (min-width: 480px) {
@@ -212,12 +215,16 @@ $user_name = $_SESSION['name'] ?? 'User';
 
 .chatbot-window.active {
     display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
     animation: slideUpChatbot 0.3s ease-out;
 }
 
 /* Ensure window is visible when active */
 #chatbot-window.active {
     display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
 }
 
 @keyframes slideUpChatbot {
@@ -806,52 +813,56 @@ function initQuickTopics() {
     });
 }
 
-// Toggle chatbot window - Make it globally accessible and define early
-window.toggleChatbot = function() {
-    const chatbotWindow = document.getElementById('chatbot-window');
-    
-    if (!chatbotWindow) {
-        console.error('Chatbot window element not found!');
-        return;
-    }
-    
-    const isActive = chatbotWindow.classList.contains('active') || chatbotWindow.style.display === 'flex';
-    
-    if (isActive) {
-        // Close chatbot
-        chatbotWindow.classList.remove('active');
-        chatbotWindow.style.display = 'none';
-        chatbotWindow.style.visibility = 'hidden';
-    } else {
-        // Open chatbot
-        chatbotWindow.classList.add('active');
-        chatbotWindow.style.display = 'flex';
-        chatbotWindow.style.visibility = 'visible';
-    }
-    
-    // Hide badge when opened
-    const badge = document.getElementById('chatbot-badge');
-    if (badge && chatbotWindow.classList.contains('active')) {
-        badge.style.display = 'none';
-    }
-}
-
-// Make sure function is available immediately
-if (typeof window.toggleChatbot === 'undefined') {
+// Toggle chatbot window - Define early and make globally accessible
+(function() {
+    // Define function immediately in IIFE to ensure it's available
     window.toggleChatbot = function() {
-        const w = document.getElementById('chatbot-window');
-        if (w) {
-            const isOpen = w.style.display === 'flex' || w.classList.contains('active');
-            if (isOpen) {
-                w.style.display = 'none';
-                w.classList.remove('active');
+        const chatbotWindow = document.getElementById('chatbot-window');
+        
+        if (!chatbotWindow) {
+            console.error('Chatbot window element not found!');
+            return false;
+        }
+        
+        // Check current state using computed styles
+        const computedStyle = window.getComputedStyle(chatbotWindow);
+        const currentDisplay = computedStyle.display;
+        const currentVisibility = computedStyle.visibility;
+        const hasActiveClass = chatbotWindow.classList.contains('active');
+        
+        // Determine if window is currently open
+        const isCurrentlyOpen = currentDisplay === 'flex' || hasActiveClass || currentVisibility === 'visible';
+        
+        if (isCurrentlyOpen) {
+            // Close chatbot
+            chatbotWindow.classList.remove('active');
+            chatbotWindow.style.display = 'none';
+            chatbotWindow.style.visibility = 'hidden';
+            chatbotWindow.style.opacity = '0';
+        } else {
+            // Open chatbot
+            chatbotWindow.classList.add('active');
+            chatbotWindow.style.display = 'flex';
+            chatbotWindow.style.visibility = 'visible';
+            chatbotWindow.style.opacity = '1';
+            chatbotWindow.style.zIndex = '99999';
+            chatbotWindow.style.position = 'fixed';
+        }
+        
+        // Hide badge when opened
+        const badge = document.getElementById('chatbot-badge');
+        if (badge) {
+            if (isCurrentlyOpen) {
+                // Show badge when closing (if needed)
             } else {
-                w.style.display = 'flex';
-                w.classList.add('active');
+                // Hide badge when opening
+                badge.style.display = 'none';
             }
         }
+        
+        return true;
     };
-}
+})();
 
 // Handle quick topic click - Make it globally accessible
 window.askQuickTopic = function(topic) {
