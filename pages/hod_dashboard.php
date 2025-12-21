@@ -149,25 +149,13 @@ $pending_applications = getPendingApplicationsForDepartment('hod', 'hod_review')
         } else {
           // Desktop: use fixed positioning to ensure it's above all content
           const rect = trigger.getBoundingClientRect();
-          const dropdownWidth = 180; // min-width of dropdown
-          const spaceOnRight = window.innerWidth - rect.right;
           
-          // Use fixed positioning to ensure dropdown is above all content
+          // Always position dropdown to the right of the trigger
           dropdown.style.position = 'fixed';
           dropdown.style.top = (rect.bottom + 8) + 'px';
-          
-          if (spaceOnRight < dropdownWidth) {
-            // Not enough space on right, position to the left
-            dropdown.style.right = 'auto';
-            dropdown.style.left = Math.max(10, rect.right - dropdownWidth) + 'px';
-            dropdown.style.transform = 'none';
-          } else {
-            // Enough space, position normally to the right
-            dropdown.style.right = (window.innerWidth - rect.right) + 'px';
-            dropdown.style.left = 'auto';
-            dropdown.style.transform = 'none';
-          }
-          
+          dropdown.style.left = rect.right + 'px';
+          dropdown.style.right = 'auto';
+          dropdown.style.transform = 'none';
           dropdown.style.bottom = 'auto';
           dropdown.style.marginTop = '0';
           dropdown.style.zIndex = '99999';
