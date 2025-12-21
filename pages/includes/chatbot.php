@@ -170,16 +170,17 @@ $user_name = $_SESSION['name'] ?? 'User';
     height: calc(100vh - 90px);
     max-height: 600px;
     min-height: 400px;
-    background: white;
+    background: white !important;
     border-radius: 15px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3) !important;
     display: none !important;
     flex-direction: column;
-    overflow: hidden;
-    z-index: 99999 !important;
+    overflow: hidden !important;
+    z-index: 999999 !important;
     box-sizing: border-box;
-    visibility: hidden;
-    opacity: 0;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none;
     transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
@@ -194,7 +195,7 @@ $user_name = $_SESSION['name'] ?? 'User';
 
 @media (min-width: 768px) {
     .chatbot-window {
-        position: absolute;
+        position: fixed !important;
         bottom: 80px;
         right: 0;
         left: auto;
@@ -217,6 +218,7 @@ $user_name = $_SESSION['name'] ?? 'User';
     display: flex !important;
     visibility: visible !important;
     opacity: 1 !important;
+    pointer-events: auto !important;
     animation: slideUpChatbot 0.3s ease-out;
 }
 
@@ -225,6 +227,8 @@ $user_name = $_SESSION['name'] ?? 'User';
     display: flex !important;
     visibility: visible !important;
     opacity: 1 !important;
+    pointer-events: auto !important;
+    z-index: 999999 !important;
 }
 
 @keyframes slideUpChatbot {
@@ -845,8 +849,15 @@ function initQuickTopics() {
             chatbotWindow.style.display = 'flex';
             chatbotWindow.style.visibility = 'visible';
             chatbotWindow.style.opacity = '1';
-            chatbotWindow.style.zIndex = '99999';
+            chatbotWindow.style.zIndex = '999999';
             chatbotWindow.style.position = 'fixed';
+            chatbotWindow.style.pointerEvents = 'auto';
+            // Force remove inline style that might hide it
+            chatbotWindow.style.removeProperty('display');
+            chatbotWindow.style.removeProperty('visibility');
+            chatbotWindow.style.removeProperty('opacity');
+            // Re-apply with !important equivalent
+            chatbotWindow.setAttribute('style', chatbotWindow.getAttribute('style') + '; display: flex !important; visibility: visible !important; opacity: 1 !important; pointer-events: auto !important; z-index: 999999 !important;');
         }
         
         // Hide badge when opened
