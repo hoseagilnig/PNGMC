@@ -203,12 +203,21 @@ if ($conn) {
       }
     }
     
-    // Close dropdown when clicking outside
+    // Close dropdown when clicking outside (but not on logout link)
     document.addEventListener('click', function(event) {
       const userInfo = document.querySelector('.user-info');
       const dropdown = document.getElementById('userDropdown');
-      if (userInfo && dropdown && !userInfo.contains(event.target)) {
-        dropdown.style.display = 'none';
+      const logoutLink = dropdown ? dropdown.querySelector('a[href*="logout"]') : null;
+      
+      // Don't close if clicking inside dropdown or on logout link
+      if (userInfo && dropdown) {
+        const clickedInside = userInfo.contains(event.target);
+        const clickedLogout = logoutLink && (event.target === logoutLink || logoutLink.contains(event.target));
+        
+        if (!clickedInside && !clickedLogout) {
+          dropdown.style.display = 'none';
+          dropdown.style.visibility = 'hidden';
+        }
       }
     });
   </script>
@@ -233,7 +242,7 @@ if ($conn) {
                     <div style="font-weight: 600; color: #333;"><?php echo htmlspecialchars($_SESSION['name']); ?></div>
                     <div style="font-size: 0.85rem; color: #666; margin-top: 4px;"><?php echo ucfirst($_SESSION['role']); ?> User</div>
                 </div>
-                <a href="logout.php" style="display: block; padding: 12px 16px; color: #dc3545; text-decoration: none; transition: background 0.2s;" onmouseover="this.style.background='#f8f9fa'" onmouseout="this.style.background='white'">
+                <a href="logout.php" id="logout-link" style="display: block !important; padding: 12px 16px; color: #dc3545; text-decoration: none !important; transition: background 0.2s; position: relative; z-index: 100000 !important; pointer-events: auto !important; cursor: pointer !important; background: white;" onmouseover="this.style.background='#f8f9fa'" onmouseout="this.style.background='white'" onclick="event.stopPropagation(); window.location.href='logout.php'; return false;">
                     🚪 Logout
                 </a>
             </div>
