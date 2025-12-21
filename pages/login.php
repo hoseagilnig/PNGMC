@@ -199,8 +199,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       border-radius: 20px;
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.2);
       padding: 25px 30px;
-      max-width: 420px;
+      max-width: 420px !important;
       width: 100%;
+      box-sizing: border-box;
       animation: slideUp 0.6s ease-out;
       position: relative;
       overflow: hidden;
@@ -486,17 +487,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     @media (max-width: 768px) {
       .login-container {
-        padding: 40px 30px;
+        padding: 25px 30px;
         border-radius: 15px;
+        max-width: 420px !important;
       }
 
       .login-container h2 {
-        font-size: 28px;
+        font-size: 22px;
       }
 
       .custom-modal {
         max-width: 95%;
         border-radius: 15px;
+      }
+    }
+    
+    @media (min-width: 769px) {
+      .login-container {
+        max-width: 420px !important;
+        width: 100%;
       }
     }
   </style>
