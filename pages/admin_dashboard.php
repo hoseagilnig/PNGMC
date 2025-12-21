@@ -266,7 +266,7 @@ if ($conn) {
                     <div style="font-weight: 600; color: #333;"><?php echo htmlspecialchars($_SESSION['name']); ?></div>
                     <div style="font-size: 0.85rem; color: #666; margin-top: 4px;"><?php echo ucfirst($_SESSION['role']); ?> User</div>
                 </div>
-                <a href="logout.php" id="logout-link" style="display: block !important; padding: 12px 16px; color: #dc3545; text-decoration: none !important; transition: background 0.2s; position: relative; z-index: 100000 !important; pointer-events: auto !important; cursor: pointer !important; background: white;" onmouseover="this.style.background='#f8f9fa'" onmouseout="this.style.background='white'" onclick="event.stopPropagation(); window.location.href='logout.php'; return false;">
+                <a href="logout.php" id="logout-link" style="display: block !important; padding: 12px 16px; color: #dc3545; text-decoration: none !important; transition: background 0.2s; position: relative; z-index: 100000 !important; pointer-events: auto !important; cursor: pointer !important; background: white;" onmouseover="this.style.background='#f8f9fa'" onmouseout="this.style.background='white'" onclick="event.stopPropagation(); event.stopImmediatePropagation(); window.location.href='logout.php'; return false;">
                     🚪 Logout
                 </a>
             </div>
