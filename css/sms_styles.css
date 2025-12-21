@@ -212,11 +212,6 @@ header .login-btn:hover {
   z-index: 0;
 }
 
-.hero-container {
-  position: relative;
-  z-index: 2;
-}
-
 @keyframes gradientShift {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
