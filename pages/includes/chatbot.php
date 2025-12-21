@@ -16,7 +16,7 @@ $user_name = $_SESSION['name'] ?? 'User';
         <span class="chatbot-badge" id="chatbot-badge" style="display: none;">1</span>
     </div>
     
-    <div id="chatbot-window" class="chatbot-window" style="display: none;">
+    <div id="chatbot-window" class="chatbot-window" style="display: none !important; visibility: hidden !important; opacity: 0 !important; pointer-events: none !important;">
         <div class="chatbot-header">
             <div class="chatbot-header-content">
                 <h3>💬 System Help Assistant</h3>
@@ -62,8 +62,13 @@ $user_name = $_SESSION['name'] ?? 'User';
     position: fixed;
     bottom: 15px;
     right: 15px;
-    z-index: 99999;
+    z-index: 999999 !important;
     font-family: Arial, sans-serif;
+    pointer-events: none;
+}
+
+.chatbot-container > * {
+    pointer-events: auto;
 }
 
 @media (min-width: 480px) {
@@ -315,13 +320,14 @@ $user_name = $_SESSION['name'] ?? 'User';
 
 .chatbot-messages {
     flex: 1;
-    overflow-y: auto;
-    overflow-x: hidden;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
     padding: 15px;
     background: #f8f9fa;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
     min-height: 0;
+    max-height: 100%;
 }
 
 @media (min-width: 480px) {
