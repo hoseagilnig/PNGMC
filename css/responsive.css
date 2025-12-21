@@ -763,8 +763,8 @@ header .login-btn {
   box-sizing: border-box !important;
   overflow: visible !important;
   position: relative !important;
-  /* Two-tone background: dark slate blue top (40%), bright royal blue bottom (60%) */
-  background: linear-gradient(to bottom, #2c3e50 0%, #2c3e50 40%, #2563eb 40%, #2563eb 100%) !important;
+  /* Sky blue gradient background */
+  background: linear-gradient(135deg, #87CEEB 0%, #6BB6FF 50%, #4A9EFF 100%) !important;
   background-image: 
     /* Vertical bands in top section */
     linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.03) 15%, transparent 30%),
@@ -801,8 +801,8 @@ header .login-btn {
   .hero {
     padding: 40px 40px 120px !important;
     min-height: 85vh !important;
-    /* Two-tone background: dark slate blue top (40%), bright royal blue bottom (60%) */
-    background: linear-gradient(to bottom, #2c3e50 0%, #2c3e50 40%, #2563eb 40%, #2563eb 100%) !important;
+    /* Sky blue gradient background */
+    background: linear-gradient(135deg, #87CEEB 0%, #6BB6FF 50%, #4A9EFF 100%) !important;
     background-image: 
       /* Vertical bands in top section */
       linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.03) 15%, transparent 30%),
@@ -840,8 +840,8 @@ header .login-btn {
   .hero {
     padding: 80px 60px 160px !important;
     min-height: 95vh !important;
-    /* Two-tone background: dark slate blue top (40%), bright royal blue bottom (60%) */
-    background: linear-gradient(to bottom, #2c3e50 0%, #2c3e50 40%, #2563eb 40%, #2563eb 100%) !important;
+    /* Sky blue gradient background */
+    background: linear-gradient(135deg, #87CEEB 0%, #6BB6FF 50%, #4A9EFF 100%) !important;
     background-image: 
       /* Vertical bands in top section */
       linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.03) 15%, transparent 30%),

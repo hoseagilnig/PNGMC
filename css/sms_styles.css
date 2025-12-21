@@ -12,40 +12,28 @@ html {
 }
 
 body {
-  /* Deep royal/navy blue background with subtle circles - landing page only */
-  background: #1e3a8a;
+  /* Sky blue background with subtle white clouds - landing page only */
+  background: linear-gradient(135deg, #87CEEB 0%, #6BB6FF 50%, #4A9EFF 100%);
   background-image: 
-    /* Subtle lighter blue circles scattered across background */
-    radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
-    radial-gradient(circle at 25% 35%, rgba(96, 165, 250, 0.12) 0%, transparent 45%),
-    radial-gradient(circle at 40% 15%, rgba(59, 130, 246, 0.14) 0%, transparent 48%),
-    radial-gradient(circle at 55% 45%, rgba(96, 165, 250, 0.13) 0%, transparent 47%),
-    radial-gradient(circle at 70% 25%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
-    radial-gradient(circle at 85% 40%, rgba(96, 165, 250, 0.11) 0%, transparent 44%),
-    radial-gradient(circle at 15% 60%, rgba(59, 130, 246, 0.14) 0%, transparent 49%),
-    radial-gradient(circle at 30% 75%, rgba(96, 165, 250, 0.12) 0%, transparent 46%),
-    radial-gradient(circle at 45% 65%, rgba(59, 130, 246, 0.13) 0%, transparent 48%),
-    radial-gradient(circle at 60% 80%, rgba(96, 165, 250, 0.15) 0%, transparent 51%),
-    radial-gradient(circle at 75% 70%, rgba(59, 130, 246, 0.12) 0%, transparent 47%),
-    radial-gradient(circle at 90% 85%, rgba(96, 165, 250, 0.14) 0%, transparent 50%),
-    radial-gradient(circle at 5% 50%, rgba(59, 130, 246, 0.13) 0%, transparent 48%),
-    radial-gradient(circle at 20% 90%, rgba(96, 165, 250, 0.11) 0%, transparent 45%),
-    radial-gradient(circle at 35% 55%, rgba(59, 130, 246, 0.15) 0%, transparent 52%),
-    radial-gradient(circle at 50% 30%, rgba(96, 165, 250, 0.12) 0%, transparent 46%),
-    radial-gradient(circle at 65% 50%, rgba(59, 130, 246, 0.14) 0%, transparent 49%),
-    radial-gradient(circle at 80% 65%, rgba(96, 165, 250, 0.13) 0%, transparent 48%),
-    radial-gradient(circle at 95% 15%, rgba(59, 130, 246, 0.12) 0%, transparent 47%),
-    radial-gradient(circle at 12% 80%, rgba(96, 165, 250, 0.14) 0%, transparent 50%);
+    /* Subtle white cloud-like circles */
+    radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 25% 35%, rgba(255, 255, 255, 0.12) 0%, transparent 45%),
+    radial-gradient(circle at 40% 15%, rgba(255, 255, 255, 0.14) 0%, transparent 48%),
+    radial-gradient(circle at 55% 45%, rgba(255, 255, 255, 0.13) 0%, transparent 47%),
+    radial-gradient(circle at 70% 25%, rgba(255, 255, 255, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 85% 40%, rgba(255, 255, 255, 0.11) 0%, transparent 44%),
+    radial-gradient(circle at 15% 60%, rgba(255, 255, 255, 0.14) 0%, transparent 49%),
+    radial-gradient(circle at 30% 75%, rgba(255, 255, 255, 0.12) 0%, transparent 46%),
+    radial-gradient(circle at 45% 65%, rgba(255, 255, 255, 0.13) 0%, transparent 48%),
+    radial-gradient(circle at 60% 80%, rgba(255, 255, 255, 0.15) 0%, transparent 51%),
+    radial-gradient(circle at 75% 70%, rgba(255, 255, 255, 0.12) 0%, transparent 47%),
+    radial-gradient(circle at 90% 85%, rgba(255, 255, 255, 0.14) 0%, transparent 50%);
   background-size: 
     180px 180px, 200px 200px, 160px 160px, 190px 190px, 170px 170px, 210px 210px,
-    185px 185px, 195px 195px, 175px 175px, 205px 205px, 165px 165px, 195px 195px,
-    180px 180px, 200px 200px, 190px 190px, 170px 170px, 185px 185px, 195px 195px,
-    160px 160px, 180px 180px;
+    185px 185px, 195px 195px, 175px 175px, 205px 205px, 165px 165px, 195px 195px;
   background-position: 
     10% 20%, 25% 35%, 40% 15%, 55% 45%, 70% 25%, 85% 40%,
-    15% 60%, 30% 75%, 45% 65%, 60% 80%, 75% 70%, 90% 85%,
-    5% 50%, 20% 90%, 35% 55%, 50% 30%, 65% 50%, 80% 65%,
-    95% 15%, 12% 80%;
+    15% 60%, 30% 75%, 45% 65%, 60% 80%, 75% 70%, 90% 85%;
   background-attachment: fixed;
   background-repeat: no-repeat;
   color: #333;
@@ -56,7 +44,7 @@ body {
   position: relative;
 }
 
-/* Additional subtle circles overlay for more texture */
+/* Additional subtle white cloud overlay for more texture */
 body::before {
   content: '';
   position: fixed;
@@ -65,14 +53,14 @@ body::before {
   width: 100%;
   height: 100%;
   background-image: 
-    radial-gradient(circle at 18% 28%, rgba(96, 165, 250, 0.1) 0%, transparent 40%),
-    radial-gradient(circle at 38% 42%, rgba(59, 130, 246, 0.09) 0%, transparent 38%),
-    radial-gradient(circle at 58% 32%, rgba(96, 165, 250, 0.11) 0%, transparent 42%),
-    radial-gradient(circle at 78% 48%, rgba(59, 130, 246, 0.1) 0%, transparent 41%),
-    radial-gradient(circle at 22% 68%, rgba(96, 165, 250, 0.09) 0%, transparent 39%),
-    radial-gradient(circle at 42% 82%, rgba(59, 130, 246, 0.11) 0%, transparent 43%),
-    radial-gradient(circle at 62% 72%, rgba(96, 165, 250, 0.1) 0%, transparent 40%),
-    radial-gradient(circle at 82% 88%, rgba(59, 130, 246, 0.09) 0%, transparent 38%);
+    radial-gradient(circle at 18% 28%, rgba(255, 255, 255, 0.1) 0%, transparent 40%),
+    radial-gradient(circle at 38% 42%, rgba(255, 255, 255, 0.09) 0%, transparent 38%),
+    radial-gradient(circle at 58% 32%, rgba(255, 255, 255, 0.11) 0%, transparent 42%),
+    radial-gradient(circle at 78% 48%, rgba(255, 255, 255, 0.1) 0%, transparent 41%),
+    radial-gradient(circle at 22% 68%, rgba(255, 255, 255, 0.09) 0%, transparent 39%),
+    radial-gradient(circle at 42% 82%, rgba(255, 255, 255, 0.11) 0%, transparent 43%),
+    radial-gradient(circle at 62% 72%, rgba(255, 255, 255, 0.1) 0%, transparent 40%),
+    radial-gradient(circle at 82% 88%, rgba(255, 255, 255, 0.09) 0%, transparent 38%);
   background-size: 
     150px 150px, 140px 140px, 160px 160px, 145px 145px,
     155px 155px, 150px 150px, 145px 145px, 160px 160px;
@@ -222,7 +210,7 @@ header .logo {
 }
 
 header .logo span {
-  background: linear-gradient(135deg, #1d4e89 0%, #2563eb 50%, #1e40af 100%);
+  background: linear-gradient(135deg, #1e90ff 0%, #4A9EFF 50%, #6BB6FF 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -237,7 +225,7 @@ header .logo:hover {
 }
 
 header .logo:hover span {
-  background: linear-gradient(135deg, #2563eb 0%, #1e40af 50%, #1d4e89 100%);
+  background: linear-gradient(135deg, #4A9EFF 0%, #6BB6FF 50%, #1e90ff 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -256,9 +244,9 @@ header .logo:hover .logo-img {
 header .login-btn {
   text-decoration: none;
   padding: 12px 28px;
-  border: 2px solid #1d4e89;
+  border: 2px solid #1e90ff;
   border-radius: 50px;
-  color: #1d4e89;
+  color: #1e90ff;
   font-weight: 600;
   font-size: 1rem;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -274,7 +262,7 @@ header .login-btn::before {
   width: 0;
   height: 0;
   border-radius: 50%;
-  background: #1d4e89;
+  background: #1e90ff;
   transform: translate(-50%, -50%);
   transition: width 0.5s, height 0.5s;
   z-index: -1;
@@ -366,9 +354,10 @@ header .login-btn:hover {
 .hero-badge {
   display: inline-block;
   padding: 12px 28px;
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.25) 0%, rgba(37, 99, 235, 0.2) 50%, rgba(29, 78, 216, 0.25) 100%);
-  text-shadow: 0 3px 15px rgba(0, 0, 0, 0.6), 0 2px 8px rgba(0, 0, 0, 0.5), 0 0 25px rgba(59, 130, 246, 0.5);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.9) 100%);
+  text-shadow: 0 2px 8px rgba(30, 144, 255, 0.3);
   backdrop-filter: blur(15px);
+  color: #1e90ff;
   border-radius: 50px;
   color: #ffffff;
   font-size: 0.95rem;
@@ -448,11 +437,12 @@ header .login-btn:hover {
 }
 
 .hero-title .title-line-1 {
-  background: linear-gradient(135deg, #ffffff 0%, #e0e7ff 50%, #c7d2fe 100%);
+  background: linear-gradient(135deg, #ffffff 0%, #f0f8ff 50%, #e0f2ff 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   display: block;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   text-shadow: 0 5px 25px rgba(0, 0, 0, 0.7), 0 3px 15px rgba(0, 0, 0, 0.5), 0 0 40px rgba(255, 255, 255, 0.4), 0 0 60px rgba(255, 255, 255, 0.2);
   animation: slideInLeft 0.8s ease-out 0.2s backwards, titleShimmer 4s ease-in-out infinite 1s;
   position: relative;
@@ -653,9 +643,9 @@ header .login-btn:hover {
 
 .hero-description {
   font-size: 1.2rem;
-  color: #e0e7ff;
+  color: #ffffff;
   max-width: 100%;
-  text-shadow: 0 3px 20px rgba(0, 0, 0, 0.6), 0 2px 12px rgba(0, 0, 0, 0.5), 0 0 30px rgba(224, 231, 255, 0.4), 0 0 50px rgba(147, 197, 253, 0.3);
+  text-shadow: 0 3px 20px rgba(0, 0, 0, 0.4), 0 2px 12px rgba(0, 0, 0, 0.3), 0 0 30px rgba(255, 255, 255, 0.3);
   font-weight: 500;
   margin: 0 0 40px 0;
   line-height: 1.8;
@@ -875,13 +865,13 @@ header .login-btn:hover {
   animation: buttonSlideInScale 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
   font-size: 1.15rem;
   font-weight: 600;
-  color: white;
-  background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+  color: #1a1a1a;
+  background: linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FFD700 100%);
   border: none;
   border-radius: 10px;
   cursor: pointer;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.35), 0 3px 10px rgba(30, 64, 175, 0.25);
+  box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4), 0 3px 10px rgba(255, 165, 0, 0.3);
   position: relative;
   overflow: hidden;
   letter-spacing: 0.3px;
@@ -957,8 +947,8 @@ header .login-btn:hover {
 
 .hero-main-cta:hover {
   transform: translateY(-3px) scale(1.01);
-  box-shadow: 0 12px 32px rgba(37, 99, 235, 0.5), 0 6px 16px rgba(30, 64, 175, 0.35);
-  background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
+  box-shadow: 0 12px 32px rgba(255, 215, 0, 0.5), 0 6px 16px rgba(255, 165, 0, 0.4);
+  background: linear-gradient(135deg, #FFA500 0%, #FFD700 50%, #FFA500 100%);
 }
 
 .hero-main-cta:hover .btn-text {
@@ -1005,13 +995,13 @@ header .login-btn:hover {
   animation: secondaryButtonSlideIn 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
   font-size: 0.95rem;
   font-weight: 500;
-  color: #1a3a5c;
+  color: #1e90ff;
   background: rgba(255, 255, 255, 0.95);
-  border: 1.5px solid rgba(139, 179, 232, 0.25);
+  border: 1.5px solid rgba(30, 144, 255, 0.3);
   border-radius: 10px;
   text-decoration: none;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15), 0 1px 4px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 3px 10px rgba(30, 144, 255, 0.2), 0 1px 4px rgba(30, 144, 255, 0.1);
   position: relative;
   overflow: hidden;
   width: 100%;
@@ -1087,10 +1077,10 @@ header .login-btn:hover {
 }
 
 .secondary-btn:hover {
-  color: #1a3a5c;
+  color: #1e90ff;
   background: rgba(255, 255, 255, 1);
-  border-color: rgba(139, 179, 232, 0.5);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25), 0 3px 8px rgba(0, 0, 0, 0.15);
+  border-color: rgba(30, 144, 255, 0.6);
+  box-shadow: 0 6px 18px rgba(30, 144, 255, 0.3), 0 3px 8px rgba(30, 144, 255, 0.2);
   transform: translateY(-2px) translateX(4px) scale(1.01);
 }
 
@@ -1948,7 +1938,7 @@ header .login-btn:hover {
 /* Slideshow Section Wrapper */
 .slideshow-section {
   padding: 80px 20px;
-  background: linear-gradient(to bottom, #f8f9fa 0%, #ffffff 100%);
+  background: linear-gradient(to bottom, #ffffff 0%, #f0f8ff 100%);
 }
 
 .slideshow-header {
@@ -1985,7 +1975,7 @@ header .login-btn:hover {
 .section-title {
   font-size: 2.8rem;
   font-weight: 800;
-  color: #1d4e89;
+  color: #1e90ff;
   margin-bottom: 15px;
   position: relative;
   display: block;
@@ -2030,9 +2020,9 @@ header .login-btn:hover {
   padding: 40px 30px;
   border-radius: 20px;
   text-align: center;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 5px 20px rgba(30, 144, 255, 0.1);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  border: 1px solid rgba(29, 78, 137, 0.1);
+  border: 1px solid rgba(30, 144, 255, 0.2);
   position: relative;
   overflow: hidden;
 }
@@ -2044,7 +2034,7 @@ header .login-btn:hover {
   left: 0;
   width: 100%;
   height: 4px;
-  background: linear-gradient(90deg, #1d4e89, #667eea);
+  background: linear-gradient(90deg, #1e90ff, #FFD700);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.4s ease;
@@ -2056,9 +2046,9 @@ header .login-btn:hover {
 
 .feature-card:hover {
   transform: translateY(-15px) scale(1.02);
-  box-shadow: 0 20px 50px rgba(29, 78, 137, 0.2), 0 10px 25px rgba(0, 0, 0, 0.1);
-  border-color: rgba(29, 78, 137, 0.3);
-  background: linear-gradient(135deg, #ffffff 0%, #f0f4f8 100%);
+  box-shadow: 0 20px 50px rgba(30, 144, 255, 0.25), 0 10px 25px rgba(30, 144, 255, 0.15);
+  border-color: rgba(30, 144, 255, 0.4);
+  background: linear-gradient(135deg, #ffffff 0%, #f0f8ff 100%);
 }
 
 .feature-icon {
@@ -2090,7 +2080,7 @@ header .login-btn:hover {
 }
 
 .feature-card h3 {
-  color: #1d4e89;
+  color: #1e90ff;
   margin-bottom: 15px;
   font-size: 1.5rem;
   font-weight: 700;
@@ -2104,7 +2094,7 @@ header .login-btn:hover {
 }
 
 .feature-link {
-  color: #1d4e89;
+  color: #1e90ff;
   font-weight: 600;
   font-size: 0.95rem;
   opacity: 0;
@@ -2120,8 +2110,8 @@ header .login-btn:hover {
 /* Quick Links Section */
 .quick-links {
   padding: 100px 20px;
-  background: linear-gradient(135deg, #1d4e89 0%, #0f4c75 100%);
-  color: white;
+  background: linear-gradient(135deg, #ffffff 0%, #f0f8ff 100%);
+  color: #333;
   position: relative;
   overflow: hidden;
 }
@@ -2150,13 +2140,13 @@ header .login-btn:hover {
 }
 
 .quick-links .section-title {
-  color: white;
+  color: #1e90ff;
   text-align: center;
   margin-bottom: 50px;
 }
 
 .quick-links .section-title::after {
-  background: linear-gradient(90deg, #ffd700, #ffed4e);
+  background: linear-gradient(90deg, #FFD700, #FFA500);
 }
 
 .links-grid {
@@ -2166,16 +2156,17 @@ header .login-btn:hover {
 }
 
 .quick-link-card {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
   padding: 40px 30px;
   border-radius: 20px;
   text-align: center;
   text-decoration: none;
-  color: white;
-  border: 2px solid rgba(255, 255, 255, 0.2);
+  color: #1e90ff;
+  border: 2px solid rgba(30, 144, 255, 0.2);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
+  box-shadow: 0 5px 20px rgba(30, 144, 255, 0.1);
   overflow: hidden;
   display: block;
 }
@@ -2197,9 +2188,9 @@ header .login-btn:hover {
 
 .quick-link-card:hover {
   transform: translateY(-15px) scale(1.03);
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.15) 100%);
-  border-color: rgba(255, 255, 255, 0.6);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), 0 10px 25px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(240, 248, 255, 1) 100%);
+  border-color: rgba(30, 144, 255, 0.5);
+  box-shadow: 0 20px 50px rgba(30, 144, 255, 0.3), 0 10px 25px rgba(30, 144, 255, 0.2);
 }
 
 .link-icon {
@@ -2235,7 +2226,7 @@ header .login-btn:hover {
 }
 
 .quick-link-card p {
-  color: rgba(255, 255, 255, 0.9);
+  color: #666;
   margin-bottom: 15px;
   font-size: 1rem;
   transition: all 0.3s ease;
@@ -2243,7 +2234,7 @@ header .login-btn:hover {
 }
 
 .quick-link-card:hover p {
-  color: rgba(255, 255, 255, 1);
+  color: #333;
 }
 
 .link-arrow {
@@ -2268,8 +2259,8 @@ header .login-btn:hover {
 footer {
   text-align: center;
   padding: 40px 20px;
-  background: linear-gradient(135deg, #1d4e89 0%, #0f4c75 100%);
-  color: rgba(255, 255, 255, 0.9);
+  background: linear-gradient(135deg, #1e90ff 0%, #4A9EFF 50%, #6BB6FF 100%);
+  color: rgba(255, 255, 255, 0.95);
   margin-top: auto;
   position: relative;
   overflow: hidden;
