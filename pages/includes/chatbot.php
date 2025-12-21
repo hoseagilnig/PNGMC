@@ -9,20 +9,20 @@ $user_role = $_SESSION['role'] ?? 'admin';
 $user_name = $_SESSION['name'] ?? 'User';
 ?>
 <div id="chatbot-container" class="chatbot-container">
-    <div id="chatbot-toggle" class="chatbot-toggle" style="cursor: pointer;" onclick="if(typeof window.toggleChatbot==='function'){window.toggleChatbot();}else{var w=document.getElementById('chatbot-window');if(w){w.classList.toggle('active');w.style.display=w.classList.contains('active')?'flex':'none';}}">
+    <div id="chatbot-toggle" class="chatbot-toggle" style="cursor: pointer;">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
         </svg>
         <span class="chatbot-badge" id="chatbot-badge" style="display: none;">1</span>
     </div>
     
-    <div id="chatbot-window" class="chatbot-window">
+    <div id="chatbot-window" class="chatbot-window" style="display: none;">
         <div class="chatbot-header">
             <div class="chatbot-header-content">
                 <h3>💬 System Help Assistant</h3>
                 <p class="chatbot-subtitle">Ask me anything about using the system</p>
             </div>
-            <button class="chatbot-close" onclick="if(typeof window.toggleChatbot==='function'){window.toggleChatbot();}else{var w=document.getElementById('chatbot-window');if(w){w.classList.remove('active');w.style.display='none';}}">×</button>
+            <button class="chatbot-close">×</button>
         </div>
         
         <div class="chatbot-messages" id="chatbot-messages">
@@ -806,35 +806,51 @@ function initQuickTopics() {
     });
 }
 
-// Toggle chatbot window - Make it globally accessible
+// Toggle chatbot window - Make it globally accessible and define early
 window.toggleChatbot = function() {
-    console.log('toggleChatbot called');
     const chatbotWindow = document.getElementById('chatbot-window');
-    console.log('chatbotWindow element:', chatbotWindow);
     
-    if (chatbotWindow) {
-        const isActive = chatbotWindow.classList.contains('active');
-        console.log('Current state - isActive:', isActive);
-        
-        if (isActive) {
-            chatbotWindow.classList.remove('active');
-            chatbotWindow.style.display = 'none';
-        } else {
-            chatbotWindow.classList.add('active');
-            chatbotWindow.style.display = 'flex';
-        }
-        
-        console.log('After toggle - has active class?', chatbotWindow.classList.contains('active'));
-        console.log('After toggle - display style:', chatbotWindow.style.display);
-        
-        // Hide badge when opened
-        const badge = document.getElementById('chatbot-badge');
-        if (badge && chatbotWindow.classList.contains('active')) {
-            badge.style.display = 'none';
-        }
-    } else {
+    if (!chatbotWindow) {
         console.error('Chatbot window element not found!');
+        return;
     }
+    
+    const isActive = chatbotWindow.classList.contains('active') || chatbotWindow.style.display === 'flex';
+    
+    if (isActive) {
+        // Close chatbot
+        chatbotWindow.classList.remove('active');
+        chatbotWindow.style.display = 'none';
+        chatbotWindow.style.visibility = 'hidden';
+    } else {
+        // Open chatbot
+        chatbotWindow.classList.add('active');
+        chatbotWindow.style.display = 'flex';
+        chatbotWindow.style.visibility = 'visible';
+    }
+    
+    // Hide badge when opened
+    const badge = document.getElementById('chatbot-badge');
+    if (badge && chatbotWindow.classList.contains('active')) {
+        badge.style.display = 'none';
+    }
+}
+
+// Make sure function is available immediately
+if (typeof window.toggleChatbot === 'undefined') {
+    window.toggleChatbot = function() {
+        const w = document.getElementById('chatbot-window');
+        if (w) {
+            const isOpen = w.style.display === 'flex' || w.classList.contains('active');
+            if (isOpen) {
+                w.style.display = 'none';
+                w.classList.remove('active');
+            } else {
+                w.style.display = 'flex';
+                w.classList.add('active');
+            }
+        }
+    };
 }
 
 // Handle quick topic click - Make it globally accessible
@@ -1079,46 +1095,24 @@ window.addMessage = function(content, type, title = null) {
 
 // Initialize on page load - try multiple methods to ensure it runs
 function initChatbot() {
-    console.log('Initializing chatbot...');
     initQuickTopics();
     
-    // Add event listeners instead of relying on inline onclick
+    // Add event listeners
     const toggleButton = document.getElementById('chatbot-toggle');
     const closeButton = document.querySelector('.chatbot-close');
     const sendButton = document.querySelector('.chatbot-send');
     const inputField = document.getElementById('chatbot-input');
     
-    console.log('Toggle button:', toggleButton);
-    console.log('Chatbot window:', document.getElementById('chatbot-window'));
-    
+    // Toggle button click handler
     if (toggleButton) {
-        // Remove any existing listeners
-        const newToggleButton = toggleButton.cloneNode(true);
-        toggleButton.parentNode.replaceChild(newToggleButton, toggleButton);
-        
-        // Add click listener
-        newToggleButton.addEventListener('click', function(e) {
-            console.log('Toggle button clicked!');
+        toggleButton.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
-            e.stopImmediatePropagation();
-            if (typeof window.toggleChatbot === 'function') {
-                window.toggleChatbot();
-            } else {
-                console.error('toggleChatbot function not found!');
-                // Fallback: directly toggle
-                const win = document.getElementById('chatbot-window');
-                if (win) {
-                    win.classList.toggle('active');
-                    win.style.display = win.classList.contains('active') ? 'flex' : 'none';
-                }
-            }
+            window.toggleChatbot();
         });
-        console.log('Event listener attached to toggle button');
-    } else {
-        console.error('Toggle button not found!');
     }
     
+    // Close button click handler
     if (closeButton) {
         closeButton.addEventListener('click', function(e) {
             e.preventDefault();
@@ -1127,57 +1121,60 @@ function initChatbot() {
         });
     }
     
+    // Send button click handler
     if (sendButton) {
         sendButton.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
-            console.log('Send button clicked');
             if (typeof window.sendChatbotMessage === 'function') {
                 window.sendChatbotMessage();
-            } else {
-                console.error('sendChatbotMessage not available');
             }
         });
-        console.log('Send button event listener attached');
-    } else {
-        console.error('Send button not found!');
     }
     
+    // Input field Enter key handler
     if (inputField) {
         inputField.addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 e.preventDefault();
                 e.stopPropagation();
-                console.log('Enter key pressed in input');
                 if (typeof window.sendChatbotMessage === 'function') {
                     window.sendChatbotMessage();
-                } else {
-                    console.error('sendChatbotMessage not available');
                 }
             }
         });
-        console.log('Input field event listener attached');
+    }
+}
+
+// Initialize chatbot - multiple methods to ensure it works
+(function() {
+    function initializeChatbot() {
+        if (document.getElementById('chatbot-toggle') && document.getElementById('chatbot-window')) {
+            initChatbot();
+            return true;
+        }
+        return false;
+    }
+    
+    // Try immediate initialization
+    if (initializeChatbot()) {
+        return;
+    }
+    
+    // Try on DOMContentLoaded
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeChatbot();
+        });
     } else {
-        console.error('Input field not found!');
+        // DOM already loaded, try after short delay
+        setTimeout(function() {
+            if (!initializeChatbot()) {
+                // Last attempt after longer delay
+                setTimeout(initializeChatbot, 1000);
+            }
+        }, 100);
     }
-}
-
-// Try multiple initialization methods
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initChatbot);
-} else {
-    // DOM is already loaded
-    initChatbot();
-}
-
-// Also try after a short delay as fallback
-setTimeout(function() {
-    const toggleBtn = document.getElementById('chatbot-toggle');
-    if (toggleBtn && !toggleBtn.hasAttribute('data-initialized')) {
-        console.log('Fallback initialization...');
-        toggleBtn.setAttribute('data-initialized', 'true');
-        initChatbot();
-    }
-}, 500);
+})();
 </script>
 
