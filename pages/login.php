@@ -198,12 +198,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       backdrop-filter: blur(20px);
       border-radius: 20px;
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.2);
-      padding: 25px 30px;
-      max-width: 420px;
+      padding: 20px 25px;
+      max-width: 380px;
       width: 100%;
       animation: slideUp 0.6s ease-out;
       position: relative;
       overflow: hidden;
+    }
+    
+    @media (max-width: 480px) {
+      .login-container {
+        max-width: 90%;
+        padding: 18px 20px;
+      }
     }
 
     .login-container::before {
@@ -237,10 +244,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     .login-container h2 {
       text-align: center;
       color: #1d4e89;
-      font-size: 24px;
+      font-size: 22px;
       font-weight: 700;
       margin: 0 0 5px 0;
       letter-spacing: 0.5px;
+    }
+    
+    @media (max-width: 480px) {
+      .login-container h2 {
+        font-size: 20px;
+      }
     }
 
     .login-container .subtitle {
