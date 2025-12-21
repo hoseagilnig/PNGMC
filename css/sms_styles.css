@@ -12,37 +12,46 @@ html {
 }
 
 body {
-  /* Two-tone blue sea background for landing page only */
-  background: linear-gradient(to bottom, #2c3e50 0%, #2c3e50 40%, #2563eb 40%, #2563eb 100%);
+  /* Enhanced two-tone blue sea background for landing page only */
+  background: linear-gradient(135deg, #1e3a52 0%, #2c3e50 25%, #2c3e50 40%, #2563eb 40%, #1e40af 60%, #2563eb 100%);
   background-image: 
+    /* Animated gradient overlay */
+    radial-gradient(ellipse at top left, rgba(100, 150, 200, 0.2) 0%, transparent 50%),
+    radial-gradient(ellipse at top right, rgba(120, 170, 220, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at bottom left, rgba(90, 140, 190, 0.18) 0%, transparent 50%),
+    radial-gradient(ellipse at bottom right, rgba(110, 160, 210, 0.16) 0%, transparent 50%),
     /* Vertical bands in top section */
-    linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.03) 15%, transparent 30%),
-    linear-gradient(90deg, transparent 45%, rgba(255, 255, 255, 0.05) 48%, rgba(255, 255, 255, 0.08) 50%, rgba(255, 255, 255, 0.05) 52%, transparent 55%),
-    /* Circular bubbles in bottom section */
-    radial-gradient(circle at 15% 65%, rgba(255, 255, 255, 0.08) 0%, transparent 40%),
-    radial-gradient(circle at 35% 75%, rgba(255, 255, 255, 0.06) 0%, transparent 35%),
-    radial-gradient(circle at 55% 60%, rgba(255, 255, 255, 0.1) 0%, transparent 45%),
-    radial-gradient(circle at 75% 70%, rgba(255, 255, 255, 0.07) 0%, transparent 38%),
-    radial-gradient(circle at 90% 55%, rgba(255, 255, 255, 0.09) 0%, transparent 42%),
-    radial-gradient(circle at 25% 85%, rgba(255, 255, 255, 0.05) 0%, transparent 32%),
-    radial-gradient(circle at 45% 90%, rgba(255, 255, 255, 0.08) 0%, transparent 40%),
-    radial-gradient(circle at 65% 80%, rgba(255, 255, 255, 0.06) 0%, transparent 36%),
-    radial-gradient(circle at 85% 85%, rgba(255, 255, 255, 0.07) 0%, transparent 38%),
-    radial-gradient(circle at 10% 70%, rgba(255, 255, 255, 0.05) 0%, transparent 30%),
-    radial-gradient(circle at 30% 60%, rgba(255, 255, 255, 0.09) 0%, transparent 44%),
-    radial-gradient(circle at 50% 75%, rgba(255, 255, 255, 0.06) 0%, transparent 34%),
-    radial-gradient(circle at 70% 65%, rgba(255, 255, 255, 0.08) 0%, transparent 40%),
-    radial-gradient(circle at 95% 75%, rgba(255, 255, 255, 0.05) 0%, transparent 32%);
+    linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.04) 12%, transparent 25%),
+    linear-gradient(90deg, transparent 40%, rgba(255, 255, 255, 0.06) 48%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0.06) 52%, transparent 60%),
+    linear-gradient(90deg, transparent 70%, rgba(255, 255, 255, 0.03) 75%, transparent 85%),
+    /* Enhanced circular bubbles in bottom section */
+    radial-gradient(circle at 10% 60%, rgba(255, 255, 255, 0.12) 0%, transparent 45%),
+    radial-gradient(circle at 25% 70%, rgba(255, 255, 255, 0.08) 0%, transparent 38%),
+    radial-gradient(circle at 40% 55%, rgba(255, 255, 255, 0.1) 0%, transparent 42%),
+    radial-gradient(circle at 55% 65%, rgba(255, 255, 255, 0.11) 0%, transparent 44%),
+    radial-gradient(circle at 70% 75%, rgba(255, 255, 255, 0.09) 0%, transparent 40%),
+    radial-gradient(circle at 85% 60%, rgba(255, 255, 255, 0.1) 0%, transparent 43%),
+    radial-gradient(circle at 20% 85%, rgba(255, 255, 255, 0.07) 0%, transparent 35%),
+    radial-gradient(circle at 35% 90%, rgba(255, 255, 255, 0.09) 0%, transparent 39%),
+    radial-gradient(circle at 50% 80%, rgba(255, 255, 255, 0.08) 0%, transparent 37%),
+    radial-gradient(circle at 65% 85%, rgba(255, 255, 255, 0.1) 0%, transparent 41%),
+    radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.07) 0%, transparent 36%),
+    radial-gradient(circle at 15% 50%, rgba(255, 255, 255, 0.09) 0%, transparent 40%),
+    radial-gradient(circle at 45% 50%, rgba(255, 255, 255, 0.11) 0%, transparent 43%),
+    radial-gradient(circle at 75% 50%, rgba(255, 255, 255, 0.08) 0%, transparent 38%),
+    radial-gradient(circle at 95% 80%, rgba(255, 255, 255, 0.09) 0%, transparent 40%);
   background-size: 
-    100% 40%, 100% 40%,
-    120px 120px, 90px 90px, 140px 140px, 100px 100px, 130px 130px,
-    85px 85px, 110px 110px, 95px 95px, 125px 125px, 105px 105px,
-    115px 115px, 88px 88px, 135px 135px;
+    800px 600px, 700px 500px, 600px 700px, 750px 550px,
+    100% 40%, 100% 40%, 100% 40%,
+    150px 150px, 120px 120px, 160px 160px, 140px 140px, 130px 130px, 145px 145px,
+    110px 110px, 125px 125px, 115px 115px, 135px 135px, 105px 105px,
+    155px 155px, 150px 150px, 140px 140px, 130px 130px;
   background-position: 
-    0% 0%, 0% 0%,
-    15% 65%, 35% 75%, 55% 60%, 75% 70%, 90% 55%,
-    25% 85%, 45% 90%, 65% 80%, 85% 85%, 10% 70%,
-    30% 60%, 50% 75%, 70% 65%, 95% 75%;
+    0% 0%, 100% 0%, 0% 100%, 100% 100%,
+    0% 0%, 0% 0%, 0% 0%,
+    10% 60%, 25% 70%, 40% 55%, 55% 65%, 70% 75%, 85% 60%,
+    20% 85%, 35% 90%, 50% 80%, 65% 85%, 80% 70%,
+    15% 50%, 45% 50%, 75% 50%, 95% 80%;
   background-repeat: no-repeat;
   background-attachment: fixed;
   color: #333;
@@ -51,6 +60,39 @@ body {
   flex-direction: column;
   overflow-x: hidden;
   position: relative;
+}
+
+/* Animated background overlay for extra depth */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 20% 30%, rgba(139, 179, 232, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(100, 150, 200, 0.08) 0%, transparent 50%);
+  animation: backgroundPulse 8s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes backgroundPulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+/* Ensure content is above background */
+body > * {
+  position: relative;
+  z-index: 1;
 }
 
 /* Header */
@@ -148,42 +190,31 @@ header .login-btn:hover {
 .hero {
   position: relative;
   padding: 80px 40px;
-  /* Two-tone background: dark slate blue top (40%), bright royal blue bottom (60%) */
-  background: linear-gradient(to bottom, #2c3e50 0%, #2c3e50 40%, #2563eb 40%, #2563eb 100%);
-  background-image: 
-    /* Vertical bands in top section */
-    linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.03) 15%, transparent 30%),
-    linear-gradient(90deg, transparent 45%, rgba(255, 255, 255, 0.05) 48%, rgba(255, 255, 255, 0.08) 50%, rgba(255, 255, 255, 0.05) 52%, transparent 55%),
-    /* Circular bubbles in bottom section */
-    radial-gradient(circle at 15% 65%, rgba(255, 255, 255, 0.08) 0%, transparent 40%),
-    radial-gradient(circle at 35% 75%, rgba(255, 255, 255, 0.06) 0%, transparent 35%),
-    radial-gradient(circle at 55% 60%, rgba(255, 255, 255, 0.1) 0%, transparent 45%),
-    radial-gradient(circle at 75% 70%, rgba(255, 255, 255, 0.07) 0%, transparent 38%),
-    radial-gradient(circle at 90% 55%, rgba(255, 255, 255, 0.09) 0%, transparent 42%),
-    radial-gradient(circle at 25% 85%, rgba(255, 255, 255, 0.05) 0%, transparent 32%),
-    radial-gradient(circle at 45% 90%, rgba(255, 255, 255, 0.08) 0%, transparent 40%),
-    radial-gradient(circle at 65% 80%, rgba(255, 255, 255, 0.06) 0%, transparent 36%),
-    radial-gradient(circle at 85% 85%, rgba(255, 255, 255, 0.07) 0%, transparent 38%),
-    radial-gradient(circle at 10% 70%, rgba(255, 255, 255, 0.05) 0%, transparent 30%),
-    radial-gradient(circle at 30% 60%, rgba(255, 255, 255, 0.09) 0%, transparent 44%),
-    radial-gradient(circle at 50% 75%, rgba(255, 255, 255, 0.06) 0%, transparent 34%),
-    radial-gradient(circle at 70% 65%, rgba(255, 255, 255, 0.08) 0%, transparent 40%),
-    radial-gradient(circle at 95% 75%, rgba(255, 255, 255, 0.05) 0%, transparent 32%);
-  background-size: 
-    100% 40%, 100% 40%,
-    120px 120px, 90px 90px, 140px 140px, 100px 100px, 130px 130px,
-    85px 85px, 110px 110px, 95px 95px, 125px 125px, 105px 105px,
-    115px 115px, 88px 88px, 135px 135px;
-  background-position: 
-    0% 0%, 0% 0%,
-    15% 65%, 35% 75%, 55% 60%, 75% 70%, 90% 55%,
-    25% 85%, 45% 90%, 65% 80%, 85% 85%, 10% 70%,
-    30% 60%, 50% 75%, 70% 65%, 95% 75%;
-  background-repeat: no-repeat;
+  /* Inherit body background - transparent to show body background */
+  background: transparent;
   overflow: hidden;
   min-height: 90vh;
   display: flex;
   align-items: center;
+  z-index: 1;
+}
+
+/* Subtle overlay on hero section for depth */
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.03) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero-container {
+  position: relative;
+  z-index: 2;
 }
 
 @keyframes gradientShift {
@@ -195,6 +226,8 @@ header .login-btn:hover {
 .hero-container {
   max-width: 1400px;
   margin: 0 auto;
+  position: relative;
+  z-index: 2;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 80px;
