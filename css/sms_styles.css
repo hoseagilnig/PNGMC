@@ -884,10 +884,10 @@ header .login-btn:hover {
 
 /* Show CTA immediately if typing is already complete */
 .hero-content:has(.hero-description.typing-complete) ~ .hero-cta,
-.hero-description.typing-complete ~ .hero-cta {
-  opacity: 1 !important;
-  visibility: visible !important;
-  animation: buttonsFadeIn 0.8s ease-out forwards;
+.hero-description.typing-complete ~ .hero-cta,
+.hero-cta.show-buttons {
+  opacity: 1;
+  visibility: visible;
 }
 
 /* Fallback: Show CTA after 5 seconds (in case JS fails) */
