@@ -141,8 +141,15 @@ if ($conn) {
       const dropdown = document.getElementById('userDropdown');
       const trigger = document.querySelector('.user-dropdown-trigger');
       
-      if (dropdown.style.display === 'none' || dropdown.style.display === '') {
+      if (!dropdown || !trigger) {
+        console.error('Dropdown or trigger not found');
+        return;
+      }
+      
+      if (dropdown.style.display === 'none' || dropdown.style.display === '' || dropdown.style.display === 'none') {
         dropdown.style.display = 'block';
+        dropdown.style.visibility = 'visible';
+        dropdown.style.opacity = '1';
         
         // On mobile, position dropdown relative to viewport at bottom
         if (window.innerWidth <= 767 && trigger) {
@@ -167,7 +174,7 @@ if ($conn) {
           if (spaceOnRight < dropdownWidth) {
             // Not enough space on right, position to the left
             dropdown.style.right = 'auto';
-            dropdown.style.left = (rect.right - dropdownWidth) + 'px';
+            dropdown.style.left = Math.max(10, rect.right - dropdownWidth) + 'px';
             dropdown.style.transform = 'none';
           } else {
             // Enough space, position normally to the right
@@ -179,9 +186,12 @@ if ($conn) {
           dropdown.style.bottom = 'auto';
           dropdown.style.marginTop = '0';
           dropdown.style.zIndex = '99999';
+          dropdown.style.visibility = 'visible';
+          dropdown.style.opacity = '1';
         }
       } else {
         dropdown.style.display = 'none';
+        dropdown.style.visibility = 'hidden';
       }
     }
     
@@ -196,15 +206,15 @@ if ($conn) {
   </script>
 </head>
 <body>
-    <header style="overflow: visible !important; z-index: 9999 !important; position: relative !important;">
-        <div class="logo">
+    <header style="overflow: visible !important; z-index: 9999 !important; position: relative !important; display: flex; justify-content: space-between; align-items: center; padding-right: 20px;">
+        <div class="logo" style="flex-shrink: 0; order: 1;">
             <a href="admin_dashboard.php" style="display: flex; align-items: center; text-decoration: none; color: inherit;">
                 <img src="../images/pnmc.png" alt="PNG Maritime College Logo" class="logo-img">
-                <span style="margin-left: 10px;">Administration Dashboard</span>
+                <span style="margin-left: 10px; white-space: nowrap;">Administration Dashboard</span>
             </a>
         </div>
         <?php echo getMobileMenuToggle(); ?>
-        <div class="user-info" style="position: relative; z-index: 10000;">
+        <div class="user-info" style="position: relative; z-index: 10000; flex-shrink: 0; order: 3; margin-left: auto; display: flex; align-items: center;">
             <div class="user-dropdown-trigger" style="cursor: pointer; display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 5px; transition: background 0.2s;" onclick="toggleUserDropdown()" onmouseover="this.style.background='#e9ecef'" onmouseout="this.style.background='transparent'">
                 <span>👤</span>
                 <span>Logged in as <strong><?php echo htmlspecialchars($_SESSION['name']); ?></strong></span>

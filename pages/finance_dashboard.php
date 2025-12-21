@@ -99,8 +99,15 @@ if ($conn) {
       const dropdown = document.getElementById('userDropdown');
       const trigger = document.querySelector('.user-dropdown-trigger');
       
-      if (dropdown.style.display === 'none' || dropdown.style.display === '') {
+      if (!dropdown || !trigger) {
+        console.error('Dropdown or trigger not found');
+        return;
+      }
+      
+      if (dropdown.style.display === 'none' || dropdown.style.display === '' || dropdown.style.display === 'none') {
         dropdown.style.display = 'block';
+        dropdown.style.visibility = 'visible';
+        dropdown.style.opacity = '1';
         
         // On mobile, position dropdown relative to viewport at bottom
         if (window.innerWidth <= 767 && trigger) {
@@ -125,7 +132,7 @@ if ($conn) {
           if (spaceOnRight < dropdownWidth) {
             // Not enough space on right, position to the left
             dropdown.style.right = 'auto';
-            dropdown.style.left = (rect.right - dropdownWidth) + 'px';
+            dropdown.style.left = Math.max(10, rect.right - dropdownWidth) + 'px';
             dropdown.style.transform = 'none';
           } else {
             // Enough space, position normally to the right
@@ -137,9 +144,12 @@ if ($conn) {
           dropdown.style.bottom = 'auto';
           dropdown.style.marginTop = '0';
           dropdown.style.zIndex = '99999';
+          dropdown.style.visibility = 'visible';
+          dropdown.style.opacity = '1';
         }
       } else {
         dropdown.style.display = 'none';
+        dropdown.style.visibility = 'hidden';
       }
     }
     
@@ -179,14 +189,14 @@ if ($conn) {
   </script>
 </head>
 <body>
-    <header style="overflow: visible !important; z-index: 9999 !important; position: relative !important;">
-        <div class="logo">
+    <header style="overflow: visible !important; z-index: 9999 !important; position: relative !important; display: flex; justify-content: space-between; align-items: center; padding-right: 20px;">
+        <div class="logo" style="flex-shrink: 0; order: 1;">
             <a href="finance_dashboard.php" style="display: flex; align-items: center; text-decoration: none; color: inherit;">
                 <img src="../images/pnmc.png" alt="PNG Maritime College Logo" class="logo-img">
-                <span style="margin-left: 10px;">Finance Dashboard</span>
+                <span style="margin-left: 10px; white-space: nowrap;">Finance Dashboard</span>
             </a>
         </div>
-        <div class="user-info" style="position: relative; display: flex; align-items: center; gap: 15px; z-index: 10000;">
+        <div class="user-info" style="position: relative; display: flex; align-items: center; gap: 15px; z-index: 10000; flex-shrink: 0; order: 3; margin-left: auto;">
             <?php if ($notification_count > 0): ?>
               <a href="workflow_manager.php" class="notification-bubble workflow-bubble" style="position: relative; display: flex; align-items: center; justify-content: center; width: 45px; height: 45px; background: linear-gradient(135deg, #f57c00 0%, #e65100 100%); border-radius: 50%; text-decoration: none; box-shadow: 0 4px 12px rgba(245, 124, 0, 0.4), 0 2px 4px rgba(0,0,0,0.2); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); animation: pulse-bubble 2s infinite; z-index: 100;" onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='0 6px 20px rgba(245, 124, 0, 0.6), 0 2px 6px rgba(0,0,0,0.3)';" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(245, 124, 0, 0.4), 0 2px 4px rgba(0,0,0,0.2)';" onclick="event.preventDefault(); window.location.href='workflow_manager.php'; return false;">
                 <span style="font-size: 1.5rem; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2)); pointer-events: none;">📬</span>
