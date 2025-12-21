@@ -226,13 +226,33 @@ header .logo {
   display: flex;
   align-items: center;
   font-size: 1.8rem;
-  font-weight: 800;
+  font-weight: 700;
   color: #1d4e89;
-  transition: transform 0.3s ease;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  letter-spacing: -0.5px;
+}
+
+header .logo span {
+  background: linear-gradient(135deg, #1d4e89 0%, #2563eb 50%, #1e40af 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  position: relative;
+  transition: all 0.3s ease;
 }
 
 header .logo:hover {
-  transform: scale(1.05);
+  transform: translateY(-2px);
+}
+
+header .logo:hover span {
+  background: linear-gradient(135deg, #2563eb 0%, #1e40af 50%, #1d4e89 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 header .logo .logo-img {
