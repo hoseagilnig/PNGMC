@@ -207,17 +207,41 @@ if ($conn) {
     document.addEventListener('click', function(event) {
       const userInfo = document.querySelector('.user-info');
       const dropdown = document.getElementById('userDropdown');
-      const logoutLink = dropdown ? dropdown.querySelector('a[href*="logout"]') : null;
+      const logoutLink = document.getElementById('logout-link');
       
       // Don't close if clicking inside dropdown or on logout link
       if (userInfo && dropdown) {
         const clickedInside = userInfo.contains(event.target);
-        const clickedLogout = logoutLink && (event.target === logoutLink || logoutLink.contains(event.target));
+        const clickedLogout = logoutLink && (event.target === logoutLink || logoutLink.contains(event.target) || event.target.closest('#logout-link'));
         
-        if (!clickedInside && !clickedLogout) {
+        // Allow logout link to work - don't interfere
+        if (clickedLogout) {
+          return true; // Let the link work
+        }
+        
+        if (!clickedInside) {
           dropdown.style.display = 'none';
           dropdown.style.visibility = 'hidden';
         }
+      }
+    });
+    
+    // Ensure logout link is always clickable - add dedicated event listener
+    document.addEventListener('DOMContentLoaded', function() {
+      const logoutLink = document.getElementById('logout-link');
+      if (logoutLink) {
+        // Remove any existing listeners
+        const newLogoutLink = logoutLink.cloneNode(true);
+        logoutLink.parentNode.replaceChild(newLogoutLink, logoutLink);
+        
+        // Add click listener
+        newLogoutLink.addEventListener('click', function(e) {
+          e.stopPropagation();
+          e.stopImmediatePropagation();
+          e.preventDefault();
+          window.location.href = 'logout.php';
+          return false;
+        }, true); // Use capture phase to ensure it fires first
       }
     });
   </script>
