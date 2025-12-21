@@ -12,28 +12,35 @@ html {
 }
 
 body {
-  /* Sky blue background with subtle white clouds - landing page only */
-  background: linear-gradient(135deg, #87CEEB 0%, #6BB6FF 50%, #4A9EFF 100%);
+  /* Elegant sky blue gradient background with depth - landing page only */
+  background: linear-gradient(180deg, 
+    #E0F2FE 0%, 
+    #BAE6FD 15%, 
+    #93C5FD 30%, 
+    #60A5FA 50%, 
+    #3B82F6 70%, 
+    #2563EB 85%, 
+    #1E40AF 100%);
   background-image: 
-    /* Subtle white cloud-like circles */
-    radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.15) 0%, transparent 50%),
-    radial-gradient(circle at 25% 35%, rgba(255, 255, 255, 0.12) 0%, transparent 45%),
-    radial-gradient(circle at 40% 15%, rgba(255, 255, 255, 0.14) 0%, transparent 48%),
-    radial-gradient(circle at 55% 45%, rgba(255, 255, 255, 0.13) 0%, transparent 47%),
-    radial-gradient(circle at 70% 25%, rgba(255, 255, 255, 0.15) 0%, transparent 50%),
-    radial-gradient(circle at 85% 40%, rgba(255, 255, 255, 0.11) 0%, transparent 44%),
-    radial-gradient(circle at 15% 60%, rgba(255, 255, 255, 0.14) 0%, transparent 49%),
-    radial-gradient(circle at 30% 75%, rgba(255, 255, 255, 0.12) 0%, transparent 46%),
-    radial-gradient(circle at 45% 65%, rgba(255, 255, 255, 0.13) 0%, transparent 48%),
-    radial-gradient(circle at 60% 80%, rgba(255, 255, 255, 0.15) 0%, transparent 51%),
-    radial-gradient(circle at 75% 70%, rgba(255, 255, 255, 0.12) 0%, transparent 47%),
-    radial-gradient(circle at 90% 85%, rgba(255, 255, 255, 0.14) 0%, transparent 50%);
+    /* Subtle wave pattern overlay */
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255, 255, 255, 0.03) 2px, rgba(255, 255, 255, 0.03) 4px),
+    /* Elegant cloud-like circles with soft edges */
+    radial-gradient(ellipse 800px 400px at 20% 30%, rgba(255, 255, 255, 0.2) 0%, transparent 60%),
+    radial-gradient(ellipse 600px 350px at 80% 20%, rgba(255, 255, 255, 0.15) 0%, transparent 55%),
+    radial-gradient(ellipse 700px 300px at 50% 70%, rgba(255, 255, 255, 0.18) 0%, transparent 58%),
+    radial-gradient(ellipse 500px 400px at 10% 80%, rgba(255, 255, 255, 0.12) 0%, transparent 52%),
+    radial-gradient(ellipse 650px 350px at 90% 60%, rgba(255, 255, 255, 0.16) 0%, transparent 56%),
+    /* Subtle light rays */
+    linear-gradient(135deg, transparent 0%, rgba(255, 255, 255, 0.05) 25%, transparent 50%),
+    linear-gradient(225deg, transparent 0%, rgba(255, 255, 255, 0.04) 30%, transparent 60%);
   background-size: 
-    180px 180px, 200px 200px, 160px 160px, 190px 190px, 170px 170px, 210px 210px,
-    185px 185px, 195px 195px, 175px 175px, 205px 205px, 165px 165px, 195px 195px;
+    100% 100%,
+    100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%,
+    200% 200%, 200% 200%;
   background-position: 
-    10% 20%, 25% 35%, 40% 15%, 55% 45%, 70% 25%, 85% 40%,
-    15% 60%, 30% 75%, 45% 65%, 60% 80%, 75% 70%, 90% 85%;
+    0 0,
+    0 0, 0 0, 0 0, 0 0, 0 0,
+    0 0, 0 0;
   background-attachment: fixed;
   background-repeat: no-repeat;
   color: #333;
@@ -44,7 +51,7 @@ body {
   position: relative;
 }
 
-/* Additional subtle white cloud overlay for more texture */
+/* Elegant shimmer overlay for depth and movement */
 body::before {
   content: '';
   position: fixed;
@@ -52,24 +59,26 @@ body::before {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: 
-    radial-gradient(circle at 18% 28%, rgba(255, 255, 255, 0.1) 0%, transparent 40%),
-    radial-gradient(circle at 38% 42%, rgba(255, 255, 255, 0.09) 0%, transparent 38%),
-    radial-gradient(circle at 58% 32%, rgba(255, 255, 255, 0.11) 0%, transparent 42%),
-    radial-gradient(circle at 78% 48%, rgba(255, 255, 255, 0.1) 0%, transparent 41%),
-    radial-gradient(circle at 22% 68%, rgba(255, 255, 255, 0.09) 0%, transparent 39%),
-    radial-gradient(circle at 42% 82%, rgba(255, 255, 255, 0.11) 0%, transparent 43%),
-    radial-gradient(circle at 62% 72%, rgba(255, 255, 255, 0.1) 0%, transparent 40%),
-    radial-gradient(circle at 82% 88%, rgba(255, 255, 255, 0.09) 0%, transparent 38%);
-  background-size: 
-    150px 150px, 140px 140px, 160px 160px, 145px 145px,
-    155px 155px, 150px 150px, 145px 145px, 160px 160px;
-  background-position: 
-    18% 28%, 38% 42%, 58% 32%, 78% 48%,
-    22% 68%, 42% 82%, 62% 72%, 82% 88%;
+  background: 
+    radial-gradient(ellipse 1000px 500px at 30% 40%, rgba(255, 255, 255, 0.15) 0%, transparent 70%),
+    radial-gradient(ellipse 800px 450px at 70% 60%, rgba(255, 255, 255, 0.12) 0%, transparent 65%),
+    radial-gradient(ellipse 900px 400px at 50% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 60%);
+  background-size: 100% 100%;
   pointer-events: none;
   z-index: 0;
-  opacity: 0.7;
+  opacity: 0.8;
+  animation: gentleShimmer 20s ease-in-out infinite;
+}
+
+@keyframes gentleShimmer {
+  0%, 100% {
+    opacity: 0.8;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 0.9;
+    transform: translateY(-10px);
+  }
 }
 
 /* Professional subtle pulse animation */
@@ -84,7 +93,7 @@ body::before {
   }
 }
 
-/* Professional accent overlay */
+/* Refined accent overlay with subtle patterns */
 body::after {
   content: '';
   position: fixed;
@@ -93,11 +102,18 @@ body::after {
   width: 100%;
   height: 100%;
   background: 
-    linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, transparent 20%),
-    linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.02) 50%, transparent 100%);
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, transparent 30%),
+    linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.05) 50%, transparent 100%),
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 10px,
+      rgba(255, 255, 255, 0.02) 10px,
+      rgba(255, 255, 255, 0.02) 20px
+    );
   pointer-events: none;
   z-index: 0;
-  opacity: 0.6;
+  opacity: 0.5;
 }
 
 /* Color changing animation - dark to darker to light */
