@@ -1156,6 +1156,8 @@ header .login-btn:hover {
   .hero-cta {
     align-items: center;
     justify-content: center;
+    margin-left: 0;
+    padding-left: 0;
   }
   
   .hero-main-cta {
