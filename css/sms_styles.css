@@ -786,7 +786,7 @@ header .login-btn:hover {
   font-size: 1.2rem;
   font-weight: 700;
   color: white;
-  background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+  background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
   border: none;
   border-radius: 12px;
   cursor: pointer;
@@ -866,8 +866,8 @@ header .login-btn:hover {
 
 .hero-main-cta:hover {
   transform: translateY(-5px) scale(1.02);
-  box-shadow: 0 15px 40px rgba(76, 175, 80, 0.6), 0 8px 20px rgba(76, 175, 80, 0.4);
-  background: linear-gradient(135deg, #45a049 0%, #3d8f41 100%);
+  box-shadow: 0 15px 40px rgba(37, 99, 235, 0.6), 0 8px 20px rgba(30, 64, 175, 0.4);
+  background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
 }
 
 .hero-main-cta:hover .btn-text {
