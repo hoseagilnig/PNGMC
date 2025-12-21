@@ -398,10 +398,19 @@ if ($conn) {
       const dropdown = document.getElementById('userDropdown');
       const trigger = document.querySelector('.user-dropdown-trigger');
       
-      if (dropdown.style.display === 'none' || dropdown.style.display === '') {
+      if (!dropdown || !trigger) {
+        console.error('Dropdown or trigger not found');
+        return;
+      }
+      
+      const isVisible = dropdown.style.display === 'block' || dropdown.style.display === '';
+      const currentDisplay = window.getComputedStyle(dropdown).display;
+      
+      if (!isVisible || currentDisplay === 'none') {
+        // Show dropdown
         dropdown.style.display = 'block';
-        
-        // Always ensure high z-index and visible overflow
+        dropdown.style.visibility = 'visible';
+        dropdown.style.opacity = '1';
         dropdown.style.zIndex = '99999';
         dropdown.style.overflow = 'visible';
         
@@ -415,18 +424,29 @@ if ($conn) {
           dropdown.style.maxHeight = (window.innerHeight - 100) + 'px';
           dropdown.style.transform = 'none';
         } else {
-          // Desktop: use fixed positioning to ensure it's above all content
+          // Desktop/Workstation: use fixed positioning to ensure it's above all content
           const rect = trigger.getBoundingClientRect();
+          const dropdownWidth = 200;
+          const viewportWidth = window.innerWidth;
           
           // Always position dropdown to the right of the trigger
           dropdown.style.position = 'fixed';
           dropdown.style.top = (rect.bottom + 8) + 'px';
-          dropdown.style.left = rect.right + 'px';
-          dropdown.style.right = 'auto';
+          
+          // Check if dropdown would go off-screen, if so position to the left
+          if (rect.right + dropdownWidth > viewportWidth - 20) {
+            // Position to the left of trigger
+            dropdown.style.left = (rect.left - dropdownWidth) + 'px';
+            dropdown.style.right = 'auto';
+          } else {
+            // Position to the right of trigger
+            dropdown.style.left = rect.right + 'px';
+            dropdown.style.right = 'auto';
+          }
+          
           dropdown.style.transform = 'none';
           dropdown.style.bottom = 'auto';
           dropdown.style.marginTop = '0';
-          dropdown.style.zIndex = '99999';
           dropdown.style.visibility = 'visible';
           dropdown.style.opacity = '1';
         }
@@ -441,7 +461,10 @@ if ($conn) {
           logoutLink.style.zIndex = '100000';
         }
       } else {
+        // Hide dropdown
         dropdown.style.display = 'none';
+        dropdown.style.visibility = 'hidden';
+        dropdown.style.opacity = '0';
       }
     }
     

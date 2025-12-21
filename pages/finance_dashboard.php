@@ -104,10 +104,15 @@ if ($conn) {
         return;
       }
       
-      if (dropdown.style.display === 'none' || dropdown.style.display === '' || dropdown.style.display === 'none') {
+      const isVisible = dropdown.style.display === 'block' || dropdown.style.display === '';
+      const currentDisplay = window.getComputedStyle(dropdown).display;
+      
+      if (!isVisible || currentDisplay === 'none') {
+        // Show dropdown
         dropdown.style.display = 'block';
         dropdown.style.visibility = 'visible';
         dropdown.style.opacity = '1';
+        dropdown.style.zIndex = '99999';
         
         // On mobile, position dropdown relative to viewport at bottom
         if (window.innerWidth <= 767 && trigger) {
@@ -116,28 +121,40 @@ if ($conn) {
           dropdown.style.bottom = '80px';
           dropdown.style.top = 'auto';
           dropdown.style.left = 'auto';
-          dropdown.style.zIndex = '99999';
           dropdown.style.maxHeight = (window.innerHeight - 100) + 'px';
           dropdown.style.overflow = 'visible';
         } else {
-          // Desktop: use fixed positioning to ensure it's above all content
+          // Desktop/Workstation: use fixed positioning to ensure it's above all content
           const rect = trigger.getBoundingClientRect();
+          const dropdownWidth = 180;
+          const viewportWidth = window.innerWidth;
           
           // Always position dropdown to the right of the trigger
           dropdown.style.position = 'fixed';
           dropdown.style.top = (rect.bottom + 8) + 'px';
-          dropdown.style.left = rect.right + 'px';
-          dropdown.style.right = 'auto';
+          
+          // Check if dropdown would go off-screen, if so position to the left
+          if (rect.right + dropdownWidth > viewportWidth - 20) {
+            // Position to the left of trigger
+            dropdown.style.left = (rect.left - dropdownWidth) + 'px';
+            dropdown.style.right = 'auto';
+          } else {
+            // Position to the right of trigger
+            dropdown.style.left = rect.right + 'px';
+            dropdown.style.right = 'auto';
+          }
+          
           dropdown.style.transform = 'none';
           dropdown.style.bottom = 'auto';
           dropdown.style.marginTop = '0';
-          dropdown.style.zIndex = '99999';
           dropdown.style.visibility = 'visible';
           dropdown.style.opacity = '1';
         }
       } else {
+        // Hide dropdown
         dropdown.style.display = 'none';
         dropdown.style.visibility = 'hidden';
+        dropdown.style.opacity = '0';
       }
     }
     
