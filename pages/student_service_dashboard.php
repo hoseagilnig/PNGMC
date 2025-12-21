@@ -513,7 +513,7 @@ if ($conn) {
                 <span style="margin-left: 10px; white-space: nowrap;">Student Services Dashboard</span>
             </a>
         </div>
-        <div class="user-info" style="position: relative; display: flex; align-items: center; gap: 10px; overflow: visible !important; z-index: 10000; flex-shrink: 0; order: 3; margin-left: auto; margin-right: 20px;">
+        <div class="user-info" style="position: relative; display: flex; align-items: center; gap: 10px; overflow: visible !important; z-index: 10000; flex-shrink: 0; order: 3; margin-left: auto; margin-right: 40px;">
             <!-- Notification Indicators -->
             <?php if ($finance_transfer_count > 0 || $notification_count > 0): ?>
               <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
