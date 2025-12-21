@@ -12,54 +12,45 @@ html {
 }
 
 body {
-  /* Professional split background: refined white top, elegant dark blue bottom - landing page only */
-  background: linear-gradient(to bottom, 
-    #fafbfc 0%, 
-    #ffffff 48%, 
-    #ffffff 50%, 
-    #1e3a5c 50%, 
-    #1a2d47 100%);
+  /* Elegant gradient background for landing page only */
+  background: linear-gradient(135deg, 
+    #0f172a 0%, 
+    #1e293b 25%, 
+    #334155 50%, 
+    #475569 75%, 
+    #64748b 100%);
   background-image: 
-    /* Refined gradient in white top section */
-    linear-gradient(to right, rgba(250, 251, 252, 0.95) 0%, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 1) 100%),
-    /* Subtle texture overlay for white section */
+    /* Subtle geometric pattern */
     repeating-linear-gradient(
-      0deg,
+      45deg,
       transparent,
-      transparent 2px,
-      rgba(0, 0, 0, 0.01) 2px,
-      rgba(0, 0, 0, 0.01) 4px
+      transparent 10px,
+      rgba(255, 255, 255, 0.02) 10px,
+      rgba(255, 255, 255, 0.02) 20px
     ),
-    /* Professional bokeh circles pattern in blue bottom section - refined */
-    radial-gradient(circle at 12% 62%, rgba(20, 45, 75, 0.25) 0%, transparent 55%),
-    radial-gradient(circle at 28% 68%, rgba(22, 50, 80, 0.22) 0%, transparent 50%),
-    radial-gradient(circle at 45% 64%, rgba(18, 42, 70, 0.28) 0%, transparent 52%),
-    radial-gradient(circle at 62% 70%, rgba(20, 45, 75, 0.24) 0%, transparent 48%),
-    radial-gradient(circle at 78% 66%, rgba(22, 50, 80, 0.26) 0%, transparent 51%),
-    radial-gradient(circle at 92% 72%, rgba(18, 42, 70, 0.23) 0%, transparent 49%),
-    radial-gradient(circle at 18% 78%, rgba(20, 45, 75, 0.27) 0%, transparent 53%),
-    radial-gradient(circle at 35% 82%, rgba(22, 50, 80, 0.21) 0%, transparent 47%),
-    radial-gradient(circle at 52% 76%, rgba(18, 42, 70, 0.25) 0%, transparent 50%),
-    radial-gradient(circle at 68% 80%, rgba(20, 45, 75, 0.24) 0%, transparent 49%),
-    radial-gradient(circle at 85% 74%, rgba(22, 50, 80, 0.26) 0%, transparent 51%),
-    radial-gradient(circle at 8% 70%, rgba(18, 42, 70, 0.22) 0%, transparent 48%),
-    radial-gradient(circle at 38% 60%, rgba(20, 45, 75, 0.25) 0%, transparent 52%),
-    radial-gradient(circle at 58% 74%, rgba(22, 50, 80, 0.23) 0%, transparent 49%),
-    radial-gradient(circle at 88% 68%, rgba(18, 42, 70, 0.24) 0%, transparent 50%);
+    /* Depth layers */
+    radial-gradient(ellipse 1200px 800px at 0% 0%, rgba(59, 130, 246, 0.15) 0%, transparent 60%),
+    radial-gradient(ellipse 1000px 700px at 100% 100%, rgba(37, 99, 235, 0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 800px 600px at 50% 50%, rgba(29, 78, 216, 0.1) 0%, transparent 70%),
+    /* Accent gradients */
+    linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+    linear-gradient(225deg, rgba(37, 99, 235, 0.06) 0%, transparent 50%);
   background-size: 
-    100% 50%,
-    100% 50%,
-    220px 220px, 200px 200px, 240px 240px, 210px 210px, 230px 230px, 205px 205px,
-    225px 225px, 195px 195px, 235px 235px, 215px 215px, 225px 225px,
-    200px 200px, 220px 220px, 210px 210px, 230px 230px;
+    40px 40px,
+    1200px 800px,
+    1000px 700px,
+    800px 600px,
+    100% 100%,
+    100% 100%;
   background-position: 
+    0 0,
     0% 0%,
+    100% 100%,
+    50% 50%,
     0% 0%,
-    12% 62%, 28% 68%, 45% 64%, 62% 70%, 78% 66%, 92% 72%,
-    18% 78%, 35% 82%, 52% 76%, 68% 80%, 85% 74%,
-    8% 70%, 38% 60%, 58% 74%, 88% 68%;
+    100% 0%;
   background-attachment: fixed;
-  background-repeat: no-repeat;
+  background-repeat: repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat;
   color: #333;
   min-height: 100vh;
   display: flex;
@@ -68,7 +59,7 @@ body {
   position: relative;
 }
 
-/* Professional depth overlay for blue section */
+/* Elegant overlay for depth and texture */
 body::before {
   content: '';
   position: fixed;
@@ -77,23 +68,21 @@ body::before {
   width: 100%;
   height: 100%;
   background-image: 
-    /* Additional refined bokeh circles */
-    radial-gradient(circle at 22% 66%, rgba(18, 42, 70, 0.18) 0%, transparent 45%),
-    radial-gradient(circle at 42% 71%, rgba(20, 45, 75, 0.16) 0%, transparent 43%),
-    radial-gradient(circle at 58% 68%, rgba(22, 50, 80, 0.19) 0%, transparent 46%),
-    radial-gradient(circle at 72% 73%, rgba(18, 42, 70, 0.17) 0%, transparent 44%),
-    radial-gradient(circle at 88% 69%, rgba(20, 45, 75, 0.18) 0%, transparent 45%),
-    /* Subtle depth gradient */
-    linear-gradient(to bottom, transparent 0%, transparent 50%, rgba(26, 65, 96, 0.08) 50%, rgba(26, 65, 96, 0.12) 100%);
+    radial-gradient(ellipse 600px 400px at 20% 30%, rgba(59, 130, 246, 0.12) 0%, transparent 50%),
+    radial-gradient(ellipse 500px 350px at 80% 70%, rgba(37, 99, 235, 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse 700px 500px at 50% 50%, rgba(29, 78, 216, 0.08) 0%, transparent 60%);
   background-size: 
-    180px 180px, 170px 170px, 190px 190px, 175px 175px, 185px 185px,
-    100% 100%;
+    600px 400px,
+    500px 350px,
+    700px 500px;
   background-position: 
-    22% 66%, 42% 71%, 58% 68%, 72% 73%, 88% 69%,
-    0% 0%;
+    20% 30%,
+    80% 70%,
+    50% 50%;
   pointer-events: none;
   z-index: 0;
-  opacity: 0.9;
+  opacity: 0.8;
+  animation: professionalPulse 20s ease-in-out infinite;
 }
 
 /* Professional subtle pulse animation */
