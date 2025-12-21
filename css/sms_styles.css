@@ -12,48 +12,40 @@ html {
 }
 
 body {
-  /* Professional sea blue background for landing page only */
-  background: linear-gradient(135deg, 
-    #0a1e2e 0%, 
-    #0d2538 20%, 
-    #102c42 40%, 
-    #13334c 60%, 
-    #163a56 80%, 
-    #1a4160 100%);
+  /* Split background: white top, dark blue bottom with bokeh pattern - landing page only */
+  background: linear-gradient(to bottom, 
+    #f8f9fa 0%, 
+    #ffffff 50%, 
+    #1e3a5c 50%, 
+    #1a2d47 100%);
   background-image: 
-    /* Subtle geometric grid pattern */
-    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-    /* Professional depth layers */
-    radial-gradient(ellipse 1200px 800px at 0% 0%, rgba(26, 65, 96, 0.3) 0%, transparent 50%),
-    radial-gradient(ellipse 1000px 700px at 100% 100%, rgba(19, 51, 76, 0.25) 0%, transparent 50%),
-    /* Subtle wave pattern */
-    repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 2px,
-      rgba(255, 255, 255, 0.01) 2px,
-      rgba(255, 255, 255, 0.01) 4px
-    ),
-    /* Professional accent gradients */
-    linear-gradient(135deg, rgba(22, 58, 86, 0.4) 0%, transparent 50%),
-    linear-gradient(225deg, rgba(19, 51, 76, 0.3) 0%, transparent 50%);
+    /* Subtle gradient in white top section */
+    linear-gradient(to right, rgba(248, 249, 250, 0.8) 0%, rgba(255, 255, 255, 1) 100%),
+    /* Bokeh-like circles pattern in blue bottom section */
+    radial-gradient(circle at 15% 60%, rgba(20, 45, 75, 0.4) 0%, transparent 50%),
+    radial-gradient(circle at 35% 70%, rgba(22, 50, 80, 0.35) 0%, transparent 45%),
+    radial-gradient(circle at 55% 65%, rgba(18, 42, 70, 0.4) 0%, transparent 48%),
+    radial-gradient(circle at 75% 75%, rgba(20, 45, 75, 0.3) 0%, transparent 42%),
+    radial-gradient(circle at 90% 60%, rgba(22, 50, 80, 0.35) 0%, transparent 46%),
+    radial-gradient(circle at 25% 80%, rgba(18, 42, 70, 0.38) 0%, transparent 47%),
+    radial-gradient(circle at 45% 85%, rgba(20, 45, 75, 0.32) 0%, transparent 44%),
+    radial-gradient(circle at 65% 80%, rgba(22, 50, 80, 0.36) 0%, transparent 45%),
+    radial-gradient(circle at 85% 70%, rgba(18, 42, 70, 0.34) 0%, transparent 43%),
+    radial-gradient(circle at 10% 75%, rgba(20, 45, 75, 0.37) 0%, transparent 46%),
+    radial-gradient(circle at 30% 65%, rgba(22, 50, 80, 0.33) 0%, transparent 44%),
+    radial-gradient(circle at 50% 72%, rgba(18, 42, 70, 0.39) 0%, transparent 48%),
+    radial-gradient(circle at 70% 68%, rgba(20, 45, 75, 0.31) 0%, transparent 43%),
+    radial-gradient(circle at 95% 78%, rgba(22, 50, 80, 0.35) 0%, transparent 45%);
   background-size: 
-    60px 60px,
-    60px 60px,
-    1200px 800px,
-    1000px 700px,
-    100% 40px,
-    100% 100%,
-    100% 100%;
+    100% 50%,
+    180px 180px, 160px 160px, 200px 200px, 170px 170px, 190px 190px,
+    175px 175px, 165px 165px, 185px 185px, 155px 155px, 195px 195px,
+    180px 180px, 170px 170px, 190px 190px, 175px 175px, 185px 185px;
   background-position: 
-    0 0,
-    0 0,
     0% 0%,
-    100% 100%,
-    0 0,
-    0% 0%,
-    100% 0%;
+    15% 60%, 35% 70%, 55% 65%, 75% 75%, 90% 60%,
+    25% 80%, 45% 85%, 65% 80%, 85% 70%,
+    10% 75%, 30% 65%, 50% 72%, 70% 68%, 95% 78%;
   background-attachment: fixed;
   background-repeat: no-repeat;
   color: #333;
@@ -64,7 +56,7 @@ body {
   position: relative;
 }
 
-/* Professional subtle overlay for depth */
+/* Additional bokeh circles for more depth in blue section */
 body::before {
   content: '';
   position: fixed;
@@ -72,13 +64,19 @@ body::before {
   left: 0;
   width: 100%;
   height: 100%;
-  background: 
-    radial-gradient(ellipse 800px 600px at 20% 30%, rgba(26, 65, 96, 0.15) 0%, transparent 50%),
-    radial-gradient(ellipse 700px 500px at 80% 70%, rgba(19, 51, 76, 0.12) 0%, transparent 50%),
-    linear-gradient(135deg, rgba(22, 58, 86, 0.08) 0%, transparent 50%);
-  animation: professionalPulse 20s ease-in-out infinite;
+  background-image: 
+    radial-gradient(circle at 20% 68%, rgba(18, 42, 70, 0.3) 0%, transparent 40%),
+    radial-gradient(circle at 40% 72%, rgba(20, 45, 75, 0.28) 0%, transparent 38%),
+    radial-gradient(circle at 60% 70%, rgba(22, 50, 80, 0.32) 0%, transparent 42%),
+    radial-gradient(circle at 80% 73%, rgba(18, 42, 70, 0.29) 0%, transparent 39%),
+    radial-gradient(circle at 5% 75%, rgba(20, 45, 75, 0.31) 0%, transparent 41%);
+  background-size: 
+    140px 140px, 130px 130px, 150px 150px, 135px 135px, 145px 145px;
+  background-position: 
+    20% 68%, 40% 72%, 60% 70%, 80% 73%, 5% 75%;
   pointer-events: none;
   z-index: 0;
+  opacity: 0.8;
 }
 
 /* Professional subtle pulse animation */
