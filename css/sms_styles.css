@@ -12,16 +12,16 @@ html {
 }
 
 body {
-  /* Sea blue background with bubbles for landing page only */
+  /* Dark sea blue background with bubbles for landing page only */
   background: linear-gradient(to bottom, 
-    #0a4d68 0%, 
-    #0d5d7f 15%, 
-    #0f6b8e 30%, 
-    #1279a0 45%, 
-    #1a8bb8 60%, 
-    #1e9cc7 75%, 
-    #22aed6 90%, 
-    #2bb8e0 100%);
+    #051a26 0%, 
+    #062533 15%, 
+    #073040 30%, 
+    #083b4d 45%, 
+    #0a4d68 60%, 
+    #0b5a7a 75%, 
+    #0d678c 90%, 
+    #0e749e 100%);
   background-image: 
     /* Ocean depth layers */
     radial-gradient(ellipse at top, rgba(10, 77, 104, 0.6) 0%, transparent 50%),
