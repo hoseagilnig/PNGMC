@@ -214,7 +214,7 @@ if ($conn) {
             </a>
         </div>
         <?php echo getMobileMenuToggle(); ?>
-        <div class="user-info" style="position: relative; z-index: 10000; flex-shrink: 0; order: 3; margin-left: auto; display: flex; align-items: center;">
+        <div class="user-info" style="position: relative; z-index: 10000; flex-shrink: 0; order: 3; margin-left: auto; margin-right: 20px; display: flex; align-items: center;">
             <div class="user-dropdown-trigger" style="cursor: pointer; display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 5px; transition: background 0.2s;" onclick="toggleUserDropdown()" onmouseover="this.style.background='#e9ecef'" onmouseout="this.style.background='transparent'">
                 <span>👤</span>
                 <span>Logged in as <strong><?php echo htmlspecialchars($_SESSION['name']); ?></strong></span>

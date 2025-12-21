@@ -198,7 +198,7 @@ $pending_applications = getPendingApplicationsForDepartment('hod', 'hod_review')
                 <span style="margin-left: 10px; white-space: nowrap;">HOD Dashboard</span>
             </a>
         </div>
-        <div class="user-info" style="position: relative; display: flex; align-items: center; gap: 15px; z-index: 10000; flex-shrink: 0; order: 3; margin-left: auto;">
+        <div class="user-info" style="position: relative; display: flex; align-items: center; gap: 15px; z-index: 10000; flex-shrink: 0; order: 3; margin-left: auto; margin-right: 20px;">
             <?php if ($notification_count > 0): ?>
               <a href="workflow_manager.php" class="notification-bubble workflow-bubble" style="position: relative; display: flex; align-items: center; justify-content: center; width: 45px; height: 45px; background: linear-gradient(135deg, #f57c00 0%, #e65100 100%); border-radius: 50%; text-decoration: none; box-shadow: 0 4px 12px rgba(245, 124, 0, 0.4), 0 2px 4px rgba(0,0,0,0.2); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); animation: pulse-bubble 2s infinite; z-index: 100;" onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='0 6px 20px rgba(245, 124, 0, 0.6), 0 2px 6px rgba(0,0,0,0.3)';" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(245, 124, 0, 0.4), 0 2px 4px rgba(0,0,0,0.2)';" onclick="event.preventDefault(); window.location.href='workflow_manager.php'; return false;">
                 <span style="font-size: 1.5rem; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2)); pointer-events: none;">📬</span>
