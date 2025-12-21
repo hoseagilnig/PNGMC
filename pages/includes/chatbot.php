@@ -202,8 +202,8 @@ $user_name = $_SESSION['name'] ?? 'User';
     .chatbot-window {
         position: fixed !important;
         bottom: 80px;
-        right: 0;
-        left: auto;
+        right: 20px !important;
+        left: auto !important;
         width: 380px;
         height: 600px;
         max-height: 80vh;
@@ -844,26 +844,23 @@ function initQuickTopics() {
         const isCurrentlyOpen = currentDisplay === 'flex' || hasActiveClass || currentVisibility === 'visible';
         
         if (isCurrentlyOpen) {
-            // Close chatbot
+            // Close chatbot - clear inline styles and set hidden state
             chatbotWindow.classList.remove('active');
-            chatbotWindow.style.display = 'none';
-            chatbotWindow.style.visibility = 'hidden';
-            chatbotWindow.style.opacity = '0';
+            chatbotWindow.style.cssText = 'display: none !important; visibility: hidden !important; opacity: 0 !important; pointer-events: none !important;';
         } else {
-            // Open chatbot
+            // Open chatbot - clear all inline styles first, then set new ones
+            chatbotWindow.removeAttribute('style');
+            
+            // Set all required properties
             chatbotWindow.classList.add('active');
-            chatbotWindow.style.display = 'flex';
-            chatbotWindow.style.visibility = 'visible';
-            chatbotWindow.style.opacity = '1';
-            chatbotWindow.style.zIndex = '999999';
-            chatbotWindow.style.position = 'fixed';
-            chatbotWindow.style.pointerEvents = 'auto';
-            // Force remove inline style that might hide it
-            chatbotWindow.style.removeProperty('display');
-            chatbotWindow.style.removeProperty('visibility');
-            chatbotWindow.style.removeProperty('opacity');
-            // Re-apply with !important equivalent
-            chatbotWindow.setAttribute('style', chatbotWindow.getAttribute('style') + '; display: flex !important; visibility: visible !important; opacity: 1 !important; pointer-events: auto !important; z-index: 999999 !important;');
+            chatbotWindow.style.cssText = 'display: flex !important; visibility: visible !important; opacity: 1 !important; pointer-events: auto !important; z-index: 999999 !important; position: fixed !important;';
+            
+            // Ensure proper positioning on desktop
+            if (window.innerWidth >= 768) {
+                chatbotWindow.style.right = '20px';
+                chatbotWindow.style.left = 'auto';
+                chatbotWindow.style.bottom = '80px';
+            }
         }
         
         // Hide badge when opened
