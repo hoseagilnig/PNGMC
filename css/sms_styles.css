@@ -653,9 +653,9 @@ header .login-btn:hover {
 
 .hero-description {
   font-size: 1.2rem;
-  color: #f5f9ff;
+  color: #e0e7ff;
   max-width: 100%;
-  text-shadow: 0 3px 20px rgba(0, 0, 0, 0.6), 0 2px 12px rgba(0, 0, 0, 0.5), 0 0 30px rgba(255, 255, 255, 0.3);
+  text-shadow: 0 3px 20px rgba(0, 0, 0, 0.6), 0 2px 12px rgba(0, 0, 0, 0.5), 0 0 30px rgba(224, 231, 255, 0.4), 0 0 50px rgba(147, 197, 253, 0.3);
   font-weight: 500;
   margin: 0 0 40px 0;
   line-height: 1.8;
@@ -664,9 +664,23 @@ header .login-btn:hover {
   filter: brightness(1.1);
   min-height: 50px;
   z-index: 3;
-  animation: descriptionFadeIn 1.2s ease-out 0.6s backwards;
-  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  animation: descriptionFadeIn 1.2s ease-out 0.6s backwards, descriptionPulse 6s ease-in-out infinite 2s;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hero-description:hover {
+  transform: translateX(5px);
+  color: #f0f4ff;
+  text-shadow: 0 4px 25px rgba(0, 0, 0, 0.7), 0 3px 15px rgba(0, 0, 0, 0.6), 0 0 40px rgba(224, 231, 255, 0.5), 0 0 60px rgba(147, 197, 253, 0.4);
+}
+
+@keyframes descriptionPulse {
+  0%, 100% {
+    text-shadow: 0 3px 20px rgba(0, 0, 0, 0.6), 0 2px 12px rgba(0, 0, 0, 0.5), 0 0 30px rgba(224, 231, 255, 0.4), 0 0 50px rgba(147, 197, 253, 0.3);
+  }
+  50% {
+    text-shadow: 0 4px 25px rgba(0, 0, 0, 0.7), 0 3px 15px rgba(0, 0, 0, 0.6), 0 0 40px rgba(224, 231, 255, 0.6), 0 0 70px rgba(147, 197, 253, 0.5);
+  }
 }
 
 .hero-description::before {
