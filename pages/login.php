@@ -198,8 +198,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       backdrop-filter: blur(20px);
       border-radius: 20px;
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.2);
-      padding: 20px 25px;
-      max-width: 380px;
+      padding: 25px 30px;
+      max-width: 420px;
       width: 100%;
       animation: slideUp 0.6s ease-out;
       position: relative;
@@ -209,7 +209,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     @media (max-width: 480px) {
       .login-container {
         max-width: 90%;
-        padding: 18px 20px;
+        padding: 20px 25px;
       }
     }
 
