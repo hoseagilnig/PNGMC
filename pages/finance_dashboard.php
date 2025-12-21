@@ -113,13 +113,30 @@ if ($conn) {
           dropdown.style.maxHeight = (window.innerHeight - 100) + 'px';
           dropdown.style.overflow = 'visible';
         } else {
-          // Desktop: position normally
-          dropdown.style.position = 'absolute';
-          dropdown.style.top = '100%';
-          dropdown.style.right = '0';
+          // Desktop: use fixed positioning to ensure it's above all content
+          const rect = trigger.getBoundingClientRect();
+          const dropdownWidth = 180; // min-width of dropdown
+          const spaceOnRight = window.innerWidth - rect.right;
+          
+          // Use fixed positioning to ensure dropdown is above all content
+          dropdown.style.position = 'fixed';
+          dropdown.style.top = (rect.bottom + 8) + 'px';
+          
+          if (spaceOnRight < dropdownWidth) {
+            // Not enough space on right, position to the left
+            dropdown.style.right = 'auto';
+            dropdown.style.left = (rect.right - dropdownWidth) + 'px';
+            dropdown.style.transform = 'none';
+          } else {
+            // Enough space, position normally to the right
+            dropdown.style.right = (window.innerWidth - rect.right) + 'px';
+            dropdown.style.left = 'auto';
+            dropdown.style.transform = 'none';
+          }
+          
           dropdown.style.bottom = 'auto';
-          dropdown.style.left = 'auto';
-          dropdown.style.zIndex = '10001';
+          dropdown.style.marginTop = '0';
+          dropdown.style.zIndex = '99999';
         }
       } else {
         dropdown.style.display = 'none';
@@ -162,7 +179,7 @@ if ($conn) {
   </script>
 </head>
 <body>
-    <header>
+    <header style="overflow: visible !important; z-index: 9999 !important; position: relative !important;">
         <div class="logo">
             <a href="finance_dashboard.php" style="display: flex; align-items: center; text-decoration: none; color: inherit;">
                 <img src="../images/pnmc.png" alt="PNG Maritime College Logo" class="logo-img">
@@ -184,7 +201,7 @@ if ($conn) {
                     <span>Logged in as <strong><?php echo htmlspecialchars($_SESSION['name']); ?></strong></span>
                     <span style="font-size: 0.8rem;">▼</span>
                 </div>
-            <div id="userDropdown" class="user-dropdown" style="display: none; position: absolute; top: 100%; right: 0; margin-top: 8px; background: white; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); min-width: 180px; z-index: 10001;">
+            <div id="userDropdown" class="user-dropdown" style="display: none; position: fixed; background: white !important; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); min-width: 180px; z-index: 99999 !important; overflow: visible !important;">
                 <div style="padding: 12px 16px; border-bottom: 1px solid #eee;">
                     <div style="font-weight: 600; color: #333;"><?php echo htmlspecialchars($_SESSION['name']); ?></div>
                     <div style="font-size: 0.85rem; color: #666; margin-top: 4px;"><?php echo ucfirst($_SESSION['role']); ?> User</div>
