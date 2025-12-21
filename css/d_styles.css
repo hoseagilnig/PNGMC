@@ -218,13 +218,28 @@ a:focus, button:focus, input:focus{outline:3px solid rgba(29,78,137,0.12);outlin
 .sidebar .brand img{filter:brightness(0) invert(1);opacity:0.95}
 
 /* Shift header and main content to the right of the fixed sidebar */
-body > header{margin-left:220px}
+body > header{
+  margin-left:220px;
+  z-index: 9999 !important;
+  position: relative !important;
+}
 .dashboard-wrap .content{
   margin-left:220px;
   overflow-x: hidden !important;
   max-width: calc(100vw - 220px) !important;
   width: 100% !important;
   box-sizing: border-box !important;
+  position: relative;
+  z-index: 1 !important;
+}
+
+/* Ensure content containers don't interfere with dropdown */
+.container,
+.main-card,
+.side-card,
+.dashboard-wrap {
+  position: relative;
+  z-index: 1 !important;
 }
 
 /* If using container as a page-width wrapper, make sure it doesn't add extra left padding */
