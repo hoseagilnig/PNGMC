@@ -66,10 +66,24 @@ $user_name = $_SESSION['name'] ?? 'User';
     font-family: Arial, sans-serif;
 }
 
+@media (min-width: 480px) {
+    .chatbot-container {
+        bottom: 18px;
+        right: 18px;
+    }
+}
+
 @media (min-width: 768px) {
     .chatbot-container {
         bottom: 20px;
         right: 20px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .chatbot-container {
+        bottom: 25px;
+        right: 25px;
     }
 }
 
@@ -86,12 +100,34 @@ $user_name = $_SESSION['name'] ?? 'User';
     transition: all 0.3s ease;
     color: white;
     position: relative;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.chatbot-toggle svg {
+    width: 24px;
+    height: 24px;
+}
+
+@media (min-width: 480px) {
+    .chatbot-toggle {
+        width: 55px;
+        height: 55px;
+    }
+    .chatbot-toggle svg {
+        width: 26px;
+        height: 26px;
+    }
 }
 
 @media (min-width: 768px) {
     .chatbot-toggle {
         width: 60px;
         height: 60px;
+    }
+    .chatbot-toggle svg {
+        width: 28px;
+        height: 28px;
     }
 }
 
@@ -128,11 +164,12 @@ $user_name = $_SESSION['name'] ?? 'User';
 .chatbot-window {
     position: fixed;
     bottom: 70px;
-    right: 15px;
-    left: 15px;
+    right: 10px;
+    left: 10px;
     width: auto;
-    height: calc(100vh - 100px);
+    height: calc(100vh - 90px);
     max-height: 600px;
+    min-height: 400px;
     background: white;
     border-radius: 15px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
@@ -140,6 +177,16 @@ $user_name = $_SESSION['name'] ?? 'User';
     flex-direction: column;
     overflow: hidden;
     z-index: 99999;
+    box-sizing: border-box;
+}
+
+@media (min-width: 480px) {
+    .chatbot-window {
+        right: 15px;
+        left: 15px;
+        height: calc(100vh - 95px);
+        max-height: 550px;
+    }
 }
 
 @media (min-width: 768px) {
@@ -151,6 +198,15 @@ $user_name = $_SESSION['name'] ?? 'User';
         width: 380px;
         height: 600px;
         max-height: 80vh;
+        min-height: 500px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .chatbot-window {
+        width: 400px;
+        height: 650px;
+        max-height: 85vh;
     }
 }
 
@@ -249,9 +305,18 @@ $user_name = $_SESSION['name'] ?? 'User';
 .chatbot-messages {
     flex: 1;
     overflow-y: auto;
+    overflow-x: hidden;
     padding: 15px;
     background: #f8f9fa;
     -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    min-height: 0;
+}
+
+@media (min-width: 480px) {
+    .chatbot-messages {
+        padding: 18px;
+    }
 }
 
 @media (min-width: 768px) {
@@ -288,6 +353,16 @@ $user_name = $_SESSION['name'] ?? 'User';
     line-height: 1.5;
     font-size: 13px;
     word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+}
+
+@media (min-width: 480px) {
+    .message-content {
+        max-width: 82%;
+        padding: 11px 15px;
+        font-size: 13.5px;
+    }
 }
 
 @media (min-width: 768px) {
@@ -392,11 +467,22 @@ $user_name = $_SESSION['name'] ?? 'User';
     outline: none;
     transition: all 0.3s;
     min-width: 0;
+    -webkit-appearance: none;
+    appearance: none;
+    touch-action: manipulation;
+}
+
+@media (min-width: 480px) {
+    .chatbot-input {
+        padding: 11px 13px;
+        font-size: 14px;
+    }
 }
 
 @media (min-width: 768px) {
     .chatbot-input {
         padding: 12px 15px;
+        font-size: 15px;
     }
 }
 
@@ -419,12 +505,34 @@ $user_name = $_SESSION['name'] ?? 'User';
     transition: all 0.3s;
     box-shadow: 0 2px 10px rgba(29, 78, 137, 0.3);
     flex-shrink: 0;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.chatbot-send svg {
+    width: 18px;
+    height: 18px;
+}
+
+@media (min-width: 480px) {
+    .chatbot-send {
+        width: 42px;
+        height: 42px;
+    }
+    .chatbot-send svg {
+        width: 19px;
+        height: 19px;
+    }
 }
 
 @media (min-width: 768px) {
     .chatbot-send {
         width: 45px;
         height: 45px;
+    }
+    .chatbot-send svg {
+        width: 20px;
+        height: 20px;
     }
 }
 
