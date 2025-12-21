@@ -161,6 +161,7 @@ if ($conn) {
           dropdown.style.right = '0';
           dropdown.style.bottom = 'auto';
           dropdown.style.left = 'auto';
+          dropdown.style.zIndex = '10001';
         }
       } else {
         dropdown.style.display = 'none';
@@ -186,13 +187,13 @@ if ($conn) {
             </a>
         </div>
         <?php echo getMobileMenuToggle(); ?>
-        <div class="user-info" style="position: relative;">
+        <div class="user-info" style="position: relative; z-index: 10000;">
             <div class="user-dropdown-trigger" style="cursor: pointer; display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 5px; transition: background 0.2s;" onclick="toggleUserDropdown()" onmouseover="this.style.background='#e9ecef'" onmouseout="this.style.background='transparent'">
                 <span>👤</span>
                 <span>Logged in as <strong><?php echo htmlspecialchars($_SESSION['name']); ?></strong></span>
                 <span style="font-size: 0.8rem;">▼</span>
             </div>
-            <div id="userDropdown" class="user-dropdown" style="display: none; position: absolute; top: 100%; right: 0; margin-top: 8px; background: white; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); min-width: 180px; z-index: 1000;">
+            <div id="userDropdown" class="user-dropdown" style="display: none; position: absolute; top: 100%; right: 0; margin-top: 8px; background: white; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); min-width: 180px; z-index: 10001;">
                 <div style="padding: 12px 16px; border-bottom: 1px solid #eee;">
                     <div style="font-weight: 600; color: #333;"><?php echo htmlspecialchars($_SESSION['name']); ?></div>
                     <div style="font-size: 0.85rem; color: #666; margin-top: 4px;"><?php echo ucfirst($_SESSION['role']); ?> User</div>

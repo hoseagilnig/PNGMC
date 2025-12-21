@@ -34,7 +34,28 @@ body{
 }
 
 /* Header */
-header{display:flex;justify-content:space-between;align-items:center;padding:18px 36px;background:rgba(255,255,255,0.95);backdrop-filter:blur(10px);box-shadow:0 2px 20px rgba(0,0,0,0.1);}
+header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:18px 36px;
+  background:rgba(255,255,255,0.95);
+  backdrop-filter:blur(10px);
+  box-shadow:0 2px 20px rgba(0,0,0,0.1);
+  position: relative;
+  z-index: 9999 !important;
+}
+
+.user-info {
+  position: relative !important;
+  z-index: 10000 !important;
+}
+
+.user-dropdown,
+#userDropdown {
+  z-index: 10001 !important;
+  position: absolute !important;
+}
 .logo{display:flex;align-items:center;font-weight:700;color:var(--primary);font-size:1.25rem}
 .logo-img{height:40px;margin-right:10px}
 
