@@ -12,7 +12,7 @@ html {
 }
 
 body {
-  /* Dark sea blue background with bubbles for landing page only */
+  /* Dark sea blue background with bubbles for landing page only - animated color change */
   background: linear-gradient(to bottom, 
     #051a26 0%, 
     #062533 15%, 
@@ -22,6 +22,8 @@ body {
     #0b5a7a 75%, 
     #0d678c 90%, 
     #0e749e 100%);
+  animation: colorShift 12s ease-in-out infinite;
+}
   background-image: 
     /* Ocean depth layers */
     radial-gradient(ellipse at top, rgba(10, 77, 104, 0.6) 0%, transparent 50%),
@@ -173,6 +175,58 @@ body::after {
   100% {
     background-position: 25% -50%, 45% -60%, 65% -56%, 85% -64%, 5% -44%;
     opacity: 0.5;
+  }
+}
+
+/* Color changing animation - dark to darker to light */
+@keyframes colorShift {
+  0% {
+    /* Dark blue */
+    background: linear-gradient(to bottom, 
+      #051a26 0%, 
+      #062533 15%, 
+      #073040 30%, 
+      #083b4d 45%, 
+      #0a4d68 60%, 
+      #0b5a7a 75%, 
+      #0d678c 90%, 
+      #0e749e 100%);
+  }
+  33% {
+    /* Darker blue */
+    background: linear-gradient(to bottom, 
+      #030f15 0%, 
+      #041a22 15%, 
+      #052530 30%, 
+      #06303d 45%, 
+      #073b4a 60%, 
+      #084657 75%, 
+      #095164 90%, 
+      #0a5c71 100%);
+  }
+  66% {
+    /* Lighter blue */
+    background: linear-gradient(to bottom, 
+      #0a4d68 0%, 
+      #0d5d7f 15%, 
+      #0f6b8e 30%, 
+      #1279a0 45%, 
+      #1a8bb8 60%, 
+      #1e9cc7 75%, 
+      #22aed6 90%, 
+      #2bb8e0 100%);
+  }
+  100% {
+    /* Back to dark blue */
+    background: linear-gradient(to bottom, 
+      #051a26 0%, 
+      #062533 15%, 
+      #073040 30%, 
+      #083b4d 45%, 
+      #0a4d68 60%, 
+      #0b5a7a 75%, 
+      #0d678c 90%, 
+      #0e749e 100%);
   }
 }
 
