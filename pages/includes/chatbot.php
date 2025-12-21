@@ -1128,12 +1128,40 @@ function initChatbot() {
     const sendButton = document.querySelector('.chatbot-send');
     const inputField = document.getElementById('chatbot-input');
     
-    // Toggle button click handler
+    // Toggle button click handler - with debugging for desktop
     if (toggleButton) {
-        toggleButton.addEventListener('click', function(e) {
+        // Remove any existing listeners by cloning
+        const newToggleButton = toggleButton.cloneNode(true);
+        toggleButton.parentNode.replaceChild(newToggleButton, toggleButton);
+        
+        // Add click listener
+        newToggleButton.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
-            window.toggleChatbot();
+            e.stopImmediatePropagation();
+            console.log('Toggle button clicked - Desktop:', window.innerWidth >= 768);
+            if (typeof window.toggleChatbot === 'function') {
+                const result = window.toggleChatbot();
+                console.log('Toggle result:', result);
+            } else {
+                console.error('toggleChatbot function not found!');
+                // Fallback
+                const w = document.getElementById('chatbot-window');
+                if (w) {
+                    w.classList.toggle('active');
+                    w.style.cssText = w.classList.contains('active') 
+                        ? 'display: flex !important; visibility: visible !important; opacity: 1 !important; pointer-events: auto !important; z-index: 999999 !important; position: fixed !important;'
+                        : 'display: none !important; visibility: hidden !important; opacity: 0 !important; pointer-events: none !important;';
+                }
+            }
+        });
+        
+        // Also add mousedown as backup for desktop
+        newToggleButton.addEventListener('mousedown', function(e) {
+            e.preventDefault();
+            if (typeof window.toggleChatbot === 'function') {
+                window.toggleChatbot();
+            }
         });
     }
     
