@@ -693,14 +693,28 @@
           if (heroDescription) {
             heroDescription.classList.add('typing-complete');
             
-            // Force CTA to show immediately after typing completes
+            // Trigger smooth button animations after typing completes
             setTimeout(function() {
               const cta = document.querySelector('.hero-cta');
               if (cta) {
-                cta.style.opacity = '1';
-                cta.style.visibility = 'visible';
+                // Add class to trigger CSS animations instead of inline styles
+                cta.classList.add('show-buttons');
+                
+                // Animate main CTA button first
+                const mainCta = cta.querySelector('.hero-main-cta');
+                if (mainCta) {
+                  mainCta.classList.add('animate-in');
+                }
+                
+                // Animate secondary buttons with staggered delay
+                const secondaryButtons = cta.querySelectorAll('.secondary-btn');
+                secondaryButtons.forEach((btn, index) => {
+                  setTimeout(() => {
+                    btn.classList.add('animate-in');
+                  }, 300 + (index * 150)); // 300ms delay, then 150ms between each
+                });
               }
-            }, 100);
+            }, 500); // Wait 500ms after typing completes for smooth transition
             
             // Force stats to show AFTER pencil disappears (wait for pencil fade-out)
             // Pencil disappears immediately, so wait a bit longer to ensure it's gone

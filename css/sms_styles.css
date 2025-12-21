@@ -583,10 +583,15 @@ header .login-btn:hover {
   margin: 0;
   opacity: 0;
   visibility: hidden;
-  animation: buttonsFadeIn 0.8s ease-out 0.5s forwards;
   position: relative;
   z-index: 5;
   height: 100%;
+}
+
+/* Show buttons container when typing is complete */
+.hero-cta.show-buttons {
+  opacity: 1;
+  visibility: visible;
 }
 
 @keyframes buttonsFadeIn {
@@ -602,6 +607,34 @@ header .login-btn:hover {
   }
 }
 
+@keyframes buttonSlideInScale {
+  0% {
+    opacity: 0;
+    transform: translateX(30px) scale(0.9);
+  }
+  60% {
+    transform: translateX(-5px) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes secondaryButtonSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateX(-20px) scale(0.95);
+  }
+  60% {
+    transform: translateX(3px) scale(1.01);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
 /* Main CTA Button */
 .hero-main-cta {
   display: inline-flex;
@@ -609,6 +642,15 @@ header .login-btn:hover {
   justify-content: space-between;
   gap: 15px;
   padding: 20px 40px;
+  opacity: 0;
+  transform: translateX(30px) scale(0.9);
+  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.hero-main-cta.animate-in {
+  opacity: 1;
+  transform: translateX(0) scale(1);
+  animation: buttonSlideInScale 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
   font-size: 1.2rem;
   font-weight: 700;
   color: white;
@@ -624,7 +666,6 @@ header .login-btn:hover {
   width: 100%;
   max-width: 350px;
   min-width: 280px;
-  animation: buttonSlideIn 0.8s ease-out 0.8s backwards;
   transform-origin: center;
 }
 
@@ -730,6 +771,15 @@ header .login-btn:hover {
   justify-content: flex-start;
   gap: 14px;
   padding: 16px 26px;
+  opacity: 0;
+  transform: translateX(-20px) scale(0.95);
+  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.secondary-btn.animate-in {
+  opacity: 1;
+  transform: translateX(0) scale(1);
+  animation: secondaryButtonSlideIn 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
   font-size: 1rem;
   font-weight: 600;
   color: #1a3a5c;
@@ -749,17 +799,7 @@ header .login-btn:hover {
   transform-origin: left center;
 }
 
-.secondary-btn:nth-child(1) {
-  animation-delay: 1s;
-}
-
-.secondary-btn:nth-child(2) {
-  animation-delay: 1.2s;
-}
-
-.secondary-btn:nth-child(3) {
-  animation-delay: 1.4s;
-}
+/* Animation delays are now handled by JavaScript for better control */
 
 .secondary-btn::after {
   content: '';
