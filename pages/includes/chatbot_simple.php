@@ -213,6 +213,9 @@ $user_name = $_SESSION['name'] ?? 'User';
 
 .chatbot-window.active {
     display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
 }
 
 .chatbot-header {
@@ -802,11 +805,38 @@ $user_name = $_SESSION['name'] ?? 'User';
     
     // Toggle chatbot
     function toggleChatbot() {
-        const window = document.getElementById('chatbot-window');
-        if (window) {
-            window.classList.toggle('active');
+        const chatbotWindow = document.getElementById('chatbot-window');
+        if (chatbotWindow) {
+            const isActive = chatbotWindow.classList.contains('active');
+            if (isActive) {
+                // Close chatbot
+                chatbotWindow.classList.remove('active');
+                chatbotWindow.style.display = 'none';
+                chatbotWindow.style.visibility = 'hidden';
+                chatbotWindow.style.opacity = '0';
+                chatbotWindow.style.pointerEvents = 'none';
+            } else {
+                // Open chatbot
+                chatbotWindow.classList.add('active');
+                chatbotWindow.style.display = 'flex';
+                chatbotWindow.style.visibility = 'visible';
+                chatbotWindow.style.opacity = '1';
+                chatbotWindow.style.pointerEvents = 'auto';
+                chatbotWindow.style.zIndex = '99999';
+                
+                // Focus on input when opening
+                const input = document.getElementById('chatbot-input');
+                if (input) {
+                    setTimeout(function() {
+                        input.focus();
+                    }, 100);
+                }
+            }
         }
     }
+    
+    // Make toggleChatbot globally accessible
+    window.toggleChatbot = toggleChatbot;
     
     // Clear chat - Reset to initial state
     function clearChat() {
@@ -840,11 +870,54 @@ $user_name = $_SESSION['name'] ?? 'User';
         const refresh = document.querySelector('.chatbot-refresh');
         const send = document.querySelector('.chatbot-send');
         const input = document.getElementById('chatbot-input');
+        const chatbotWindow = document.getElementById('chatbot-window');
         
-        if (toggle) toggle.onclick = toggleChatbot;
-        if (close) close.onclick = toggleChatbot;
-        if (refresh) refresh.onclick = clearChat;
-        if (send) send.onclick = sendMessage;
+        // Ensure chatbot window is initially hidden
+        if (chatbotWindow) {
+            chatbotWindow.style.display = 'none';
+            chatbotWindow.style.visibility = 'hidden';
+            chatbotWindow.style.opacity = '0';
+            chatbotWindow.style.pointerEvents = 'none';
+        }
+        
+        // Attach event handlers
+        if (toggle) {
+            toggle.onclick = function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                toggleChatbot();
+            };
+            toggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                toggleChatbot();
+            });
+        }
+        
+        if (close) {
+            close.onclick = function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                toggleChatbot();
+            };
+        }
+        
+        if (refresh) {
+            refresh.onclick = function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                clearChat();
+            };
+        }
+        
+        if (send) {
+            send.onclick = function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                sendMessage();
+            };
+        }
+        
         if (input) {
             input.onkeypress = function(e) {
                 if (e.key === 'Enter') {
@@ -853,6 +926,22 @@ $user_name = $_SESSION['name'] ?? 'User';
                 }
             };
         }
+        
+        // Close chatbot when clicking outside (optional)
+        document.addEventListener('click', function(e) {
+            const chatbotContainer = document.querySelector('.chatbot-container');
+            const chatbotWindow = document.getElementById('chatbot-window');
+            const toggle = document.getElementById('chatbot-toggle');
+            
+            if (chatbotWindow && chatbotWindow.classList.contains('active')) {
+                // Check if click is outside chatbot
+                if (!chatbotContainer.contains(e.target) && e.target !== toggle) {
+                    // Don't auto-close on desktop, only on mobile if needed
+                    // Uncomment below if you want auto-close on outside click
+                    // toggleChatbot();
+                }
+            }
+        });
         
         // Quick topics
         const topicsContainer = document.getElementById('chatbot-quick-topics');
