@@ -156,12 +156,50 @@ if ($conn) {
       opacity: 1 !important;
       position: relative !important;
       z-index: 10000 !important;
+      width: auto !important;
+      max-width: none !important;
+      margin-left: auto !important;
     }
     body > header .user-dropdown-trigger,
     header .user-dropdown-trigger[style] {
       display: flex !important;
       visibility: visible !important;
       opacity: 1 !important;
+      width: auto !important;
+      min-width: fit-content !important;
+      flex-shrink: 0 !important;
+    }
+    
+    /* Ensure user-info is always visible on desktop/laptop screens */
+    @media (min-width: 768px) {
+      body > header .user-info,
+      header .user-info[style] {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        position: relative !important;
+        z-index: 10000 !important;
+        flex: 0 0 auto !important;
+        flex-shrink: 0 !important;
+        min-width: fit-content !important;
+        max-width: none !important;
+        width: auto !important;
+        margin-left: auto !important;
+      }
+      body > header .user-dropdown-trigger,
+      header .user-dropdown-trigger[style] {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        width: auto !important;
+        min-width: fit-content !important;
+      }
+      body > header .logo,
+      header .logo[style] {
+        flex: 0 1 auto !important;
+        max-width: 50% !important;
+        min-width: 0 !important;
+      }
     }
     body > header .user-dropdown-trigger span:nth-child(2),
     header .user-dropdown-trigger span:nth-child(2)[style] {
