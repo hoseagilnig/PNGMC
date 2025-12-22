@@ -178,9 +178,9 @@ $user_name = $_SESSION['name'] ?? 'User';
 
 @media (min-width: 768px) {
     .chatbot-window {
-        position: absolute;
+        position: fixed !important;
         bottom: 80px;
-        right: 0;
+        right: 20px;
         left: auto;
         width: 380px !important;
         min-width: 380px !important;
@@ -199,6 +199,7 @@ $user_name = $_SESSION['name'] ?? 'User';
         opacity: 1 !important;
         pointer-events: auto !important;
         z-index: 99999 !important;
+        position: fixed !important;
         width: 380px !important;
         min-width: 380px !important;
         max-width: 380px !important;
@@ -214,7 +215,8 @@ $user_name = $_SESSION['name'] ?? 'User';
         height: 650px !important;
         max-height: 85vh;
         bottom: 90px;
-        right: 0;
+        right: 25px;
+        position: fixed !important;
         display: none !important;
         visibility: hidden !important;
         opacity: 0 !important;
@@ -227,6 +229,7 @@ $user_name = $_SESSION['name'] ?? 'User';
         opacity: 1 !important;
         pointer-events: auto !important;
         z-index: 99999 !important;
+        position: fixed !important;
         width: 420px !important;
         min-width: 420px !important;
         max-width: 420px !important;
@@ -241,7 +244,8 @@ $user_name = $_SESSION['name'] ?? 'User';
         height: 700px !important;
         max-height: 85vh;
         bottom: 100px;
-        right: 0;
+        right: 30px;
+        position: fixed !important;
         display: none !important;
         visibility: hidden !important;
         opacity: 0 !important;
@@ -254,6 +258,7 @@ $user_name = $_SESSION['name'] ?? 'User';
         opacity: 1 !important;
         pointer-events: auto !important;
         z-index: 99999 !important;
+        position: fixed !important;
         width: 450px !important;
         min-width: 450px !important;
         max-width: 450px !important;
@@ -891,10 +896,12 @@ $user_name = $_SESSION['name'] ?? 'User';
                 // Ensure proper positioning on desktop FIRST
                 if (window.innerWidth >= 768) {
                     console.log('Setting desktop positioning...');
-                    chatbotWindow.style.setProperty('position', 'absolute', 'important');
+                    // Use fixed positioning on desktop to position relative to viewport, not container
+                    chatbotWindow.style.setProperty('position', 'fixed', 'important');
                     const bottomValue = window.innerWidth >= 1440 ? '100px' : (window.innerWidth >= 1200 ? '90px' : '80px');
                     chatbotWindow.style.setProperty('bottom', bottomValue, 'important');
-                    chatbotWindow.style.setProperty('right', '0', 'important');
+                    const rightValue = window.innerWidth >= 1440 ? '30px' : (window.innerWidth >= 1200 ? '25px' : '20px');
+                    chatbotWindow.style.setProperty('right', rightValue, 'important');
                     chatbotWindow.style.setProperty('left', 'auto', 'important');
                     const widthValue = window.innerWidth >= 1440 ? '450px' : (window.innerWidth >= 1200 ? '420px' : '380px');
                     const heightValue = window.innerWidth >= 1440 ? '700px' : (window.innerWidth >= 1200 ? '650px' : '600px');
@@ -904,13 +911,12 @@ $user_name = $_SESSION['name'] ?? 'User';
                     chatbotWindow.style.setProperty('width', widthValue, 'important');
                     chatbotWindow.style.setProperty('min-width', widthValue, 'important');
                     chatbotWindow.style.setProperty('max-width', widthValue, 'important');
-                    chatbotWindow.setAttribute('style', chatbotWindow.getAttribute('style') + ' width: ' + widthValue + ' !important; min-width: ' + widthValue + ' !important; max-width: ' + widthValue + ' !important;');
                     
                     chatbotWindow.style.setProperty('height', heightValue, 'important');
                     chatbotWindow.style.setProperty('min-height', heightValue, 'important');
                     chatbotWindow.style.setProperty('max-height', maxHeightValue, 'important');
                     
-                    console.log('Set width to:', widthValue, 'for screen width:', window.innerWidth);
+                    console.log('Set width to:', widthValue, 'position: fixed, right:', rightValue, 'bottom:', bottomValue, 'for screen width:', window.innerWidth);
                 } else {
                     // Mobile positioning
                     chatbotWindow.style.setProperty('position', 'fixed', 'important');
