@@ -214,25 +214,198 @@ if ($conn) {
       max-width: none !important;
       display: inline-block !important;
     }
-    @media (max-width: 1400px) {
-      header .logo span {
-        font-size: 0.85rem !important;
+    /* Responsive breakpoints for header */
+    
+    /* Large Desktop (1400px and above) */
+    @media (min-width: 1400px) {
+      body > header,
+      header[style] {
+        padding: 12px 25px !important;
+        gap: 20px !important;
+      }
+      body > header .logo,
+      header .logo[style] {
+        max-width: 50% !important;
+      }
+      body > header .logo span,
+      header .logo span[style] {
+        font-size: 0.95rem !important;
       }
     }
-    @media (max-width: 1200px) {
-      header .logo {
+    
+    /* Desktop (1200px - 1399px) */
+    @media (max-width: 1399px) and (min-width: 1200px) {
+      body > header,
+      header[style] {
+        padding: 10px 20px !important;
+        gap: 15px !important;
+      }
+      body > header .logo,
+      header .logo[style] {
         max-width: 45% !important;
       }
-      header .logo span {
+      body > header .logo span,
+      header .logo span[style] {
+        font-size: 0.9rem !important;
+      }
+      body > header .user-dropdown-trigger span:nth-child(2),
+      header .user-dropdown-trigger span:nth-child(2)[style] {
+        max-width: 300px !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+      }
+    }
+    
+    /* Tablet Landscape (992px - 1199px) */
+    @media (max-width: 1199px) and (min-width: 992px) {
+      body > header,
+      header[style] {
+        padding: 10px 15px !important;
+        gap: 12px !important;
+      }
+      body > header .logo,
+      header .logo[style] {
+        max-width: 40% !important;
+      }
+      body > header .logo img,
+      header .logo img[style] {
+        height: 30px !important;
+        max-width: 40px !important;
+      }
+      body > header .logo span,
+      header .logo span[style] {
+        font-size: 0.85rem !important;
+      }
+      body > header .user-dropdown-trigger span:nth-child(2),
+      header .user-dropdown-trigger span:nth-child(2)[style] {
+        max-width: 250px !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
         font-size: 0.8rem !important;
       }
     }
-    @media (max-width: 992px) {
-      header .logo {
-        max-width: 40% !important;
+    
+    /* Tablet Portrait (768px - 991px) */
+    @media (max-width: 991px) and (min-width: 768px) {
+      body > header,
+      header[style] {
+        padding: 8px 12px !important;
+        gap: 10px !important;
       }
-      header .logo span {
+      body > header .logo,
+      header .logo[style] {
+        max-width: 35% !important;
+      }
+      body > header .logo img,
+      header .logo img[style] {
+        height: 28px !important;
+        max-width: 35px !important;
+      }
+      body > header .logo span,
+      header .logo span[style] {
         font-size: 0.75rem !important;
+      }
+      body > header .user-dropdown-trigger,
+      header .user-dropdown-trigger[style] {
+        padding: 4px 6px !important;
+        gap: 4px !important;
+      }
+      body > header .user-dropdown-trigger span:nth-child(2),
+      header .user-dropdown-trigger span:nth-child(2)[style] {
+        max-width: 200px !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        font-size: 0.75rem !important;
+      }
+    }
+    
+    /* Mobile (480px - 767px) */
+    @media (max-width: 767px) and (min-width: 480px) {
+      body > header,
+      header[style] {
+        padding: 8px 10px !important;
+        gap: 8px !important;
+        flex-wrap: wrap !important;
+      }
+      body > header .logo,
+      header .logo[style] {
+        max-width: 60% !important;
+        flex: 0 1 auto !important;
+      }
+      body > header .logo img,
+      header .logo img[style] {
+        height: 26px !important;
+        max-width: 30px !important;
+      }
+      body > header .logo span,
+      header .logo span[style] {
+        display: none !important;
+      }
+      body > header .user-info,
+      header .user-info[style] {
+        flex: 0 0 auto !important;
+        width: auto !important;
+        margin-left: auto !important;
+      }
+      body > header .user-dropdown-trigger,
+      header .user-dropdown-trigger[style] {
+        padding: 4px 6px !important;
+        gap: 3px !important;
+      }
+      body > header .user-dropdown-trigger span:nth-child(2),
+      header .user-dropdown-trigger span:nth-child(2)[style] {
+        display: none !important;
+      }
+      body > header .user-dropdown-trigger span:first-child,
+      header .user-dropdown-trigger span:first-child[style] {
+        font-size: 1.1rem !important;
+      }
+    }
+    
+    /* Small Mobile (below 480px) */
+    @media (max-width: 479px) {
+      body > header,
+      header[style] {
+        padding: 6px 8px !important;
+        gap: 6px !important;
+        flex-wrap: wrap !important;
+      }
+      body > header .logo,
+      header .logo[style] {
+        max-width: 50% !important;
+        flex: 0 1 auto !important;
+      }
+      body > header .logo img,
+      header .logo img[style] {
+        height: 24px !important;
+        max-width: 28px !important;
+      }
+      body > header .logo span,
+      header .logo span[style] {
+        display: none !important;
+      }
+      body > header .user-info,
+      header .user-info[style] {
+        flex: 0 0 auto !important;
+        width: auto !important;
+        margin-left: auto !important;
+      }
+      body > header .user-dropdown-trigger,
+      header .user-dropdown-trigger[style] {
+        padding: 3px 5px !important;
+        gap: 2px !important;
+      }
+      body > header .user-dropdown-trigger span:nth-child(2),
+      header .user-dropdown-trigger span:nth-child(2)[style] {
+        display: none !important;
+      }
+      body > header .user-dropdown-trigger span:first-child,
+      header .user-dropdown-trigger span:first-child[style] {
+        font-size: 1rem !important;
+      }
+      body > header .user-dropdown-trigger span:last-child,
+      header .user-dropdown-trigger span:last-child[style] {
+        font-size: 0.6rem !important;
       }
     }
     header .user-info {
