@@ -859,6 +859,69 @@ $pending_applications = getPendingApplicationsForDepartment('hod', 'hod_review')
       padding: 14px 16px !important;
     }
     
+    /* Mobile: Ensure dropdown and logout button are always visible */
+    @media (max-width: 767px) {
+      .user-dropdown {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        z-index: 99999 !important;
+        position: fixed !important;
+        overflow: visible !important;
+        max-height: none !important;
+        min-width: 200px !important;
+        background: white !important;
+        border: 1px solid #ddd !important;
+        border-radius: 8px !important;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.25) !important;
+      }
+      
+      .user-dropdown[style*="display: none"] {
+        display: none !important;
+      }
+      
+      .user-dropdown[style*="display: block"] {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+      }
+      
+      .user-dropdown a[href*="logout"],
+      .user-dropdown #logout-link {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        z-index: 100000 !important;
+        min-height: 44px !important;
+        padding: 14px 16px !important;
+        color: #dc3545 !important;
+        text-decoration: none !important;
+        position: relative !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+      }
+      
+      .user-dropdown > div {
+        display: block !important;
+        visibility: visible !important;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .user-dropdown {
+        min-width: 180px !important;
+        max-width: calc(100vw - 20px) !important;
+      }
+      
+      .user-dropdown a[href*="logout"],
+      .user-dropdown #logout-link {
+        padding: 12px 14px !important;
+        font-size: 0.9rem !important;
+        min-height: 44px !important;
+      }
+    }
+    
     /* Ensure menu toggle doesn't overlap */
     .menu-toggle {
       flex-shrink: 0 !important;
@@ -1078,6 +1141,25 @@ $pending_applications = getPendingApplicationsForDepartment('hod', 'hod_review')
           dropdown.style.bottom = '80px';
           dropdown.style.top = 'auto';
           dropdown.style.left = 'auto';
+          dropdown.style.display = 'block';
+          dropdown.style.visibility = 'visible';
+          dropdown.style.opacity = '1';
+          dropdown.style.zIndex = '99999';
+          dropdown.style.overflow = 'visible';
+          dropdown.style.maxHeight = 'none';
+          
+          // Force logout button visibility on mobile
+          const logoutLink = dropdown.querySelector('a[href*="logout"]') || document.getElementById('logout-link');
+          if (logoutLink) {
+            logoutLink.style.display = 'block';
+            logoutLink.style.visibility = 'visible';
+            logoutLink.style.opacity = '1';
+            logoutLink.style.pointerEvents = 'auto';
+            logoutLink.style.zIndex = '100000';
+            logoutLink.style.position = 'relative';
+            logoutLink.style.width = '100%';
+            logoutLink.style.boxSizing = 'border-box';
+          }
         } else {
           // Desktop: position below trigger, adjust if goes off-screen
           dropdown.style.position = 'fixed';
