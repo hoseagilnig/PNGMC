@@ -54,12 +54,39 @@ $user_name = $_SESSION['name'] ?? 'User';
     right: 15px;
     z-index: 99999;
     font-family: Arial, sans-serif;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
 }
 
 @media (min-width: 768px) {
     .chatbot-container {
         bottom: 20px;
         right: 20px;
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+}
+
+/* Ensure chatbot is visible on workstation and laptop views */
+@media (min-width: 1200px) {
+    .chatbot-container {
+        bottom: 25px;
+        right: 25px;
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+}
+
+@media (min-width: 1440px) {
+    .chatbot-container {
+        bottom: 30px;
+        right: 30px;
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
     }
 }
 
@@ -68,19 +95,45 @@ $user_name = $_SESSION['name'] ?? 'User';
     height: 50px;
     background: linear-gradient(135deg, #1d4e89 0%, #163c6a 100%);
     border-radius: 50%;
-    display: flex;
+    display: flex !important;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     box-shadow: 0 4px 15px rgba(29, 78, 137, 0.4);
     transition: all 0.3s ease;
     color: white;
+    visibility: visible !important;
+    opacity: 1 !important;
 }
 
 @media (min-width: 768px) {
     .chatbot-toggle {
         width: 60px;
         height: 60px;
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+}
+
+/* Ensure chatbot toggle is visible on workstation and laptop views */
+@media (min-width: 1200px) {
+    .chatbot-toggle {
+        width: 65px;
+        height: 65px;
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+}
+
+@media (min-width: 1440px) {
+    .chatbot-toggle {
+        width: 70px;
+        height: 70px;
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
     }
 }
 
@@ -115,6 +168,46 @@ $user_name = $_SESSION['name'] ?? 'User';
         width: 380px;
         height: 600px;
         max-height: 80vh;
+        display: none !important;
+    }
+    
+    .chatbot-window.active {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+}
+
+/* Ensure chatbot window works on workstation and laptop views */
+@media (min-width: 1200px) {
+    .chatbot-window {
+        width: 420px;
+        height: 650px;
+        max-height: 85vh;
+        bottom: 90px;
+        right: 0;
+    }
+    
+    .chatbot-window.active {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+}
+
+@media (min-width: 1440px) {
+    .chatbot-window {
+        width: 450px;
+        height: 700px;
+        max-height: 85vh;
+        bottom: 100px;
+        right: 0;
+    }
+    
+    .chatbot-window.active {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
     }
 }
 
