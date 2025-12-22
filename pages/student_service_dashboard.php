@@ -915,7 +915,7 @@ if ($conn) {
     </div>
   </div>
 
-  <?php require_once 'includes/chatbot_simple.php'; ?>
+  <?php require_once __DIR__ . '/includes/chatbot_simple.php'; ?>
     <?php echo getMobileMenuScript(); ?>
 </body>
 </html>

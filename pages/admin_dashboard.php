@@ -282,19 +282,24 @@ if ($conn) {
     }
   </style>
   <script>
-    function toggleUserDropdown() {
+    function toggleUserDropdown(event) {
+      if (event) {
+        event.stopPropagation();
+        event.preventDefault();
+      }
+      
       const dropdown = document.getElementById('userDropdown');
       const trigger = document.querySelector('.user-dropdown-trigger');
       
       if (!dropdown || !trigger) {
         console.error('Dropdown or trigger not found');
-        return;
+        return false;
       }
       
-      const isVisible = dropdown.style.display === 'block' || dropdown.style.display === '';
-      const currentDisplay = window.getComputedStyle(dropdown).display;
+      const isVisible = dropdown.style.display === 'block' || 
+                       (dropdown.style.display === '' && window.getComputedStyle(dropdown).display !== 'none');
       
-      if (!isVisible || currentDisplay === 'none') {
+      if (!isVisible) {
         // Show dropdown
         dropdown.style.display = 'block';
         dropdown.style.visibility = 'visible';
@@ -303,39 +308,39 @@ if ($conn) {
         dropdown.style.overflow = 'visible';
         dropdown.style.maxHeight = 'none';
         
-        // Ensure logout button is visible
-        const logoutLink = dropdown.querySelector('a[href*="logout"]');
+        // Force logout button to be visible
+        const logoutLink = dropdown.querySelector('a[href*="logout"]') || document.getElementById('logout-link');
         if (logoutLink) {
           logoutLink.style.display = 'block';
           logoutLink.style.visibility = 'visible';
           logoutLink.style.opacity = '1';
           logoutLink.style.pointerEvents = 'auto';
           logoutLink.style.zIndex = '100000';
+          logoutLink.style.position = 'relative';
         }
         
-        // On mobile, position dropdown relative to viewport at bottom
-        if (window.innerWidth <= 767 && trigger) {
+        // Position dropdown
+        const rect = trigger.getBoundingClientRect();
+        const dropdownWidth = 220;
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
+        
+        if (window.innerWidth <= 767) {
+          // Mobile: position at bottom
           dropdown.style.position = 'fixed';
           dropdown.style.right = '10px';
           dropdown.style.bottom = '80px';
           dropdown.style.top = 'auto';
           dropdown.style.left = 'auto';
-          dropdown.style.maxHeight = 'none';
-          dropdown.style.overflow = 'visible';
         } else {
-          // Desktop/Workstation: use fixed positioning to ensure it's above all content
-          const rect = trigger.getBoundingClientRect();
-          const dropdownWidth = 180;
-          const viewportWidth = window.innerWidth;
-          
-          // Always position dropdown to the right of the trigger
+          // Desktop: position below trigger, adjust if goes off-screen
           dropdown.style.position = 'fixed';
-          dropdown.style.top = (rect.bottom + 8) + 'px';
+          dropdown.style.top = (rect.bottom + 5) + 'px';
           
-          // Check if dropdown would go off-screen, if so position to the left
-          if (rect.right + dropdownWidth > viewportWidth - 20) {
+          // Check if dropdown would go off right edge
+          if (rect.right + dropdownWidth > viewportWidth - 10) {
             // Position to the left of trigger
-            dropdown.style.left = (rect.left - dropdownWidth) + 'px';
+            dropdown.style.left = Math.max(10, rect.left - dropdownWidth) + 'px';
             dropdown.style.right = 'auto';
           } else {
             // Position to the right of trigger
@@ -343,45 +348,42 @@ if ($conn) {
             dropdown.style.right = 'auto';
           }
           
-          dropdown.style.transform = 'none';
-          dropdown.style.bottom = 'auto';
-          dropdown.style.marginTop = '0';
-          dropdown.style.visibility = 'visible';
-          dropdown.style.opacity = '1';
-          dropdown.style.maxHeight = 'none';
-          dropdown.style.overflow = 'visible';
-          
-          // Force show with important styles
-          dropdown.setAttribute('style', dropdown.getAttribute('style') + ' !important');
+          // Check if dropdown would go off bottom
+          const dropdownHeight = dropdown.offsetHeight || 100;
+          if (rect.bottom + dropdownHeight + 10 > viewportHeight) {
+            dropdown.style.top = Math.max(10, rect.top - dropdownHeight) + 'px';
+          }
         }
+        
+        dropdown.style.transform = 'none';
+        dropdown.style.marginTop = '0';
       } else {
         // Hide dropdown
         dropdown.style.display = 'none';
         dropdown.style.visibility = 'hidden';
         dropdown.style.opacity = '0';
       }
+      
+      return false;
     }
     
-    // Close dropdown when clicking outside (but not on logout link)
+    // Close dropdown when clicking outside
     document.addEventListener('click', function(event) {
-      const userInfo = document.querySelector('.user-info');
       const dropdown = document.getElementById('userDropdown');
+      const trigger = document.querySelector('.user-dropdown-trigger');
       const logoutLink = document.getElementById('logout-link');
       
-      // Don't close if clicking inside dropdown or on logout link
-      if (userInfo && dropdown) {
-        const clickedInside = userInfo.contains(event.target);
-        const clickedLogout = logoutLink && (event.target === logoutLink || logoutLink.contains(event.target) || event.target.closest('#logout-link'));
-        
-        // Allow logout link to work - don't interfere
-        if (clickedLogout) {
-          return true; // Let the link work
-        }
-        
-        if (!clickedInside) {
-          dropdown.style.display = 'none';
-          dropdown.style.visibility = 'hidden';
-        }
+      if (!dropdown) return;
+      
+      // Don't close if clicking on trigger, dropdown, or logout link
+      const clickedInside = (trigger && trigger.contains(event.target)) || 
+                           dropdown.contains(event.target) ||
+                           (logoutLink && (event.target === logoutLink || logoutLink.contains(event.target)));
+      
+      if (!clickedInside && dropdown.style.display === 'block') {
+        dropdown.style.display = 'none';
+        dropdown.style.visibility = 'hidden';
+        dropdown.style.opacity = '0';
       }
     });
     
