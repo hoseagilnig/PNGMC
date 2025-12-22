@@ -40,10 +40,18 @@ header{
   align-items:center;
   padding:18px 36px;
   background:rgba(255,255,255,0.95);
+  -webkit-backdrop-filter:blur(10px);
   backdrop-filter:blur(10px);
   box-shadow:0 2px 20px rgba(0,0,0,0.1);
   position: relative;
   z-index: 9999 !important;
+}
+
+/* Fallback for browsers that don't support backdrop-filter */
+@supports not (backdrop-filter: blur(10px)) {
+  header {
+    background:rgba(255,255,255,0.98);
+  }
 }
 
 .user-info {
@@ -91,10 +99,24 @@ header{
 .quick-links a{color:var(--primary);text-decoration:none;font-weight:600}
 .quick-links a:hover{color:var(--primary-dark)}
 
-.side-card{background:rgba(255,255,255,0.95);backdrop-filter:blur(10px);padding:18px;border-radius:10px;box-shadow:0 6px 18px rgba(15,30,60,0.15);border:1px solid rgba(255,255,255,0.2)}
+.side-card{background:rgba(255,255,255,0.95);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);padding:18px;border-radius:10px;box-shadow:0 6px 18px rgba(15,30,60,0.15);border:1px solid rgba(255,255,255,0.2)}
+
+/* Fallback for browsers that don't support backdrop-filter */
+@supports not (backdrop-filter: blur(10px)) {
+  .side-card {
+    background:rgba(255,255,255,0.98);
+  }
+}
 .side-card h3{color:var(--primary);margin-bottom:10px}
 .stat-row{display:flex;gap:12px;flex-wrap:wrap}
-.stat{flex:1 1 140px;background:rgba(255,255,255,0.9);backdrop-filter:blur(8px);padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,0.3);text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.1)}
+.stat{flex:1 1 140px;background:rgba(255,255,255,0.9);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,0.3);text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.1)}
+
+/* Fallback for browsers that don't support backdrop-filter */
+@supports not (backdrop-filter: blur(8px)) {
+  .stat {
+    background:rgba(255,255,255,0.95);
+  }
+}
 .stat .num{font-size:1.4rem;color:var(--primary);font-weight:700}
 .stat .label{font-size:0.85rem;color:#556}
 
