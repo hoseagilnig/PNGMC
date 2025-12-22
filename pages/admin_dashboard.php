@@ -406,26 +406,26 @@ if ($conn) {
   </script>
 </head>
 <body>
-    <header style="overflow: visible !important; z-index: 9999 !important; position: relative !important; display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; width: 100%; box-sizing: border-box; gap: 15px;">
-        <div class="logo" style="flex-shrink: 1; order: 1; min-width: 0; flex: 1 1 auto; max-width: 50%; overflow: visible;">
-            <a href="admin_dashboard.php" style="display: flex; align-items: center; text-decoration: none; color: inherit; gap: 8px; min-width: 0;">
-                <img src="../images/pnmc.png" alt="PNG Maritime College Logo" class="logo-img" style="width: auto; height: 35px; max-width: 50px; object-fit: contain; flex-shrink: 0;">
-                <span style="white-space: nowrap; font-size: 0.9rem; overflow: visible; text-overflow: clip; min-width: 0; flex-shrink: 1;">Administration Dashboard</span>
+    <header style="overflow: visible !important; z-index: 9999 !important; position: relative !important; padding: 10px 15px !important; display: flex !important; justify-content: space-between !important; align-items: center !important; width: 100% !important; max-width: 100vw !important; box-sizing: border-box !important; gap: 10px !important;">
+        <div class="logo" style="flex-shrink: 1 !important; order: 1 !important; min-width: 0 !important; flex: 0 1 auto !important; max-width: calc(50% - 20px) !important; overflow: hidden !important;">
+            <a href="admin_dashboard.php" style="display: flex !important; align-items: center !important; text-decoration: none !important; color: inherit !important; gap: 6px !important; min-width: 0 !important;">
+                <img src="../images/pnmc.png" alt="PNG Maritime College Logo" class="logo-img" style="width: auto !important; height: 32px !important; max-width: 45px !important; object-fit: contain !important; flex-shrink: 0 !important;">
+                <span style="white-space: nowrap !important; font-size: 0.85rem !important; overflow: hidden !important; text-overflow: ellipsis !important; min-width: 0 !important; flex-shrink: 1 !important;">Administration Dashboard</span>
             </a>
         </div>
         <?php echo getMobileMenuToggle(); ?>
-        <div class="user-info" style="position: relative; z-index: 10000; flex-shrink: 0; order: 3; margin-left: auto; display: flex; align-items: center; gap: 10px; min-width: fit-content; flex: 0 0 auto;">
-            <div class="user-dropdown-trigger" style="cursor: pointer; display: flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 5px; transition: background 0.2s; white-space: nowrap; flex-shrink: 0;" onclick="toggleUserDropdown()" onmouseover="this.style.background='#e9ecef'" onmouseout="this.style.background='transparent'">
-                <span style="flex-shrink: 0;">👤</span>
-                <span style="white-space: nowrap; overflow: visible; flex-shrink: 0; min-width: fit-content;">Logged in as <strong><?php echo htmlspecialchars($_SESSION['name']); ?></strong></span>
-                <span style="font-size: 0.8rem; flex-shrink: 0;">▼</span>
+        <div class="user-info" style="position: relative !important; z-index: 10000 !important; flex-shrink: 0 !important; order: 3 !important; margin-left: auto !important; display: flex !important; align-items: center !important; gap: 8px !important; min-width: fit-content !important; flex: 0 0 auto !important;">
+            <div class="user-dropdown-trigger" style="cursor: pointer !important; display: flex !important; align-items: center !important; gap: 5px !important; padding: 5px 8px !important; border-radius: 5px !important; transition: background 0.2s !important; white-space: nowrap !important; flex-shrink: 0 !important;" onclick="toggleUserDropdown(event); return false;" onmouseover="this.style.background='#e9ecef'" onmouseout="this.style.background='transparent'">
+                <span style="flex-shrink: 0 !important;">👤</span>
+                <span style="white-space: nowrap !important; overflow: visible !important; flex-shrink: 0 !important; min-width: fit-content !important; font-size: 0.85rem !important;">Logged in as <strong><?php echo htmlspecialchars($_SESSION['name']); ?></strong></span>
+                <span style="font-size: 0.7rem !important; flex-shrink: 0 !important;">▼</span>
             </div>
-            <div id="userDropdown" class="user-dropdown" style="display: none; position: fixed; background: white !important; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); min-width: 180px; z-index: 99999 !important; overflow: visible !important;">
-                <div style="padding: 12px 16px; border-bottom: 1px solid #eee;">
-                    <div style="font-weight: 600; color: #333;"><?php echo htmlspecialchars($_SESSION['name']); ?></div>
-                    <div style="font-size: 0.85rem; color: #666; margin-top: 4px;"><?php echo ucfirst($_SESSION['role']); ?> User</div>
+            <div id="userDropdown" class="user-dropdown" style="display: none !important; position: fixed !important; background: white !important; border: 1px solid #ddd !important; border-radius: 8px !important; box-shadow: 0 8px 24px rgba(0,0,0,0.25) !important; min-width: 200px !important; z-index: 99999 !important; overflow: visible !important; max-height: none !important;">
+                <div style="padding: 12px 16px !important; border-bottom: 1px solid #eee !important;">
+                    <div style="font-weight: 600 !important; color: #333 !important;"><?php echo htmlspecialchars($_SESSION['name']); ?></div>
+                    <div style="font-size: 0.85rem !important; color: #666 !important; margin-top: 4px !important;"><?php echo ucfirst($_SESSION['role']); ?> User</div>
                 </div>
-                <a href="logout.php" id="logout-link" style="display: block !important; padding: 12px 16px; color: #dc3545; text-decoration: none !important; transition: background 0.2s; position: relative; z-index: 100000 !important; pointer-events: auto !important; cursor: pointer !important; background: white;" onmouseover="this.style.background='#f8f9fa'" onmouseout="this.style.background='white'" onclick="event.stopPropagation(); event.stopImmediatePropagation(); window.location.href='logout.php'; return false;">
+                <a href="logout.php" id="logout-link" style="display: block !important; padding: 14px 16px !important; color: #dc3545 !important; text-decoration: none !important; transition: background 0.2s !important; min-height: 44px !important; line-height: 1.4 !important; position: relative !important; z-index: 100000 !important; visibility: visible !important; opacity: 1 !important; pointer-events: auto !important;" onmouseover="this.style.background='#f8f9fa'" onmouseout="this.style.background='white'" onclick="event.stopPropagation();">
                     🚪 Logout
                 </a>
             </div>
