@@ -160,6 +160,17 @@ $pending_applications = getPendingApplicationsForDepartment('hod', 'hod_review')
       min-width: fit-content !important;
       flex-shrink: 0 !important;
       overflow: visible !important;
+      display: flex !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+      position: relative !important;
+      z-index: 10000 !important;
+    }
+    body > header .user-dropdown-trigger,
+    header .user-dropdown-trigger[style] {
+      display: flex !important;
+      visibility: visible !important;
+      opacity: 1 !important;
     }
     body > header .user-dropdown-trigger span:nth-child(2),
     header .user-dropdown-trigger span:nth-child(2)[style] {
