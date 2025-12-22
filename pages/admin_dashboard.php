@@ -1031,6 +1031,68 @@ if ($conn) {
       margin-left: 10px !important;
     }
     
+    /* Make menu toggle button visible and blue on mobile */
+    @media (max-width: 767px) {
+      .menu-toggle,
+      #menuToggle {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        background: #007bff !important;
+        border: 2px solid #0056b3 !important;
+        border-radius: 6px !important;
+        padding: 8px 10px !important;
+        cursor: pointer !important;
+        z-index: 10001 !important;
+        min-width: 44px !important;
+        min-height: 44px !important;
+        align-items: center !important;
+        justify-content: center !important;
+        box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3) !important;
+        transition: all 0.2s ease !important;
+      }
+      
+      .menu-toggle:hover,
+      .menu-toggle:active,
+      #menuToggle:hover,
+      #menuToggle:active {
+        background: #0056b3 !important;
+        border-color: #004085 !important;
+        box-shadow: 0 4px 12px rgba(0, 123, 255, 0.5) !important;
+        transform: scale(1.05) !important;
+      }
+      
+      .menu-toggle svg,
+      #menuToggle svg {
+        width: 24px !important;
+        height: 24px !important;
+        fill: white !important;
+        stroke: white !important;
+        color: white !important;
+      }
+      
+      .menu-toggle path,
+      #menuToggle path {
+        fill: white !important;
+        stroke: white !important;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .menu-toggle,
+      #menuToggle {
+        padding: 10px 12px !important;
+        min-width: 48px !important;
+        min-height: 48px !important;
+      }
+      
+      .menu-toggle svg,
+      #menuToggle svg {
+        width: 26px !important;
+        height: 26px !important;
+      }
+    }
+    
     @keyframes slideIn {
       from {
         opacity: 0;
