@@ -191,6 +191,18 @@ $pending_applications = getPendingApplicationsForDepartment('hod', 'hod_review')
       opacity: 1 !important;
     }
     
+    /* Logout button styles */
+    .logout-button,
+    header .logout-button,
+    body > header .logout-button {
+      display: inline-flex !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+      position: relative !important;
+      z-index: 10000 !important;
+      flex-shrink: 0 !important;
+    }
+    
     /* RESPONSIVE: Ensure user-dropdown-trigger is visible on ALL screen sizes */
     /* Large Desktop (1400px+) */
     @media (min-width: 1400px) {
@@ -348,6 +360,21 @@ $pending_applications = getPendingApplicationsForDepartment('hod', 'hod_review')
         visibility: visible !important;
         opacity: 1 !important;
         font-size: 0.6rem !important;
+      }
+      .logout-button,
+      header .logout-button {
+        padding: 6px 12px !important;
+        font-size: 0.8rem !important;
+        gap: 4px !important;
+      }
+    }
+    
+    /* Mobile (480px - 767px) - Adjust logout button */
+    @media (min-width: 480px) and (max-width: 767px) {
+      .logout-button,
+      header .logout-button {
+        padding: 7px 14px !important;
+        font-size: 0.85rem !important;
       }
     }
     body > header .logo,
@@ -870,6 +897,9 @@ $pending_applications = getPendingApplicationsForDepartment('hod', 'hod_review')
                 </div>
             </div>
         </div>
+        <a href="logout.php" class="logout-button" style="display: inline-flex !important; align-items: center !important; gap: 6px !important; padding: 8px 16px !important; background-color: #dc3545 !important; color: white !important; text-decoration: none !important; border-radius: 5px !important; font-size: 0.9rem !important; font-weight: 500 !important; transition: background-color 0.2s, transform 0.1s !important; flex-shrink: 0 !important; white-space: nowrap !important; z-index: 10000 !important; margin-left: 8px !important;" onmouseover="this.style.backgroundColor='#c82333'; this.style.transform='translateY(-1px)'" onmouseout="this.style.backgroundColor='#dc3545'; this.style.transform='translateY(0)'">
+            🚪 Logout
+        </a>
         <?php echo getMobileMenuToggle(); ?>
     </header>
 
