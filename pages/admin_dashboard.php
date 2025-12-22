@@ -144,9 +144,9 @@ if ($conn) {
     }
     header .logo {
       min-width: 0;
-      flex: 0 1 auto;
-      max-width: 35%;
-      overflow: hidden;
+      flex: 1 1 auto;
+      max-width: 50%;
+      overflow: visible;
     }
     header .logo a {
       display: flex;
@@ -158,14 +158,36 @@ if ($conn) {
       flex-shrink: 0;
       width: auto;
       height: 35px;
-      max-width: 60px;
+      max-width: 50px;
       object-fit: contain;
     }
     header .logo span {
-      overflow: hidden;
-      text-overflow: ellipsis;
+      overflow: visible;
+      text-overflow: clip;
       white-space: nowrap;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
+      flex-shrink: 1;
+    }
+    @media (max-width: 1400px) {
+      header .logo span {
+        font-size: 0.85rem;
+      }
+    }
+    @media (max-width: 1200px) {
+      header .logo {
+        max-width: 45%;
+      }
+      header .logo span {
+        font-size: 0.8rem;
+      }
+    }
+    @media (max-width: 992px) {
+      header .logo {
+        max-width: 40%;
+      }
+      header .logo span {
+        font-size: 0.75rem;
+      }
     }
     header .user-info {
       flex: 0 0 auto;
@@ -349,15 +371,15 @@ if ($conn) {
   </script>
 </head>
 <body>
-    <header style="overflow: visible !important; z-index: 9999 !important; position: relative !important; display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; width: 100%; box-sizing: border-box; gap: 20px;">
-        <div class="logo" style="flex-shrink: 1; order: 1; min-width: 0; flex: 0 1 auto; max-width: 35%; overflow: hidden;">
+    <header style="overflow: visible !important; z-index: 9999 !important; position: relative !important; display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; width: 100%; box-sizing: border-box; gap: 15px;">
+        <div class="logo" style="flex-shrink: 1; order: 1; min-width: 0; flex: 1 1 auto; max-width: 50%; overflow: visible;">
             <a href="admin_dashboard.php" style="display: flex; align-items: center; text-decoration: none; color: inherit; gap: 8px; min-width: 0;">
-                <img src="../images/pnmc.png" alt="PNG Maritime College Logo" class="logo-img" style="width: auto; height: 35px; max-width: 60px; object-fit: contain; flex-shrink: 0;">
-                <span style="white-space: nowrap; font-size: 0.85rem; overflow: hidden; text-overflow: ellipsis; min-width: 0;">Administration Dashboard</span>
+                <img src="../images/pnmc.png" alt="PNG Maritime College Logo" class="logo-img" style="width: auto; height: 35px; max-width: 50px; object-fit: contain; flex-shrink: 0;">
+                <span style="white-space: nowrap; font-size: 0.9rem; overflow: visible; text-overflow: clip; min-width: 0; flex-shrink: 1;">Administration Dashboard</span>
             </a>
         </div>
         <?php echo getMobileMenuToggle(); ?>
-        <div class="user-info" style="position: relative; z-index: 10000; flex-shrink: 0; order: 3; margin-left: auto; display: flex; align-items: center; gap: 10px; min-width: fit-content;">
+        <div class="user-info" style="position: relative; z-index: 10000; flex-shrink: 0; order: 3; margin-left: auto; display: flex; align-items: center; gap: 10px; min-width: fit-content; flex: 0 0 auto;">
             <div class="user-dropdown-trigger" style="cursor: pointer; display: flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 5px; transition: background 0.2s; white-space: nowrap; flex-shrink: 0;" onclick="toggleUserDropdown()" onmouseover="this.style.background='#e9ecef'" onmouseout="this.style.background='transparent'">
                 <span style="flex-shrink: 0;">👤</span>
                 <span style="white-space: nowrap; overflow: visible; flex-shrink: 0; min-width: fit-content;">Logged in as <strong><?php echo htmlspecialchars($_SESSION['name']); ?></strong></span>

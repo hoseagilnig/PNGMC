@@ -102,9 +102,9 @@ if ($conn) {
     }
     header .logo {
       min-width: 0;
-      flex: 0 1 auto;
-      max-width: 35%;
-      overflow: hidden;
+      flex: 1 1 auto;
+      max-width: 50%;
+      overflow: visible;
     }
     header .logo a {
       display: flex;
@@ -116,14 +116,36 @@ if ($conn) {
       flex-shrink: 0;
       width: auto;
       height: 35px;
-      max-width: 60px;
+      max-width: 50px;
       object-fit: contain;
     }
     header .logo span {
-      overflow: hidden;
-      text-overflow: ellipsis;
+      overflow: visible;
+      text-overflow: clip;
       white-space: nowrap;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
+      flex-shrink: 1;
+    }
+    @media (max-width: 1400px) {
+      header .logo span {
+        font-size: 0.85rem;
+      }
+    }
+    @media (max-width: 1200px) {
+      header .logo {
+        max-width: 45%;
+      }
+      header .logo span {
+        font-size: 0.8rem;
+      }
+    }
+    @media (max-width: 992px) {
+      header .logo {
+        max-width: 40%;
+      }
+      header .logo span {
+        font-size: 0.75rem;
+      }
     }
     header .user-info {
       flex: 0 0 auto;
@@ -297,14 +319,14 @@ if ($conn) {
   </script>
 </head>
 <body>
-    <header style="overflow: visible !important; z-index: 9999 !important; position: relative !important; display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; width: 100%; box-sizing: border-box; gap: 20px;">
-        <div class="logo" style="flex-shrink: 1; order: 1; min-width: 0; flex: 0 1 auto; max-width: 35%; overflow: hidden;">
+    <header style="overflow: visible !important; z-index: 9999 !important; position: relative !important; display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; width: 100%; box-sizing: border-box; gap: 15px;">
+        <div class="logo" style="flex-shrink: 1; order: 1; min-width: 0; flex: 1 1 auto; max-width: 50%; overflow: visible;">
             <a href="finance_dashboard.php" style="display: flex; align-items: center; text-decoration: none; color: inherit; gap: 8px; min-width: 0;">
-                <img src="../images/pnmc.png" alt="PNG Maritime College Logo" class="logo-img" style="width: auto; height: 35px; max-width: 60px; object-fit: contain; flex-shrink: 0;">
-                <span style="white-space: nowrap; font-size: 0.85rem; overflow: hidden; text-overflow: ellipsis; min-width: 0;">Finance Dashboard</span>
+                <img src="../images/pnmc.png" alt="PNG Maritime College Logo" class="logo-img" style="width: auto; height: 35px; max-width: 50px; object-fit: contain; flex-shrink: 0;">
+                <span style="white-space: nowrap; font-size: 0.9rem; overflow: visible; text-overflow: clip; min-width: 0; flex-shrink: 1;">Finance Dashboard</span>
             </a>
         </div>
-        <div class="user-info" style="position: relative; display: flex; align-items: center; gap: 15px; z-index: 10000; flex-shrink: 0; order: 3; margin-left: auto; min-width: fit-content;">
+        <div class="user-info" style="position: relative; display: flex; align-items: center; gap: 15px; z-index: 10000; flex-shrink: 0; order: 3; margin-left: auto; min-width: fit-content; flex: 0 0 auto;">
             <?php if ($notification_count > 0): ?>
               <a href="workflow_manager.php" class="notification-bubble workflow-bubble" style="position: relative; display: flex; align-items: center; justify-content: center; width: 45px; height: 45px; background: linear-gradient(135deg, #f57c00 0%, #e65100 100%); border-radius: 50%; text-decoration: none; box-shadow: 0 4px 12px rgba(245, 124, 0, 0.4), 0 2px 4px rgba(0,0,0,0.2); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); animation: pulse-bubble 2s infinite; z-index: 100;" onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='0 6px 20px rgba(245, 124, 0, 0.6), 0 2px 6px rgba(0,0,0,0.3)';" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(245, 124, 0, 0.4), 0 2px 4px rgba(0,0,0,0.2)';" onclick="event.preventDefault(); window.location.href='workflow_manager.php'; return false;">
                 <span style="font-size: 1.5rem; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2)); pointer-events: none;">📬</span>
