@@ -871,9 +871,20 @@ $user_name = $_SESSION['name'] ?? 'User';
                     chatbotWindow.style.setProperty('right', '0', 'important');
                     chatbotWindow.style.setProperty('left', 'auto', 'important');
                     const widthValue = window.innerWidth >= 1440 ? '450px' : (window.innerWidth >= 1200 ? '420px' : '380px');
+                    const heightValue = window.innerWidth >= 1440 ? '700px' : (window.innerWidth >= 1200 ? '650px' : '600px');
+                    const maxHeightValue = window.innerWidth >= 1440 ? '85vh' : '80vh';
+                    
+                    // Set width with multiple methods to ensure it sticks
                     chatbotWindow.style.setProperty('width', widthValue, 'important');
-                    chatbotWindow.style.setProperty('height', window.innerWidth >= 1440 ? '700px' : (window.innerWidth >= 1200 ? '650px' : '600px'), 'important');
-                    chatbotWindow.style.setProperty('max-height', window.innerWidth >= 1440 ? '85vh' : '80vh', 'important');
+                    chatbotWindow.style.setProperty('min-width', widthValue, 'important');
+                    chatbotWindow.style.setProperty('max-width', widthValue, 'important');
+                    chatbotWindow.setAttribute('style', chatbotWindow.getAttribute('style') + ' width: ' + widthValue + ' !important; min-width: ' + widthValue + ' !important; max-width: ' + widthValue + ' !important;');
+                    
+                    chatbotWindow.style.setProperty('height', heightValue, 'important');
+                    chatbotWindow.style.setProperty('min-height', heightValue, 'important');
+                    chatbotWindow.style.setProperty('max-height', maxHeightValue, 'important');
+                    
+                    console.log('Set width to:', widthValue, 'for screen width:', window.innerWidth);
                 } else {
                     // Mobile positioning
                     chatbotWindow.style.setProperty('position', 'fixed', 'important');
@@ -908,7 +919,29 @@ $user_name = $_SESSION['name'] ?? 'User';
                 console.log('Computed bottom:', computedStyle.bottom);
                 console.log('Computed right:', computedStyle.right);
                 console.log('Computed width:', computedStyle.width);
+                console.log('Computed min-width:', computedStyle.minWidth);
+                console.log('Computed max-width:', computedStyle.maxWidth);
+                console.log('Computed height:', computedStyle.height);
                 console.log('Computed z-index:', computedStyle.zIndex);
+                console.log('Window innerWidth:', window.innerWidth);
+                
+                // If width is still wrong, force it again
+                if (window.innerWidth >= 1440 && parseFloat(computedStyle.width) < 400) {
+                    console.warn('Width is too small, forcing width again...');
+                    const correctWidth = '450px';
+                    chatbotWindow.style.cssText += ' width: ' + correctWidth + ' !important; min-width: ' + correctWidth + ' !important; max-width: ' + correctWidth + ' !important;';
+                    chatbotWindow.setAttribute('style', chatbotWindow.getAttribute('style') + ' width: ' + correctWidth + ' !important; min-width: ' + correctWidth + ' !important; max-width: ' + correctWidth + ' !important;');
+                } else if (window.innerWidth >= 1200 && window.innerWidth < 1440 && parseFloat(computedStyle.width) < 400) {
+                    console.warn('Width is too small, forcing width again...');
+                    const correctWidth = '420px';
+                    chatbotWindow.style.cssText += ' width: ' + correctWidth + ' !important; min-width: ' + correctWidth + ' !important; max-width: ' + correctWidth + ' !important;';
+                    chatbotWindow.setAttribute('style', chatbotWindow.getAttribute('style') + ' width: ' + correctWidth + ' !important; min-width: ' + correctWidth + ' !important; max-width: ' + correctWidth + ' !important;');
+                } else if (window.innerWidth >= 768 && window.innerWidth < 1200 && parseFloat(computedStyle.width) < 350) {
+                    console.warn('Width is too small, forcing width again...');
+                    const correctWidth = '380px';
+                    chatbotWindow.style.cssText += ' width: ' + correctWidth + ' !important; min-width: ' + correctWidth + ' !important; max-width: ' + correctWidth + ' !important;';
+                    chatbotWindow.setAttribute('style', chatbotWindow.getAttribute('style') + ' width: ' + correctWidth + ' !important; min-width: ' + correctWidth + ' !important; max-width: ' + correctWidth + ' !important;');
+                }
                 
                 // Focus on input when opening
                 const input = document.getElementById('chatbot-input');
