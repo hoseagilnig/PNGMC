@@ -100,8 +100,9 @@ if ($conn) {
       overflow: visible !important;
       gap: 15px !important;
     }
-    /* Force header layout with !important to override external CSS */
-    header {
+    /* Force header layout with !important to override external CSS and inline styles */
+    body > header,
+    header[style] {
       display: flex !important;
       justify-content: space-between !important;
       align-items: center !important;
@@ -109,42 +110,50 @@ if ($conn) {
       width: 100% !important;
       box-sizing: border-box !important;
       overflow: visible !important;
+      padding: 10px 20px !important;
     }
-    header .logo {
+    body > header .logo,
+    header .logo[style] {
       min-width: 0 !important;
       flex: 1 1 auto !important;
       max-width: 50% !important;
       overflow: visible !important;
     }
-    header .logo a {
+    body > header .logo a,
+    header .logo a[style] {
       display: flex !important;
       align-items: center !important;
       gap: 8px !important;
       min-width: 0 !important;
       overflow: visible !important;
     }
-    header .logo img {
+    body > header .logo img,
+    header .logo img[style] {
       flex-shrink: 0 !important;
       width: auto !important;
       height: 35px !important;
       max-width: 50px !important;
       object-fit: contain !important;
     }
-    header .logo span {
+    body > header .logo span,
+    header .logo span[style] {
       overflow: visible !important;
       text-overflow: clip !important;
       white-space: nowrap !important;
       font-size: 0.9rem !important;
       flex-shrink: 1 !important;
       display: inline-block !important;
+      max-width: none !important;
     }
-    header .user-info {
+    body > header .user-info,
+    header .user-info[style] {
       flex: 0 0 auto !important;
       min-width: fit-content !important;
       flex-shrink: 0 !important;
       overflow: visible !important;
     }
-    .user-dropdown-trigger span:nth-child(2) {
+    body > header .user-dropdown-trigger span:nth-child(2),
+    header .user-dropdown-trigger span:nth-child(2)[style] {
       overflow: visible !important;
       white-space: nowrap !important;
       flex-shrink: 0 !important;
