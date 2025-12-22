@@ -57,6 +57,17 @@ $user_name = $_SESSION['name'] ?? 'User';
     display: block !important;
     visibility: visible !important;
     opacity: 1 !important;
+    width: auto !important;
+    min-width: auto !important;
+    max-width: none !important;
+}
+
+@media (min-width: 768px) {
+    .chatbot-container {
+        width: auto !important;
+        min-width: auto !important;
+        max-width: none !important;
+    }
 }
 
 @media (min-width: 768px) {
@@ -171,8 +182,10 @@ $user_name = $_SESSION['name'] ?? 'User';
         bottom: 80px;
         right: 0;
         left: auto;
-        width: 380px;
-        height: 600px;
+        width: 380px !important;
+        min-width: 380px !important;
+        max-width: 380px !important;
+        height: 600px !important;
         max-height: 80vh;
         display: none !important;
         visibility: hidden !important;
@@ -186,14 +199,19 @@ $user_name = $_SESSION['name'] ?? 'User';
         opacity: 1 !important;
         pointer-events: auto !important;
         z-index: 99999 !important;
+        width: 380px !important;
+        min-width: 380px !important;
+        max-width: 380px !important;
     }
 }
 
 /* Ensure chatbot window works on workstation and laptop views */
 @media (min-width: 1200px) {
     .chatbot-window {
-        width: 420px;
-        height: 650px;
+        width: 420px !important;
+        min-width: 420px !important;
+        max-width: 420px !important;
+        height: 650px !important;
         max-height: 85vh;
         bottom: 90px;
         right: 0;
@@ -209,13 +227,18 @@ $user_name = $_SESSION['name'] ?? 'User';
         opacity: 1 !important;
         pointer-events: auto !important;
         z-index: 99999 !important;
+        width: 420px !important;
+        min-width: 420px !important;
+        max-width: 420px !important;
     }
 }
 
 @media (min-width: 1440px) {
     .chatbot-window {
-        width: 450px;
-        height: 700px;
+        width: 450px !important;
+        min-width: 450px !important;
+        max-width: 450px !important;
+        height: 700px !important;
         max-height: 85vh;
         bottom: 100px;
         right: 0;
@@ -231,6 +254,9 @@ $user_name = $_SESSION['name'] ?? 'User';
         opacity: 1 !important;
         pointer-events: auto !important;
         z-index: 99999 !important;
+        width: 450px !important;
+        min-width: 450px !important;
+        max-width: 450px !important;
     }
 }
 
