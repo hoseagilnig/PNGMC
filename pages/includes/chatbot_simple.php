@@ -888,8 +888,8 @@ $user_name = $_SESSION['name'] ?? 'User';
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }
     
-    // Initialize
-    document.addEventListener('DOMContentLoaded', function() {
+    // Initialize chatbot - robust initialization for all devices
+    function initializeChatbot() {
         const toggle = document.getElementById('chatbot-toggle');
         const close = document.querySelector('.chatbot-close');
         const refresh = document.querySelector('.chatbot-refresh');
@@ -897,76 +897,119 @@ $user_name = $_SESSION['name'] ?? 'User';
         const input = document.getElementById('chatbot-input');
         const chatbotWindow = document.getElementById('chatbot-window');
         
+        // Check if all required elements exist
+        if (!toggle || !chatbotWindow) {
+            console.warn('Chatbot elements not found, retrying...');
+            return false;
+        }
+        
         // Ensure chatbot window is initially hidden
         if (chatbotWindow) {
-            chatbotWindow.style.display = 'none';
-            chatbotWindow.style.visibility = 'hidden';
-            chatbotWindow.style.opacity = '0';
-            chatbotWindow.style.pointerEvents = 'none';
+            chatbotWindow.style.setProperty('display', 'none', 'important');
+            chatbotWindow.style.setProperty('visibility', 'hidden', 'important');
+            chatbotWindow.style.setProperty('opacity', '0', 'important');
+            chatbotWindow.style.setProperty('pointer-events', 'none', 'important');
+            chatbotWindow.classList.remove('active');
         }
         
-        // Attach event handlers
-        if (toggle) {
-            toggle.onclick = function(e) {
+        // Remove existing event listeners by cloning toggle button
+        if (toggle && toggle.parentNode) {
+            const newToggle = toggle.cloneNode(true);
+            toggle.parentNode.replaceChild(newToggle, toggle);
+            
+            // Attach multiple event handlers for reliability
+            newToggle.onclick = function(e) {
                 e.preventDefault();
                 e.stopPropagation();
+                e.stopImmediatePropagation();
                 toggleChatbot();
+                return false;
             };
-            toggle.addEventListener('click', function(e) {
+            
+            newToggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                e.stopImmediatePropagation();
+                toggleChatbot();
+                return false;
+            }, true);
+            
+            // Add touch event for mobile devices
+            newToggle.addEventListener('touchend', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
                 toggleChatbot();
-            });
+                return false;
+            }, { passive: false });
         }
         
+        // Close button
         if (close) {
             close.onclick = function(e) {
                 e.preventDefault();
                 e.stopPropagation();
                 toggleChatbot();
+                return false;
             };
+            close.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                toggleChatbot();
+                return false;
+            });
         }
         
+        // Refresh button
         if (refresh) {
             refresh.onclick = function(e) {
                 e.preventDefault();
                 e.stopPropagation();
                 clearChat();
+                return false;
             };
+            refresh.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                clearChat();
+                return false;
+            });
         }
         
+        // Send button
         if (send) {
             send.onclick = function(e) {
                 e.preventDefault();
                 e.stopPropagation();
                 sendMessage();
+                return false;
             };
+            send.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                sendMessage();
+                return false;
+            });
         }
         
+        // Input field
         if (input) {
             input.onkeypress = function(e) {
                 if (e.key === 'Enter') {
                     e.preventDefault();
+                    e.stopPropagation();
                     sendMessage();
+                    return false;
                 }
             };
-        }
-        
-        // Close chatbot when clicking outside (optional)
-        document.addEventListener('click', function(e) {
-            const chatbotContainer = document.querySelector('.chatbot-container');
-            const chatbotWindow = document.getElementById('chatbot-window');
-            const toggle = document.getElementById('chatbot-toggle');
-            
-            if (chatbotWindow && chatbotWindow.classList.contains('active')) {
-                // Check if click is outside chatbot
-                if (!chatbotContainer.contains(e.target) && e.target !== toggle) {
-                    // Don't auto-close on desktop, only on mobile if needed
-                    // Uncomment below if you want auto-close on outside click
-                    // toggleChatbot();
+            input.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    sendMessage();
+                    return false;
                 }
-            }
-        });
+            });
+        }
         
         // Quick topics
         const topicsContainer = document.getElementById('chatbot-quick-topics');
@@ -981,10 +1024,59 @@ $user_name = $_SESSION['name'] ?? 'User';
             const roleTopics = topics[userRole] || topics['admin'];
             topicsContainer.innerHTML = roleTopics.map(function(topic) {
                 const safeTopic = topic.replace(/'/g, "\\'");
-                return '<span class="quick-topic" onclick="document.getElementById(\'chatbot-input\').value=\'' + safeTopic + '\'; document.querySelector(\'.chatbot-send\').click();">' + topic + '</span>';
+                return '<span class="quick-topic" onclick="if(typeof window.toggleChatbot === \'function\') { document.getElementById(\'chatbot-input\').value=\'' + safeTopic + '\'; document.querySelector(\'.chatbot-send\').click(); }">' + topic + '</span>';
             }).join('');
         }
-    });
+        
+        return true;
+    }
+    
+    // Try multiple initialization methods to ensure it works on all devices
+    (function() {
+        // Method 1: Try immediate initialization if DOM is ready
+        if (document.readyState === 'complete' || document.readyState === 'interactive') {
+            if (initializeChatbot()) {
+                return;
+            }
+        }
+        
+        // Method 2: Wait for DOMContentLoaded
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+                if (!initializeChatbot()) {
+                    // Retry after short delay
+                    setTimeout(function() {
+                        if (!initializeChatbot()) {
+                            // Final retry after longer delay
+                            setTimeout(initializeChatbot, 1000);
+                        }
+                    }, 100);
+                }
+            });
+        } else {
+            // DOM already loaded, try immediately
+            if (!initializeChatbot()) {
+                // Retry after short delay
+                setTimeout(function() {
+                    if (!initializeChatbot()) {
+                        // Final retry after longer delay
+                        setTimeout(initializeChatbot, 1000);
+                    }
+                }, 100);
+            }
+        }
+        
+        // Method 3: Fallback initialization after window load
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                const toggle = document.getElementById('chatbot-toggle');
+                if (toggle && !toggle.hasAttribute('data-initialized')) {
+                    toggle.setAttribute('data-initialized', 'true');
+                    initializeChatbot();
+                }
+            }, 500);
+        });
+    })();
 })();
 </script>
 
