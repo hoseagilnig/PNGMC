@@ -194,20 +194,31 @@ if ($conn) {
       text-overflow: ellipsis;
       white-space: nowrap;
     }
+    .user-dropdown-trigger {
+      min-width: 0;
+      flex-shrink: 1;
+    }
     .user-dropdown-trigger span:nth-child(2) {
-      overflow: hidden;
-      text-overflow: ellipsis;
+      overflow: visible;
       white-space: nowrap;
-      max-width: 200px;
+      flex-shrink: 1;
+      min-width: 0;
+    }
+    @media (max-width: 1400px) {
+      .user-dropdown-trigger span:nth-child(2) {
+        max-width: 300px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
     }
     @media (max-width: 1200px) {
       .user-dropdown-trigger span:nth-child(2) {
-        max-width: 150px;
+        max-width: 250px;
       }
     }
     @media (max-width: 992px) {
       .user-dropdown-trigger span:nth-child(2) {
-        max-width: 120px;
+        max-width: 200px;
       }
     }
     @media (max-width: 768px) {
