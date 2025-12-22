@@ -121,7 +121,10 @@ if ($conn) {
     header .user-info,
     body > header .user-info,
     header .user-info[style],
-    body > header .user-info[style] {
+    body > header .user-info[style],
+    div.user-info,
+    header div.user-info,
+    body > header div.user-info {
       display: flex !important;
       visibility: visible !important;
       opacity: 1 !important;
@@ -141,6 +144,9 @@ if ($conn) {
       right: auto !important;
       top: auto !important;
       bottom: auto !important;
+      height: auto !important;
+      min-height: fit-content !important;
+      max-height: none !important;
     }
     
     /* CRITICAL: Force user-dropdown-trigger to always be visible */
@@ -148,7 +154,10 @@ if ($conn) {
     header .user-dropdown-trigger,
     body > header .user-dropdown-trigger,
     header .user-dropdown-trigger[style],
-    body > header .user-dropdown-trigger[style] {
+    body > header .user-dropdown-trigger[style],
+    div.user-dropdown-trigger,
+    header div.user-dropdown-trigger,
+    body > header div.user-dropdown-trigger {
       display: flex !important;
       visibility: visible !important;
       opacity: 1 !important;
@@ -159,6 +168,9 @@ if ($conn) {
       clip: auto !important;
       clip-path: none !important;
       transform: none !important;
+      height: auto !important;
+      min-height: fit-content !important;
+      max-height: none !important;
     }
     
     /* CRITICAL: Force all spans inside user-dropdown-trigger to be visible */
@@ -333,7 +345,7 @@ if ($conn) {
     header .logo[style] {
       min-width: 0 !important;
       flex: 0 1 auto !important;
-      max-width: 40% !important;
+      max-width: 30% !important;
       overflow: visible !important;
     }
     body > header .logo a,
@@ -393,9 +405,13 @@ if ($conn) {
       header[style] {
         overflow: visible !important;
         max-width: 100vw !important;
+        display: flex !important;
+        justify-content: space-between !important;
       }
       body > header .user-info,
-      header .user-info[style] {
+      header .user-info[style],
+      body > header div.user-info,
+      header div.user-info[style] {
         display: flex !important;
         visibility: visible !important;
         opacity: 1 !important;
@@ -421,7 +437,7 @@ if ($conn) {
       body > header .logo,
       header .logo[style] {
         flex: 0 1 auto !important;
-        max-width: 40% !important;
+        max-width: 30% !important;
         min-width: 0 !important;
         order: 1 !important;
       }
@@ -486,7 +502,7 @@ if ($conn) {
       }
       body > header .logo,
       header .logo[style] {
-        max-width: 40% !important;
+        max-width: 30% !important;
       }
       body > header .logo img,
       header .logo img[style] {
@@ -820,7 +836,7 @@ if ($conn) {
 </head>
 <body>
     <header style="overflow: visible !important; z-index: 9999 !important; position: relative !important; padding: 10px 15px !important; display: flex !important; justify-content: space-between !important; align-items: center !important; width: 100% !important; max-width: 100vw !important; box-sizing: border-box !important; gap: 10px !important;">
-        <div class="logo" style="flex-shrink: 1 !important; order: 1 !important; min-width: 0 !important; flex: 0 1 auto !important; max-width: 40% !important; overflow: hidden !important;">
+        <div class="logo" style="flex-shrink: 1 !important; order: 1 !important; min-width: 0 !important; flex: 0 1 auto !important; max-width: 30% !important; overflow: hidden !important;">
             <a href="finance_dashboard.php" style="display: flex !important; align-items: center !important; text-decoration: none !important; color: inherit !important; gap: 6px !important; min-width: 0 !important;">
                 <img src="../images/pnmc.png" alt="PNG Maritime College Logo" class="logo-img" style="width: auto !important; height: 32px !important; max-width: 45px !important; object-fit: contain !important; flex-shrink: 0 !important;">
                 <span style="white-space: nowrap !important; font-size: 0.85rem !important; overflow: hidden !important; text-overflow: ellipsis !important; min-width: 0 !important; flex-shrink: 1 !important;">Finance Dashboard</span>
