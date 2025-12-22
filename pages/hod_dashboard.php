@@ -122,6 +122,61 @@ $pending_applications = getPendingApplicationsForDepartment('hod', 'hod_review')
       overflow: visible !important;
       padding: 10px 20px !important;
       position: relative !important;
+      min-height: 50px !important;
+    }
+    
+    /* CRITICAL: Force user-info to always be visible - override ALL possible hiding rules */
+    .user-info,
+    header .user-info,
+    body > header .user-info,
+    header .user-info[style],
+    body > header .user-info[style] {
+      display: flex !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+      position: relative !important;
+      z-index: 10000 !important;
+      flex: 0 0 auto !important;
+      flex-shrink: 0 !important;
+      min-width: fit-content !important;
+      max-width: none !important;
+      width: auto !important;
+      margin-left: auto !important;
+      overflow: visible !important;
+      clip: auto !important;
+      clip-path: none !important;
+      transform: none !important;
+      left: auto !important;
+      right: auto !important;
+      top: auto !important;
+      bottom: auto !important;
+    }
+    
+    /* CRITICAL: Force user-dropdown-trigger to always be visible */
+    .user-dropdown-trigger,
+    header .user-dropdown-trigger,
+    body > header .user-dropdown-trigger,
+    header .user-dropdown-trigger[style],
+    body > header .user-dropdown-trigger[style] {
+      display: flex !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+      width: auto !important;
+      min-width: fit-content !important;
+      flex-shrink: 0 !important;
+      position: relative !important;
+      clip: auto !important;
+      clip-path: none !important;
+      transform: none !important;
+    }
+    
+    /* CRITICAL: Force all spans inside user-dropdown-trigger to be visible */
+    .user-dropdown-trigger span,
+    header .user-dropdown-trigger span,
+    body > header .user-dropdown-trigger span {
+      display: inline-block !important;
+      visibility: visible !important;
+      opacity: 1 !important;
     }
     body > header .logo,
     header .logo[style] {
