@@ -909,6 +909,35 @@ $pending_applications = getPendingApplicationsForDepartment('hod', 'hod_review')
         opacity: 1 !important;
       }
       
+      /* Profile details section - ensure it's always visible on mobile */
+      .user-dropdown > div:first-child {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        padding: 12px 16px !important;
+        border-bottom: 1px solid #eee !important;
+        background: white !important;
+      }
+      
+      .user-dropdown > div:first-child > div:first-child {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        font-weight: 600 !important;
+        color: #333 !important;
+        font-size: 0.95rem !important;
+      }
+      
+      .user-dropdown > div:first-child > div:last-child {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        font-size: 0.85rem !important;
+        color: #666 !important;
+        margin-top: 4px !important;
+      }
+      
+      /* Logout button - ensure it's always visible and clickable on mobile */
       .user-dropdown a[href*="logout"],
       .user-dropdown #logout-link {
         display: block !important;
@@ -923,11 +952,14 @@ $pending_applications = getPendingApplicationsForDepartment('hod', 'hod_review')
         position: relative !important;
         width: 100% !important;
         box-sizing: border-box !important;
+        cursor: pointer !important;
+        -webkit-tap-highlight-color: rgba(220, 53, 69, 0.2) !important;
       }
       
       .user-dropdown > div {
         display: block !important;
         visibility: visible !important;
+        opacity: 1 !important;
       }
     }
     
@@ -937,6 +969,20 @@ $pending_applications = getPendingApplicationsForDepartment('hod', 'hod_review')
         max-width: calc(100vw - 20px) !important;
       }
       
+      /* Profile details on small mobile */
+      .user-dropdown > div:first-child {
+        padding: 10px 14px !important;
+      }
+      
+      .user-dropdown > div:first-child > div:first-child {
+        font-size: 0.9rem !important;
+      }
+      
+      .user-dropdown > div:first-child > div:last-child {
+        font-size: 0.8rem !important;
+      }
+      
+      /* Logout button on small mobile */
       .user-dropdown a[href*="logout"],
       .user-dropdown #logout-link {
         padding: 12px 14px !important;
