@@ -169,12 +169,17 @@ $user_name = $_SESSION['name'] ?? 'User';
         height: 600px;
         max-height: 80vh;
         display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
     }
     
     .chatbot-window.active {
         display: flex !important;
         visibility: visible !important;
         opacity: 1 !important;
+        pointer-events: auto !important;
+        z-index: 99999 !important;
     }
 }
 
@@ -186,12 +191,18 @@ $user_name = $_SESSION['name'] ?? 'User';
         max-height: 85vh;
         bottom: 90px;
         right: 0;
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
     }
     
     .chatbot-window.active {
         display: flex !important;
         visibility: visible !important;
         opacity: 1 !important;
+        pointer-events: auto !important;
+        z-index: 99999 !important;
     }
 }
 
@@ -202,12 +213,18 @@ $user_name = $_SESSION['name'] ?? 'User';
         max-height: 85vh;
         bottom: 100px;
         right: 0;
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
     }
     
     .chatbot-window.active {
         display: flex !important;
         visibility: visible !important;
         opacity: 1 !important;
+        pointer-events: auto !important;
+        z-index: 99999 !important;
     }
 }
 
