@@ -828,18 +828,26 @@ $user_name = $_SESSION['name'] ?? 'User';
             if (isActive) {
                 // Close chatbot
                 chatbotWindow.classList.remove('active');
-                chatbotWindow.style.display = 'none';
-                chatbotWindow.style.visibility = 'hidden';
-                chatbotWindow.style.opacity = '0';
-                chatbotWindow.style.pointerEvents = 'none';
+                chatbotWindow.style.setProperty('display', 'none', 'important');
+                chatbotWindow.style.setProperty('visibility', 'hidden', 'important');
+                chatbotWindow.style.setProperty('opacity', '0', 'important');
+                chatbotWindow.style.setProperty('pointer-events', 'none', 'important');
             } else {
                 // Open chatbot
                 chatbotWindow.classList.add('active');
-                chatbotWindow.style.display = 'flex';
-                chatbotWindow.style.visibility = 'visible';
-                chatbotWindow.style.opacity = '1';
-                chatbotWindow.style.pointerEvents = 'auto';
-                chatbotWindow.style.zIndex = '99999';
+                chatbotWindow.style.setProperty('display', 'flex', 'important');
+                chatbotWindow.style.setProperty('visibility', 'visible', 'important');
+                chatbotWindow.style.setProperty('opacity', '1', 'important');
+                chatbotWindow.style.setProperty('pointer-events', 'auto', 'important');
+                chatbotWindow.style.setProperty('z-index', '99999', 'important');
+                
+                // Ensure proper positioning on desktop
+                if (window.innerWidth >= 768) {
+                    chatbotWindow.style.setProperty('position', 'absolute', 'important');
+                    chatbotWindow.style.setProperty('bottom', window.innerWidth >= 1440 ? '100px' : (window.innerWidth >= 1200 ? '90px' : '80px'), 'important');
+                    chatbotWindow.style.setProperty('right', '0', 'important');
+                    chatbotWindow.style.setProperty('left', 'auto', 'important');
+                }
                 
                 // Focus on input when opening
                 const input = document.getElementById('chatbot-input');
