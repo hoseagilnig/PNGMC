@@ -100,51 +100,77 @@ if ($conn) {
       overflow: visible !important;
       gap: 15px !important;
     }
+    /* Force header layout with !important to override external CSS */
+    header {
+      display: flex !important;
+      justify-content: space-between !important;
+      align-items: center !important;
+      gap: 15px !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+      overflow: visible !important;
+    }
     header .logo {
-      min-width: 0;
-      flex: 1 1 auto;
-      max-width: 50%;
-      overflow: visible;
+      min-width: 0 !important;
+      flex: 1 1 auto !important;
+      max-width: 50% !important;
+      overflow: visible !important;
     }
     header .logo a {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      min-width: 0;
+      display: flex !important;
+      align-items: center !important;
+      gap: 8px !important;
+      min-width: 0 !important;
+      overflow: visible !important;
     }
     header .logo img {
-      flex-shrink: 0;
-      width: auto;
-      height: 35px;
-      max-width: 50px;
-      object-fit: contain;
+      flex-shrink: 0 !important;
+      width: auto !important;
+      height: 35px !important;
+      max-width: 50px !important;
+      object-fit: contain !important;
     }
     header .logo span {
-      overflow: visible;
-      text-overflow: clip;
-      white-space: nowrap;
-      font-size: 0.9rem;
-      flex-shrink: 1;
+      overflow: visible !important;
+      text-overflow: clip !important;
+      white-space: nowrap !important;
+      font-size: 0.9rem !important;
+      flex-shrink: 1 !important;
+      display: inline-block !important;
+    }
+    header .user-info {
+      flex: 0 0 auto !important;
+      min-width: fit-content !important;
+      flex-shrink: 0 !important;
+      overflow: visible !important;
+    }
+    .user-dropdown-trigger span:nth-child(2) {
+      overflow: visible !important;
+      white-space: nowrap !important;
+      flex-shrink: 0 !important;
+      min-width: fit-content !important;
+      max-width: none !important;
+      display: inline-block !important;
     }
     @media (max-width: 1400px) {
       header .logo span {
-        font-size: 0.85rem;
+        font-size: 0.85rem !important;
       }
     }
     @media (max-width: 1200px) {
       header .logo {
-        max-width: 45%;
+        max-width: 45% !important;
       }
       header .logo span {
-        font-size: 0.8rem;
+        font-size: 0.8rem !important;
       }
     }
     @media (max-width: 992px) {
       header .logo {
-        max-width: 40%;
+        max-width: 40% !important;
       }
       header .logo span {
-        font-size: 0.75rem;
+        font-size: 0.75rem !important;
       }
     }
     header .user-info {
