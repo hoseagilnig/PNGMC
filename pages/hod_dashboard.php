@@ -117,15 +117,17 @@ $pending_applications = getPendingApplicationsForDepartment('hod', 'hod_review')
       align-items: center !important;
       gap: 15px !important;
       width: 100% !important;
+      max-width: 100vw !important;
       box-sizing: border-box !important;
       overflow: visible !important;
       padding: 10px 20px !important;
+      position: relative !important;
     }
     body > header .logo,
     header .logo[style] {
       min-width: 0 !important;
-      flex: 1 1 auto !important;
-      max-width: 50% !important;
+      flex: 0 1 auto !important;
+      max-width: 40% !important;
       overflow: visible !important;
     }
     body > header .logo a,
@@ -181,6 +183,11 @@ $pending_applications = getPendingApplicationsForDepartment('hod', 'hod_review')
     
     /* Ensure user-info is always visible on desktop/laptop screens */
     @media (min-width: 768px) {
+      body > header,
+      header[style] {
+        overflow: visible !important;
+        max-width: 100vw !important;
+      }
       body > header .user-info,
       header .user-info[style] {
         display: flex !important;
@@ -194,6 +201,7 @@ $pending_applications = getPendingApplicationsForDepartment('hod', 'hod_review')
         max-width: none !important;
         width: auto !important;
         margin-left: auto !important;
+        order: 999 !important;
       }
       body > header .user-dropdown-trigger,
       header .user-dropdown-trigger[style] {
@@ -202,12 +210,14 @@ $pending_applications = getPendingApplicationsForDepartment('hod', 'hod_review')
         opacity: 1 !important;
         width: auto !important;
         min-width: fit-content !important;
+        flex-shrink: 0 !important;
       }
       body > header .logo,
       header .logo[style] {
         flex: 0 1 auto !important;
-        max-width: 50% !important;
+        max-width: 40% !important;
         min-width: 0 !important;
+        order: 1 !important;
       }
     }
     body > header .user-dropdown-trigger span:nth-child(2),
