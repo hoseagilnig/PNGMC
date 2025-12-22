@@ -340,6 +340,111 @@ if ($conn) {
   </div>
 
   <script>
+    function toggleUserDropdown(event) {
+      if (event) {
+        event.stopPropagation();
+        event.preventDefault();
+      }
+      
+      const dropdown = document.getElementById('userDropdown');
+      const trigger = document.querySelector('.user-dropdown-trigger');
+      
+      if (!dropdown || !trigger) {
+        console.error('Dropdown or trigger not found');
+        return false;
+      }
+      
+      const isVisible = dropdown.style.display === 'block' || 
+                       (dropdown.style.display === '' && window.getComputedStyle(dropdown).display !== 'none');
+      
+      if (!isVisible) {
+        // Show dropdown
+        dropdown.style.display = 'block';
+        dropdown.style.visibility = 'visible';
+        dropdown.style.opacity = '1';
+        dropdown.style.zIndex = '99999';
+        dropdown.style.overflow = 'visible';
+        dropdown.style.maxHeight = 'none';
+        
+        // Force logout button to be visible
+        const logoutLink = dropdown.querySelector('a[href*="logout"]') || document.getElementById('logout-link');
+        if (logoutLink) {
+          logoutLink.style.display = 'block';
+          logoutLink.style.visibility = 'visible';
+          logoutLink.style.opacity = '1';
+          logoutLink.style.pointerEvents = 'auto';
+          logoutLink.style.zIndex = '100000';
+          logoutLink.style.position = 'relative';
+        }
+        
+        // Position dropdown
+        const rect = trigger.getBoundingClientRect();
+        const dropdownWidth = 220;
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
+        
+        if (window.innerWidth <= 767) {
+          // Mobile: position at bottom
+          dropdown.style.position = 'fixed';
+          dropdown.style.right = '10px';
+          dropdown.style.bottom = '80px';
+          dropdown.style.top = 'auto';
+          dropdown.style.left = 'auto';
+        } else {
+          // Desktop: position below trigger, adjust if goes off-screen
+          dropdown.style.position = 'fixed';
+          dropdown.style.top = (rect.bottom + 5) + 'px';
+          
+          // Check if dropdown would go off right edge
+          if (rect.right + dropdownWidth > viewportWidth - 10) {
+            // Position to the left of trigger
+            dropdown.style.left = Math.max(10, rect.left - dropdownWidth) + 'px';
+            dropdown.style.right = 'auto';
+          } else {
+            // Position to the right of trigger
+            dropdown.style.left = rect.right + 'px';
+            dropdown.style.right = 'auto';
+          }
+          
+          // Check if dropdown would go off bottom
+          const dropdownHeight = dropdown.offsetHeight || 100;
+          if (rect.bottom + dropdownHeight + 10 > viewportHeight) {
+            dropdown.style.top = Math.max(10, rect.top - dropdownHeight) + 'px';
+          }
+        }
+        
+        dropdown.style.transform = 'none';
+        dropdown.style.marginTop = '0';
+      } else {
+        // Hide dropdown
+        dropdown.style.display = 'none';
+        dropdown.style.visibility = 'hidden';
+        dropdown.style.opacity = '0';
+      }
+      
+      return false;
+    }
+    
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(event) {
+      const dropdown = document.getElementById('userDropdown');
+      const trigger = document.querySelector('.user-dropdown-trigger');
+      const logoutLink = document.getElementById('logout-link');
+      
+      if (!dropdown) return;
+      
+      // Don't close if clicking on trigger, dropdown, or logout link
+      const clickedInside = (trigger && trigger.contains(event.target)) || 
+                           dropdown.contains(event.target) ||
+                           (logoutLink && (event.target === logoutLink || logoutLink.contains(event.target)));
+      
+      if (!clickedInside && dropdown.style.display === 'block') {
+        dropdown.style.display = 'none';
+        dropdown.style.visibility = 'hidden';
+        dropdown.style.opacity = '0';
+      }
+    });
+
     function archiveStudent(studentId) {
       document.getElementById('archive_student_id').value = studentId;
       document.getElementById('archiveModal').style.display = 'block';
