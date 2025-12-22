@@ -523,7 +523,7 @@ if ($conn) {
         max-width: none !important;
         width: auto !important;
         margin-left: auto !important;
-        margin-right: 180px !important;
+        margin-right: 240px !important;
         order: 999 !important;
       }
       body > header .user-dropdown-trigger,
@@ -608,7 +608,7 @@ if ($conn) {
       header .user-info[style],
       body > header div.user-info,
       header div.user-info[style] {
-        margin-right: 180px !important;
+        margin-right: 240px !important;
       }
     }
     
