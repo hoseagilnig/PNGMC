@@ -86,6 +86,27 @@ if ($conn) {
   <link rel="stylesheet" href="../css/d_styles.css">
   <link rel="stylesheet" href="../css/responsive.css">
   <style>
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.8; transform: scale(1.05); }
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    .notification-badge {
+      animation: pulse 2s infinite;
+      display: inline-block;
+    }
+    .highlight-menu-item {
+      background: #e7f3ff !important;
+      border-left: 4px solid #1d4e89 !important;
+      font-weight: 600 !important;
+      color: #1d4e89 !important;
+    }
+    .alert-banner {
+      animation: blink 3s infinite;
+    }
     .user-dropdown {
       animation: fadeIn 0.2s ease-in;
     }
@@ -699,6 +720,212 @@ if ($conn) {
       }
       .user-dropdown-trigger span:nth-child(2) {
         display: none;
+      }
+    }
+    
+    header .logo {
+      order: 1 !important;
+      flex-shrink: 0 !important;
+      margin-right: auto !important;
+    }
+    
+    header .user-info {
+      overflow: visible !important;
+      flex-shrink: 0 !important;
+      order: 3 !important;
+      margin-left: auto !important;
+    }
+    
+    header .menu-toggle {
+      order: 2 !important;
+      flex-shrink: 0 !important;
+    }
+    
+    /* Prevent notification bubbles from taking too much space */
+    .user-info > div:first-child {
+      flex-shrink: 0 !important;
+    }
+    
+    .notification-bubble {
+      flex-shrink: 0 !important;
+      width: 40px !important;
+      height: 40px !important;
+    }
+    
+    /* Ensure dropdown has space and doesn't overlap */
+    .user-dropdown {
+      overflow: visible !important;
+      z-index: 99999 !important;
+      right: 0 !important;
+      left: auto !important;
+    }
+    
+    /* On smaller screens, position dropdown to the left if needed */
+    @media (max-width: 1200px) {
+      .user-dropdown {
+        right: auto !important;
+        left: 0 !important;
+        transform: translateX(-100%) !important;
+      }
+    }
+    
+    .user-dropdown a[href*="logout"] {
+      display: block !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+      pointer-events: auto !important;
+      z-index: 100000 !important;
+      min-height: 44px !important;
+      padding: 14px 16px !important;
+    }
+    
+    /* Ensure menu toggle doesn't overlap */
+    .menu-toggle {
+      flex-shrink: 0 !important;
+      margin-left: 10px !important;
+    }
+    
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    @keyframes slideInBounce {
+      0% {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.95);
+      }
+      60% {
+        opacity: 1;
+        transform: translateY(5px) scale(1.02);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+    @keyframes bounce {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-8px);
+      }
+    }
+    .notification-banner {
+      transition: all 0.3s ease;
+    }
+    .notification-banner:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15), 0 2px 6px rgba(0,0,0,0.1) !important;
+    }
+    
+    /* Responsive styles for notification bubbles */
+    @media (max-width: 768px) {
+      .user-info {
+        gap: 10px !important;
+      }
+      .notification-bubble {
+        width: 40px !important;
+        height: 40px !important;
+      }
+      .notification-bubble span:first-child {
+        font-size: 1.3rem !important;
+      }
+      .bubble-count {
+        min-width: 18px !important;
+        height: 18px !important;
+        font-size: 0.65rem !important;
+        top: -3px !important;
+        right: -3px !important;
+      }
+      .user-dropdown-trigger span:nth-child(2) {
+        display: none;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .notification-bubble {
+        width: 38px !important;
+        height: 38px !important;
+      }
+      .notification-bubble span:first-child {
+        font-size: 1.2rem !important;
+      }
+      .bubble-count {
+        min-width: 16px !important;
+        height: 16px !important;
+        font-size: 0.6rem !important;
+        padding: 0 4px !important;
+      }
+    }
+    
+    /* Responsive styles for notification banners */
+    @media (max-width: 768px) {
+      .notification-banner {
+        padding: 15px !important;
+        margin-bottom: 15px !important;
+        border-radius: 10px !important;
+      }
+      .notification-banner .banner-content {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 12px !important;
+      }
+      .notification-banner .banner-icon {
+        font-size: 2.5rem !important;
+      }
+      .notification-banner .banner-text {
+        width: 100% !important;
+      }
+      .notification-banner .banner-header {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 8px !important;
+        margin-bottom: 10px !important;
+      }
+      .notification-banner .banner-text strong {
+        font-size: 1.1rem !important;
+        line-height: 1.4 !important;
+      }
+      .notification-banner .banner-text p {
+        font-size: 0.9rem !important;
+      }
+      .notification-banner .banner-button {
+        width: 100% !important;
+        justify-content: center !important;
+        padding: 12px 20px !important;
+        font-size: 0.9rem !important;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .notification-banner {
+        padding: 12px !important;
+        border-radius: 8px !important;
+        border-left-width: 4px !important;
+      }
+      .notification-banner .banner-icon {
+        font-size: 2rem !important;
+      }
+      .notification-banner .banner-text strong {
+        font-size: 1rem !important;
+      }
+      .notification-banner .banner-text p {
+        font-size: 0.85rem !important;
+      }
+      .notification-banner .banner-button {
+        padding: 10px 16px !important;
+        font-size: 0.85rem !important;
+      }
+      .notification-banner .banner-header span {
+        font-size: 0.7rem !important;
+        padding: 3px 8px !important;
       }
     }
   </style>
