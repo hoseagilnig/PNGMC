@@ -1320,15 +1320,46 @@ header .login-btn {
 
 /* Force user-info to always be visible */
 header .user-info,
-body > header .user-info {
+body > header .user-info,
+.user-info {
   display: flex !important;
   visibility: visible !important;
   opacity: 1 !important;
+  position: relative !important;
+  z-index: 10000 !important;
+  flex: 0 0 auto !important;
+  flex-shrink: 0 !important;
+  min-width: fit-content !important;
+  max-width: none !important;
+  width: auto !important;
+  margin-left: auto !important;
+  overflow: visible !important;
+  clip: auto !important;
+  clip-path: none !important;
+  transform: none !important;
 }
 
 /* Force user-dropdown-trigger to always be visible */
-.user-dropdown-trigger {
+.user-dropdown-trigger,
+header .user-dropdown-trigger,
+body > header .user-dropdown-trigger {
   display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  width: auto !important;
+  min-width: fit-content !important;
+  flex-shrink: 0 !important;
+  position: relative !important;
+  clip: auto !important;
+  clip-path: none !important;
+  transform: none !important;
+}
+
+/* Force all spans inside user-dropdown-trigger to be visible */
+.user-dropdown-trigger span,
+header .user-dropdown-trigger span,
+body > header .user-dropdown-trigger span {
+  display: inline-block !important;
   visibility: visible !important;
   opacity: 1 !important;
 }
