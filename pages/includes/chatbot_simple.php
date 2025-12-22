@@ -98,12 +98,18 @@ $user_name = $_SESSION['name'] ?? 'User';
     display: flex !important;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
+    cursor: pointer !important;
     box-shadow: 0 4px 15px rgba(29, 78, 137, 0.4);
     transition: all 0.3s ease;
     color: white;
     visibility: visible !important;
     opacity: 1 !important;
+    pointer-events: auto !important;
+    z-index: 99999 !important;
+    position: relative !important;
+    -webkit-user-select: none !important;
+    user-select: none !important;
+    -webkit-tap-highlight-color: transparent !important;
 }
 
 @media (min-width: 768px) {
@@ -822,41 +828,64 @@ $user_name = $_SESSION['name'] ?? 'User';
     
     // Toggle chatbot
     function toggleChatbot() {
+        console.log('toggleChatbot function called');
         const chatbotWindow = document.getElementById('chatbot-window');
-        if (chatbotWindow) {
-            const isActive = chatbotWindow.classList.contains('active');
-            if (isActive) {
-                // Close chatbot
-                chatbotWindow.classList.remove('active');
-                chatbotWindow.style.setProperty('display', 'none', 'important');
-                chatbotWindow.style.setProperty('visibility', 'hidden', 'important');
-                chatbotWindow.style.setProperty('opacity', '0', 'important');
-                chatbotWindow.style.setProperty('pointer-events', 'none', 'important');
+        if (!chatbotWindow) {
+            console.error('Chatbot window element not found!');
+            return;
+        }
+        
+        const isActive = chatbotWindow.classList.contains('active');
+        console.log('Current state - isActive:', isActive, 'Window width:', window.innerWidth);
+        
+        if (isActive) {
+            // Close chatbot
+            console.log('Closing chatbot...');
+            chatbotWindow.classList.remove('active');
+            chatbotWindow.style.setProperty('display', 'none', 'important');
+            chatbotWindow.style.setProperty('visibility', 'hidden', 'important');
+            chatbotWindow.style.setProperty('opacity', '0', 'important');
+            chatbotWindow.style.setProperty('pointer-events', 'none', 'important');
+        } else {
+            // Open chatbot
+            console.log('Opening chatbot...');
+            chatbotWindow.classList.add('active');
+            chatbotWindow.style.setProperty('display', 'flex', 'important');
+            chatbotWindow.style.setProperty('visibility', 'visible', 'important');
+            chatbotWindow.style.setProperty('opacity', '1', 'important');
+            chatbotWindow.style.setProperty('pointer-events', 'auto', 'important');
+            chatbotWindow.style.setProperty('z-index', '99999', 'important');
+            
+            // Ensure proper positioning on desktop
+            if (window.innerWidth >= 768) {
+                console.log('Setting desktop positioning...');
+                chatbotWindow.style.setProperty('position', 'absolute', 'important');
+                const bottomValue = window.innerWidth >= 1440 ? '100px' : (window.innerWidth >= 1200 ? '90px' : '80px');
+                chatbotWindow.style.setProperty('bottom', bottomValue, 'important');
+                chatbotWindow.style.setProperty('right', '0', 'important');
+                chatbotWindow.style.setProperty('left', 'auto', 'important');
+                chatbotWindow.style.setProperty('width', window.innerWidth >= 1440 ? '450px' : (window.innerWidth >= 1200 ? '420px' : '380px'), 'important');
             } else {
-                // Open chatbot
-                chatbotWindow.classList.add('active');
-                chatbotWindow.style.setProperty('display', 'flex', 'important');
-                chatbotWindow.style.setProperty('visibility', 'visible', 'important');
-                chatbotWindow.style.setProperty('opacity', '1', 'important');
-                chatbotWindow.style.setProperty('pointer-events', 'auto', 'important');
-                chatbotWindow.style.setProperty('z-index', '99999', 'important');
-                
-                // Ensure proper positioning on desktop
-                if (window.innerWidth >= 768) {
-                    chatbotWindow.style.setProperty('position', 'absolute', 'important');
-                    chatbotWindow.style.setProperty('bottom', window.innerWidth >= 1440 ? '100px' : (window.innerWidth >= 1200 ? '90px' : '80px'), 'important');
-                    chatbotWindow.style.setProperty('right', '0', 'important');
-                    chatbotWindow.style.setProperty('left', 'auto', 'important');
-                }
-                
-                // Focus on input when opening
-                const input = document.getElementById('chatbot-input');
-                if (input) {
-                    setTimeout(function() {
-                        input.focus();
-                    }, 100);
-                }
+                // Mobile positioning
+                chatbotWindow.style.setProperty('position', 'fixed', 'important');
+                chatbotWindow.style.setProperty('bottom', '70px', 'important');
+                chatbotWindow.style.setProperty('right', '15px', 'important');
+                chatbotWindow.style.setProperty('left', '15px', 'important');
+                chatbotWindow.style.setProperty('width', 'auto', 'important');
             }
+            
+            // Force a reflow to ensure styles are applied
+            chatbotWindow.offsetHeight;
+            
+            // Focus on input when opening
+            const input = document.getElementById('chatbot-input');
+            if (input) {
+                setTimeout(function() {
+                    input.focus();
+                }, 100);
+            }
+            
+            console.log('Chatbot window should now be visible');
         }
     }
     
@@ -917,20 +946,37 @@ $user_name = $_SESSION['name'] ?? 'User';
             const newToggle = toggle.cloneNode(true);
             toggle.parentNode.replaceChild(newToggle, toggle);
             
-            // Attach multiple event handlers for reliability
-            newToggle.onclick = function(e) {
+            // Ensure toggle button is clickable
+            newToggle.style.setProperty('cursor', 'pointer', 'important');
+            newToggle.style.setProperty('pointer-events', 'auto', 'important');
+            newToggle.style.setProperty('z-index', '99999', 'important');
+            
+            // Function to handle toggle
+            function handleToggle(e) {
+                if (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    e.stopImmediatePropagation();
+                }
+                console.log('Chatbot toggle clicked - Desktop:', window.innerWidth >= 768);
+                toggleChatbot();
+                return false;
+            }
+            
+            // Attach multiple event handlers for reliability (desktop)
+            newToggle.onclick = handleToggle;
+            newToggle.onmousedown = function(e) {
                 e.preventDefault();
                 e.stopPropagation();
-                e.stopImmediatePropagation();
-                toggleChatbot();
+                handleToggle(e);
                 return false;
             };
             
-            newToggle.addEventListener('click', function(e) {
+            newToggle.addEventListener('click', handleToggle, true);
+            newToggle.addEventListener('mousedown', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
-                e.stopImmediatePropagation();
-                toggleChatbot();
+                handleToggle(e);
                 return false;
             }, true);
             
@@ -938,9 +984,20 @@ $user_name = $_SESSION['name'] ?? 'User';
             newToggle.addEventListener('touchend', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
-                toggleChatbot();
+                handleToggle(e);
                 return false;
             }, { passive: false });
+            
+            // Also add mouseup as backup for desktop
+            newToggle.addEventListener('mouseup', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                handleToggle(e);
+                return false;
+            }, true);
+            
+            // Debug: Log when toggle is ready
+            console.log('Chatbot toggle button initialized - Desktop:', window.innerWidth >= 768);
         }
         
         // Close button
