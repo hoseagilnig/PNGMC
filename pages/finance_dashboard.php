@@ -842,7 +842,7 @@ if ($conn) {
                 <span style="white-space: nowrap !important; font-size: 0.85rem !important; overflow: hidden !important; text-overflow: ellipsis !important; min-width: 0 !important; flex-shrink: 1 !important;">Finance Dashboard</span>
             </a>
         </div>
-        <div class="user-info" style="position: relative !important; display: flex !important; align-items: center !important; gap: 8px !important; z-index: 10000 !important; flex-shrink: 0 !important; order: 3 !important; margin-left: auto !important; min-width: fit-content !important; flex: 0 0 auto !important;">
+        <div class="user-info" style="position: relative !important; display: flex !important; align-items: center !important; gap: 8px !important; overflow: visible !important; z-index: 10000 !important; flex-shrink: 0 !important; order: 3 !important; margin-left: auto !important; min-width: fit-content !important; flex: 0 0 auto !important;">
             <?php if ($notification_count > 0): ?>
               <a href="workflow_manager.php" class="notification-bubble workflow-bubble" style="position: relative; display: flex; align-items: center; justify-content: center; width: 45px; height: 45px; background: linear-gradient(135deg, #f57c00 0%, #e65100 100%); border-radius: 50%; text-decoration: none; box-shadow: 0 4px 12px rgba(245, 124, 0, 0.4), 0 2px 4px rgba(0,0,0,0.2); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); animation: pulse-bubble 2s infinite; z-index: 100;" onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='0 6px 20px rgba(245, 124, 0, 0.6), 0 2px 6px rgba(0,0,0,0.3)';" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(245, 124, 0, 0.4), 0 2px 4px rgba(0,0,0,0.2)';" onclick="event.preventDefault(); window.location.href='workflow_manager.php'; return false;">
                 <span style="font-size: 1.5rem; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2)); pointer-events: none;">📬</span>
@@ -851,20 +851,21 @@ if ($conn) {
             <?php endif; ?>
             
             <!-- User Profile Dropdown -->
-            <div style="position: relative;">
+            <div style="position: relative !important; z-index: 10000 !important; overflow: visible !important; flex-shrink: 0 !important;">
                 <div class="user-dropdown-trigger" style="cursor: pointer !important; display: flex !important; align-items: center !important; gap: 5px !important; padding: 5px 8px !important; border-radius: 5px !important; transition: background 0.2s !important; white-space: nowrap !important; flex-shrink: 0 !important;" onclick="toggleUserDropdown(event); return false;" onmouseover="this.style.background='#e9ecef'" onmouseout="this.style.background='transparent'">
                     <span style="flex-shrink: 0 !important;">👤</span>
                     <span style="white-space: nowrap !important; overflow: visible !important; flex-shrink: 0 !important; min-width: fit-content !important; font-size: 0.85rem !important;">Logged in as <strong><?php echo htmlspecialchars($_SESSION['name']); ?></strong></span>
                     <span style="font-size: 0.7rem !important; flex-shrink: 0 !important;">▼</span>
                 </div>
-            <div id="userDropdown" class="user-dropdown" style="display: none !important; position: fixed !important; background: white !important; border: 1px solid #ddd !important; border-radius: 8px !important; box-shadow: 0 8px 24px rgba(0,0,0,0.25) !important; min-width: 200px !important; z-index: 99999 !important; overflow: visible !important; max-height: none !important;">
-                <div style="padding: 12px 16px !important; border-bottom: 1px solid #eee !important;">
-                    <div style="font-weight: 600 !important; color: #333 !important;"><?php echo htmlspecialchars($_SESSION['name']); ?></div>
-                    <div style="font-size: 0.85rem !important; color: #666 !important; margin-top: 4px !important;"><?php echo ucfirst($_SESSION['role']); ?> User</div>
-                </div>
-                <a href="logout.php" id="logout-link" style="display: block !important; padding: 14px 16px !important; color: #dc3545 !important; text-decoration: none !important; transition: background 0.2s !important; min-height: 44px !important; line-height: 1.4 !important; position: relative !important; z-index: 100000 !important; visibility: visible !important; opacity: 1 !important; pointer-events: auto !important;" onmouseover="this.style.background='#f8f9fa'" onmouseout="this.style.background='white'" onclick="event.stopPropagation();">
+                <div id="userDropdown" class="user-dropdown" style="display: none !important; position: fixed !important; background: white !important; border: 1px solid #ddd !important; border-radius: 8px !important; box-shadow: 0 8px 24px rgba(0,0,0,0.25) !important; min-width: 200px !important; z-index: 99999 !important; overflow: visible !important; max-height: none !important;">
+                    <div style="padding: 12px 16px !important; border-bottom: 1px solid #eee !important;">
+                        <div style="font-weight: 600 !important; color: #333 !important;"><?php echo htmlspecialchars($_SESSION['name']); ?></div>
+                        <div style="font-size: 0.85rem !important; color: #666 !important; margin-top: 4px !important;"><?php echo ucfirst($_SESSION['role']); ?> User</div>
+                    </div>
+                    <a href="logout.php" id="logout-link" style="display: block !important; padding: 14px 16px !important; color: #dc3545 !important; text-decoration: none !important; transition: background 0.2s !important; min-height: 44px !important; line-height: 1.4 !important; position: relative !important; z-index: 100000 !important; visibility: visible !important; opacity: 1 !important; pointer-events: auto !important;" onmouseover="this.style.background='#f8f9fa'" onmouseout="this.style.background='white'" onclick="event.stopPropagation();">
                         🚪 Logout
                     </a>
+                </div>
             </div>
         </div>
         <?php echo getMobileMenuToggle(); ?>
