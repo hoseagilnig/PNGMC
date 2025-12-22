@@ -207,13 +207,13 @@ $user_name = $_SESSION['name'] ?? 'User';
 }
 
 /* Ensure chatbot window works on workstation and laptop views */
-@media (min-width: 1200px) {
+@media (min-width: 1200px) and (max-width: 1439px) {
     .chatbot-window {
-        width: 420px !important;
-        min-width: 420px !important;
-        max-width: 420px !important;
-        height: 650px !important;
-        max-height: 85vh;
+        width: 360px !important;
+        min-width: 360px !important;
+        max-width: 360px !important;
+        height: 550px !important;
+        max-height: 75vh;
         bottom: 90px;
         right: 25px;
         position: fixed !important;
@@ -230,9 +230,9 @@ $user_name = $_SESSION['name'] ?? 'User';
         pointer-events: auto !important;
         z-index: 99999 !important;
         position: fixed !important;
-        width: 420px !important;
-        min-width: 420px !important;
-        max-width: 420px !important;
+        width: 360px !important;
+        min-width: 360px !important;
+        max-width: 360px !important;
     }
 }
 
@@ -903,9 +903,9 @@ $user_name = $_SESSION['name'] ?? 'User';
                     const rightValue = window.innerWidth >= 1440 ? '30px' : (window.innerWidth >= 1200 ? '25px' : '20px');
                     chatbotWindow.style.setProperty('right', rightValue, 'important');
                     chatbotWindow.style.setProperty('left', 'auto', 'important');
-                    const widthValue = window.innerWidth >= 1440 ? '450px' : (window.innerWidth >= 1200 ? '420px' : '380px');
-                    const heightValue = window.innerWidth >= 1440 ? '700px' : (window.innerWidth >= 1200 ? '650px' : '600px');
-                    const maxHeightValue = window.innerWidth >= 1440 ? '85vh' : '80vh';
+                    const widthValue = window.innerWidth >= 1440 ? '450px' : (window.innerWidth >= 1200 ? '360px' : '380px');
+                    const heightValue = window.innerWidth >= 1440 ? '700px' : (window.innerWidth >= 1200 ? '550px' : '600px');
+                    const maxHeightValue = window.innerWidth >= 1440 ? '85vh' : (window.innerWidth >= 1200 ? '75vh' : '80vh');
                     
                     // Set width with multiple methods to ensure it sticks
                     chatbotWindow.style.setProperty('width', widthValue, 'important');
