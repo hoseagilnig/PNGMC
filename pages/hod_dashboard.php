@@ -490,7 +490,7 @@ $pending_applications = getPendingApplicationsForDepartment('hod', 'hod_review')
         max-width: none !important;
         width: auto !important;
         margin-left: auto !important;
-        margin-right: 240px !important;
+        margin-right: 300px !important;
         order: 999 !important;
       }
       body > header .user-dropdown-trigger,
@@ -512,6 +512,16 @@ $pending_applications = getPendingApplicationsForDepartment('hod', 'hod_review')
         overflow: visible !important;
         white-space: nowrap !important;
         max-width: none !important;
+      }
+    }
+    
+    /* Desktop/Laptop (1200px - 1399px) - Add margin for profile */
+    @media (min-width: 1200px) and (max-width: 1399px) {
+      body > header .user-info,
+      header .user-info[style],
+      body > header div.user-info,
+      header div.user-info[style] {
+        margin-right: 180px !important;
       }
     }
     
@@ -598,6 +608,12 @@ $pending_applications = getPendingApplicationsForDepartment('hod', 'hod_review')
         max-width: 300px !important;
         overflow: hidden !important;
         text-overflow: ellipsis !important;
+      }
+      body > header .user-info,
+      header .user-info[style],
+      body > header div.user-info,
+      header div.user-info[style] {
+        margin-right: 180px !important;
       }
     }
     
