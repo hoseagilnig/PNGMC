@@ -1173,23 +1173,30 @@ if ($conn) {
                        (dropdown.style.display === '' && window.getComputedStyle(dropdown).display !== 'none');
       
       if (!isVisible) {
-        // Show dropdown
-        dropdown.style.display = 'block';
-        dropdown.style.visibility = 'visible';
-        dropdown.style.opacity = '1';
-        dropdown.style.zIndex = '99999';
-        dropdown.style.overflow = 'visible';
-        dropdown.style.maxHeight = 'none';
+        // Show dropdown - use setProperty with !important to override inline !important
+        dropdown.style.setProperty('display', 'block', 'important');
+        dropdown.style.setProperty('visibility', 'visible', 'important');
+        dropdown.style.setProperty('opacity', '1', 'important');
+        dropdown.style.setProperty('z-index', '99999', 'important');
+        dropdown.style.setProperty('overflow', 'visible', 'important');
+        dropdown.style.setProperty('max-height', 'none', 'important');
         
         // Force logout button to be visible
         const logoutLink = dropdown.querySelector('a[href*="logout"]') || document.getElementById('logout-link');
         if (logoutLink) {
-          logoutLink.style.display = 'block';
-          logoutLink.style.visibility = 'visible';
-          logoutLink.style.opacity = '1';
-          logoutLink.style.pointerEvents = 'auto';
-          logoutLink.style.zIndex = '100000';
-          logoutLink.style.position = 'relative';
+          logoutLink.style.setProperty('display', 'block', 'important');
+          logoutLink.style.setProperty('visibility', 'visible', 'important');
+          logoutLink.style.setProperty('opacity', '1', 'important');
+          logoutLink.style.setProperty('pointer-events', 'auto', 'important');
+          logoutLink.style.setProperty('z-index', '100000', 'important');
+          logoutLink.style.setProperty('position', 'relative', 'important');
+        }
+        
+        // Ensure dropdown content is visible
+        const dropdownContent = dropdown.querySelector('div');
+        if (dropdownContent) {
+          dropdownContent.style.setProperty('display', 'block', 'important');
+          dropdownContent.style.setProperty('visibility', 'visible', 'important');
         }
         
         // Position dropdown
@@ -1200,29 +1207,37 @@ if ($conn) {
         
         if (window.innerWidth <= 767) {
           // Mobile: position at bottom
-          dropdown.style.position = 'fixed';
-          dropdown.style.right = '10px';
-          dropdown.style.bottom = '80px';
-          dropdown.style.top = 'auto';
-          dropdown.style.left = 'auto';
-          dropdown.style.display = 'block';
-          dropdown.style.visibility = 'visible';
-          dropdown.style.opacity = '1';
-          dropdown.style.zIndex = '99999';
-          dropdown.style.overflow = 'visible';
-          dropdown.style.maxHeight = 'none';
+          dropdown.style.setProperty('position', 'fixed', 'important');
+          dropdown.style.setProperty('right', '10px', 'important');
+          dropdown.style.setProperty('bottom', '80px', 'important');
+          dropdown.style.setProperty('top', 'auto', 'important');
+          dropdown.style.setProperty('left', 'auto', 'important');
+          dropdown.style.setProperty('display', 'block', 'important');
+          dropdown.style.setProperty('visibility', 'visible', 'important');
+          dropdown.style.setProperty('opacity', '1', 'important');
+          dropdown.style.setProperty('z-index', '99999', 'important');
+          dropdown.style.setProperty('overflow', 'visible', 'important');
+          dropdown.style.setProperty('max-height', 'none', 'important');
           
           // Force logout button visibility on mobile
-          const logoutLink = dropdown.querySelector('a[href*="logout"]') || document.getElementById('logout-link');
-          if (logoutLink) {
-            logoutLink.style.display = 'block';
-            logoutLink.style.visibility = 'visible';
-            logoutLink.style.opacity = '1';
-            logoutLink.style.pointerEvents = 'auto';
-            logoutLink.style.zIndex = '100000';
-            logoutLink.style.position = 'relative';
-            logoutLink.style.width = '100%';
-            logoutLink.style.boxSizing = 'border-box';
+          const logoutLinkMobile = dropdown.querySelector('a[href*="logout"]') || document.getElementById('logout-link');
+          if (logoutLinkMobile) {
+            logoutLinkMobile.style.setProperty('display', 'block', 'important');
+            logoutLinkMobile.style.setProperty('visibility', 'visible', 'important');
+            logoutLinkMobile.style.setProperty('opacity', '1', 'important');
+            logoutLinkMobile.style.setProperty('pointer-events', 'auto', 'important');
+            logoutLinkMobile.style.setProperty('z-index', '100000', 'important');
+            logoutLinkMobile.style.setProperty('position', 'relative', 'important');
+            logoutLinkMobile.style.setProperty('width', '100%', 'important');
+            logoutLinkMobile.style.setProperty('box-sizing', 'border-box', 'important');
+          }
+          
+          // Ensure dropdown content is visible on mobile
+          const dropdownContentMobile = dropdown.querySelector('div');
+          if (dropdownContentMobile) {
+            dropdownContentMobile.style.setProperty('display', 'block', 'important');
+            dropdownContentMobile.style.setProperty('visibility', 'visible', 'important');
+            dropdownContentMobile.style.setProperty('opacity', '1', 'important');
           }
         } else {
           // Desktop: position below trigger, adjust if goes off-screen
