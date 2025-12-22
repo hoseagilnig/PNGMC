@@ -463,6 +463,77 @@ if ($conn) {
         order: 1 !important;
       }
     }
+    
+    /* Laptop L (1440px) - Ensure profile is always visible */
+    @media (min-width: 1440px) {
+      body > header .user-info,
+      header .user-info[style],
+      body > header div.user-info,
+      header div.user-info[style] {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        position: relative !important;
+        z-index: 10000 !important;
+        flex: 0 0 auto !important;
+        flex-shrink: 0 !important;
+        min-width: fit-content !important;
+        max-width: none !important;
+        width: auto !important;
+        margin-left: auto !important;
+        order: 999 !important;
+      }
+      body > header .user-dropdown-trigger,
+      header .user-dropdown-trigger[style] {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        width: auto !important;
+        min-width: fit-content !important;
+        flex-shrink: 0 !important;
+        padding: 6px 10px !important;
+        gap: 6px !important;
+      }
+      body > header .user-dropdown-trigger span:nth-child(2),
+      header .user-dropdown-trigger span:nth-child(2)[style] {
+        display: inline-block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        overflow: visible !important;
+        white-space: nowrap !important;
+        max-width: none !important;
+      }
+    }
+    
+    /* Tablet sizes (768px - 1199px) - Ensure profile is always visible */
+    @media (min-width: 768px) and (max-width: 1199px) {
+      body > header .user-info,
+      header .user-info[style],
+      body > header div.user-info,
+      header div.user-info[style] {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        position: relative !important;
+        z-index: 10000 !important;
+        flex: 0 0 auto !important;
+        flex-shrink: 0 !important;
+        min-width: fit-content !important;
+        max-width: none !important;
+        width: auto !important;
+        margin-left: auto !important;
+        order: 999 !important;
+      }
+      body > header .user-dropdown-trigger,
+      header .user-dropdown-trigger[style] {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        width: auto !important;
+        min-width: fit-content !important;
+        flex-shrink: 0 !important;
+      }
+    }
     body > header .user-dropdown-trigger span:nth-child(2),
     header .user-dropdown-trigger span:nth-child(2)[style] {
       overflow: visible !important;
