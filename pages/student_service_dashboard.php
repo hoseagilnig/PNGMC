@@ -186,7 +186,6 @@ if ($conn) {
       gap: 15px !important;
     }
     /* Force header layout with !important to override external CSS and inline styles */
-    /* FIXED HEADER: Make header sticky/fixed at top on all screen sizes */
     body > header,
     header[style] {
       display: flex !important;
@@ -198,25 +197,8 @@ if ($conn) {
       box-sizing: border-box !important;
       overflow: visible !important;
       padding: 10px 20px !important;
-      position: fixed !important;
-      top: 0 !important;
-      left: 0 !important;
-      right: 0 !important;
-      min-height: 50px !important;
-      z-index: 1000 !important;
-      background-color: white !important;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
-    }
-    
-    /* Add padding-top to main content to account for fixed header */
-    .dashboard-wrap {
-      padding-top: 70px !important;
-    }
-    
-    /* Ensure sidebar doesn't overlap header */
-    .sidebar {
       position: relative !important;
-      z-index: 100 !important;
+      min-height: 50px !important;
     }
     
     /* CRITICAL: Force user-info to always be visible - override ALL possible hiding rules */
@@ -283,18 +265,6 @@ if ($conn) {
       display: inline-block !important;
       visibility: visible !important;
       opacity: 1 !important;
-    }
-    
-    /* Logout button styles */
-    .logout-button,
-    header .logout-button,
-    body > header .logout-button {
-      display: inline-flex !important;
-      visibility: visible !important;
-      opacity: 1 !important;
-      position: relative !important;
-      z-index: 10000 !important;
-      flex-shrink: 0 !important;
     }
     
     /* RESPONSIVE: Ensure user-dropdown-trigger is visible on ALL screen sizes */
@@ -395,20 +365,6 @@ if ($conn) {
     
     /* Mobile (480px - 767px) */
     @media (min-width: 480px) and (max-width: 767px) {
-      body > header,
-      header[style] {
-        position: fixed !important;
-        top: 0 !important;
-        left: 0 !important;
-        right: 0 !important;
-        z-index: 1000 !important;
-        padding: 8px 12px !important;
-      }
-      
-      .dashboard-wrap {
-        padding-top: 60px !important;
-      }
-      
       .user-dropdown-trigger,
       header .user-dropdown-trigger,
       body > header .user-dropdown-trigger {
@@ -441,20 +397,6 @@ if ($conn) {
     
     /* Small Mobile (below 480px) */
     @media (max-width: 479px) {
-      body > header,
-      header[style] {
-        position: fixed !important;
-        top: 0 !important;
-        left: 0 !important;
-        right: 0 !important;
-        z-index: 1000 !important;
-        padding: 6px 10px !important;
-      }
-      
-      .dashboard-wrap {
-        padding-top: 55px !important;
-      }
-      
       .user-dropdown-trigger,
       header .user-dropdown-trigger,
       body > header .user-dropdown-trigger {
@@ -482,21 +424,6 @@ if ($conn) {
         visibility: visible !important;
         opacity: 1 !important;
         font-size: 0.6rem !important;
-      }
-      .logout-button,
-      header .logout-button {
-        padding: 6px 12px !important;
-        font-size: 0.8rem !important;
-        gap: 4px !important;
-      }
-    }
-    
-    /* Mobile (480px - 767px) - Adjust logout button */
-    @media (min-width: 480px) and (max-width: 767px) {
-      .logout-button,
-      header .logout-button {
-        padding: 7px 14px !important;
-        font-size: 0.85rem !important;
       }
     }
     body > header .logo,
@@ -1093,12 +1020,7 @@ if ($conn) {
         dropdown.style.display = 'block';
         dropdown.style.visibility = 'visible';
         dropdown.style.opacity = '1';
-        dropdown.style.zIndex = '1001';
-        
-        // Update aria-expanded for accessibility
-        if (trigger) {
-          trigger.setAttribute('aria-expanded', 'true');
-        }
+        dropdown.style.zIndex = '99999';
         dropdown.style.overflow = 'visible';
         dropdown.style.maxHeight = 'none';
         
@@ -1109,7 +1031,7 @@ if ($conn) {
           logoutLink.style.visibility = 'visible';
           logoutLink.style.opacity = '1';
           logoutLink.style.pointerEvents = 'auto';
-          logoutLink.style.zIndex = '1002';
+          logoutLink.style.zIndex = '100000';
           logoutLink.style.position = 'relative';
         }
         
@@ -1153,66 +1075,31 @@ if ($conn) {
         dropdown.style.marginTop = '0';
       } else {
         // Hide dropdown
-        closeUserDropdown();
-      }
-      
-      return false;
-    }
-    
-    // Function to close dropdown with accessibility updates
-    function closeUserDropdown() {
-      const dropdown = document.getElementById('userDropdown');
-      const trigger = document.querySelector('.user-dropdown-trigger');
-      
-      if (dropdown) {
         dropdown.style.display = 'none';
         dropdown.style.visibility = 'hidden';
         dropdown.style.opacity = '0';
       }
       
-      if (trigger) {
-        trigger.setAttribute('aria-expanded', 'false');
-      }
+      return false;
     }
     
     // Close dropdown when clicking outside
     document.addEventListener('click', function(event) {
       const dropdown = document.getElementById('userDropdown');
       const trigger = document.querySelector('.user-dropdown-trigger');
+      const logoutLink = document.getElementById('logout-link');
       
-      if (!dropdown || !trigger) return;
+      if (!dropdown) return;
       
-      const clickedInside = trigger.contains(event.target) ||
-                           dropdown.contains(event.target);
+      // Don't close if clicking on trigger, dropdown, or logout link
+      const clickedInside = (trigger && trigger.contains(event.target)) || 
+                           dropdown.contains(event.target) ||
+                           (logoutLink && (event.target === logoutLink || logoutLink.contains(event.target)));
       
       if (!clickedInside && dropdown.style.display === 'block') {
-        closeUserDropdown();
-      }
-    });
-    
-    // Close dropdown on Escape key
-    document.addEventListener('keydown', function(event) {
-      if (event.key === 'Escape') {
-        const dropdown = document.getElementById('userDropdown');
-        if (dropdown && dropdown.style.display === 'block') {
-          closeUserDropdown();
-          const trigger = document.querySelector('.user-dropdown-trigger');
-          if (trigger) {
-            trigger.focus();
-          }
-        }
-      }
-    });
-    
-    // Ensure logout link is always clickable
-    document.addEventListener('DOMContentLoaded', function() {
-      const logoutLink = document.getElementById('logout-link');
-      if (logoutLink) {
-        logoutLink.addEventListener('click', function(e) {
-          e.stopPropagation();
-          // Allow default navigation behavior
-          return true;
-        });
+        dropdown.style.display = 'none';
+        dropdown.style.visibility = 'hidden';
+        dropdown.style.opacity = '0';
       }
     });
   </script>
@@ -1258,7 +1145,7 @@ if ($conn) {
   </style>
 </head>
 <body>
-    <header role="banner" style="overflow: visible !important; z-index: 1000 !important; position: fixed !important; top: 0 !important; left: 0 !important; right: 0 !important; padding: 10px 15px !important; display: flex !important; justify-content: space-between !important; align-items: center !important; width: 100% !important; max-width: 100vw !important; box-sizing: border-box !important; gap: 10px !important; background-color: white !important; box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;">
+    <header style="overflow: visible !important; z-index: 9999 !important; position: relative !important; padding: 10px 15px !important; display: flex !important; justify-content: space-between !important; align-items: center !important; width: 100% !important; max-width: 100vw !important; box-sizing: border-box !important; gap: 10px !important;">
         <div class="logo" style="flex-shrink: 1 !important; order: 1 !important; min-width: 0 !important; flex: 0 1 auto !important; max-width: 30% !important; overflow: hidden !important;">
             <a href="student_service_dashboard.php" style="display: flex !important; align-items: center !important; text-decoration: none !important; color: inherit !important; gap: 6px !important; min-width: 0 !important;">
                 <img src="../images/pnmc.png" alt="PNG Maritime College Logo" class="logo-img" style="width: auto !important; height: 32px !important; max-width: 45px !important; object-fit: contain !important; flex-shrink: 0 !important;">
@@ -1286,25 +1173,22 @@ if ($conn) {
             
             <!-- User Profile Dropdown -->
             <div style="position: relative !important; z-index: 10000 !important; overflow: visible !important; flex-shrink: 0 !important;">
-                <div class="user-dropdown-trigger" role="button" aria-haspopup="true" aria-expanded="false" aria-label="User menu" tabindex="0" style="cursor: pointer !important; display: flex !important; align-items: center !important; gap: 5px !important; padding: 5px 8px !important; border-radius: 5px !important; transition: background 0.2s !important; white-space: nowrap !important; flex-shrink: 0 !important;" onclick="toggleUserDropdown(event); return false;" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleUserDropdown(event);}" onmouseover="this.style.background='#e9ecef'" onmouseout="this.style.background='transparent'">
-                    <span style="flex-shrink: 0 !important;" aria-hidden="true">👤</span>
+                <div class="user-dropdown-trigger" style="cursor: pointer !important; display: flex !important; align-items: center !important; gap: 5px !important; padding: 5px 8px !important; border-radius: 5px !important; transition: background 0.2s !important; white-space: nowrap !important; flex-shrink: 0 !important;" onclick="toggleUserDropdown(event); return false;" onmouseover="this.style.background='#e9ecef'" onmouseout="this.style.background='transparent'">
+                    <span style="flex-shrink: 0 !important;">👤</span>
                     <span style="white-space: nowrap !important; overflow: visible !important; flex-shrink: 0 !important; min-width: fit-content !important; font-size: 0.85rem !important;">Logged in as <strong><?php echo htmlspecialchars($_SESSION['name']); ?></strong></span>
-                    <span style="font-size: 0.7rem !important; flex-shrink: 0 !important;" aria-hidden="true">▼</span>
+                    <span style="font-size: 0.7rem !important; flex-shrink: 0 !important;">▼</span>
                 </div>
-                <div id="userDropdown" class="user-dropdown" role="menu" aria-labelledby="user-dropdown-trigger" style="display: none !important; position: fixed !important; background: white !important; border: 1px solid #ddd !important; border-radius: 8px !important; box-shadow: 0 8px 24px rgba(0,0,0,0.25) !important; min-width: 200px !important; z-index: 1001 !important; overflow: visible !important; max-height: none !important;">
+                <div id="userDropdown" class="user-dropdown" style="display: none !important; position: fixed !important; background: white !important; border: 1px solid #ddd !important; border-radius: 8px !important; box-shadow: 0 8px 24px rgba(0,0,0,0.25) !important; min-width: 200px !important; z-index: 99999 !important; overflow: visible !important; max-height: none !important;">
                     <div style="padding: 12px 16px !important; border-bottom: 1px solid #eee !important;">
                         <div style="font-weight: 600 !important; color: #333 !important;"><?php echo htmlspecialchars($_SESSION['name']); ?></div>
                         <div style="font-size: 0.85rem !important; color: #666 !important; margin-top: 4px !important;"><?php echo ucfirst($_SESSION['role']); ?> User</div>
                     </div>
-                    <a href="logout.php" id="logout-link" role="menuitem" tabindex="0" style="display: block !important; padding: 14px 16px !important; color: #dc3545 !important; text-decoration: none !important; transition: background 0.2s !important; min-height: 44px !important; line-height: 1.4 !important; position: relative !important; z-index: 1002 !important; visibility: visible !important; opacity: 1 !important; pointer-events: auto !important;" onmouseover="this.style.background='#f8f9fa'" onmouseout="this.style.background='white'" onclick="event.stopPropagation(); return true;">
+                    <a href="logout.php" id="logout-link" style="display: block !important; padding: 14px 16px !important; color: #dc3545 !important; text-decoration: none !important; transition: background 0.2s !important; min-height: 44px !important; line-height: 1.4 !important; position: relative !important; z-index: 100000 !important; visibility: visible !important; opacity: 1 !important; pointer-events: auto !important;" onmouseover="this.style.background='#f8f9fa'" onmouseout="this.style.background='white'" onclick="event.stopPropagation();">
                         🚪 Logout
                     </a>
                 </div>
             </div>
         </div>
-        <a href="logout.php" class="logout-button" style="display: inline-flex !important; align-items: center !important; gap: 6px !important; padding: 8px 16px !important; background-color: #dc3545 !important; color: white !important; text-decoration: none !important; border-radius: 5px !important; font-size: 0.9rem !important; font-weight: 500 !important; transition: background-color 0.2s, transform 0.1s !important; flex-shrink: 0 !important; white-space: nowrap !important; z-index: 10000 !important; margin-left: 8px !important;" onmouseover="this.style.backgroundColor='#c82333'; this.style.transform='translateY(-1px)'" onmouseout="this.style.backgroundColor='#dc3545'; this.style.transform='translateY(0)'">
-            🚪 Logout
-        </a>
         <?php echo getMobileMenuToggle(); ?>
     </header>
 
