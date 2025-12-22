@@ -98,42 +98,77 @@ if ($conn) {
       width: 100% !important;
       box-sizing: border-box !important;
       overflow: visible !important;
+      gap: 15px !important;
     }
     header .logo {
       min-width: 0;
       flex: 0 1 auto;
+      max-width: 40%;
       overflow: hidden;
+    }
+    header .logo a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+    header .logo img {
+      flex-shrink: 0;
+      width: auto;
+      height: 40px;
+      max-width: 100%;
+      object-fit: contain;
     }
     header .logo span {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+      font-size: 0.9rem;
+    }
+    header .user-info {
+      flex: 0 0 auto;
+      min-width: 0;
+      flex-shrink: 0;
+      overflow: visible !important;
     }
     .user-dropdown-trigger {
       min-width: 0;
-      flex-shrink: 1;
+      flex-shrink: 0;
+      white-space: nowrap;
     }
     .user-dropdown-trigger span:nth-child(2) {
       overflow: visible;
       white-space: nowrap;
-      flex-shrink: 1;
-      min-width: 0;
+      flex-shrink: 0;
+      min-width: fit-content;
     }
     @media (max-width: 1400px) {
+      header .logo {
+        max-width: 35%;
+      }
       .user-dropdown-trigger span:nth-child(2) {
-        max-width: 300px;
+        max-width: 350px;
         overflow: hidden;
         text-overflow: ellipsis;
       }
     }
     @media (max-width: 1200px) {
+      header .logo {
+        max-width: 30%;
+      }
+      header .logo span {
+        font-size: 0.85rem;
+      }
       .user-dropdown-trigger span:nth-child(2) {
-        max-width: 250px;
+        max-width: 280px;
       }
     }
     @media (max-width: 992px) {
+      header .logo {
+        max-width: 25%;
+      }
       .user-dropdown-trigger span:nth-child(2) {
-        max-width: 200px;
+        max-width: 220px;
       }
     }
     @media (max-width: 768px) {
