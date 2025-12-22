@@ -145,44 +145,46 @@ if ($conn) {
     header .logo {
       min-width: 0;
       flex: 0 1 auto;
-      max-width: 40%;
+      max-width: 35%;
       overflow: hidden;
     }
     header .logo a {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       min-width: 0;
     }
     header .logo img {
       flex-shrink: 0;
       width: auto;
-      height: 40px;
-      max-width: 100%;
+      height: 35px;
+      max-width: 60px;
       object-fit: contain;
     }
     header .logo span {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
     }
     header .user-info {
       flex: 0 0 auto;
-      min-width: 0;
+      min-width: fit-content;
       flex-shrink: 0;
       overflow: visible !important;
     }
     .user-dropdown-trigger {
-      min-width: 0;
+      min-width: fit-content;
       flex-shrink: 0;
       white-space: nowrap;
+      overflow: visible;
     }
     .user-dropdown-trigger span:nth-child(2) {
-      overflow: visible;
-      white-space: nowrap;
-      flex-shrink: 0;
-      min-width: fit-content;
+      overflow: visible !important;
+      white-space: nowrap !important;
+      flex-shrink: 0 !important;
+      min-width: fit-content !important;
+      max-width: none !important;
     }
     @media (max-width: 1400px) {
       header .logo {
@@ -347,19 +349,19 @@ if ($conn) {
   </script>
 </head>
 <body>
-    <header style="overflow: visible !important; z-index: 9999 !important; position: relative !important; display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; width: 100%; box-sizing: border-box;">
-        <div class="logo" style="flex-shrink: 0; order: 1; min-width: 0; flex: 0 1 auto;">
-            <a href="admin_dashboard.php" style="display: flex; align-items: center; text-decoration: none; color: inherit; gap: 10px;">
-                <img src="../images/pnmc.png" alt="PNG Maritime College Logo" class="logo-img" style="width: auto; height: 40px; max-width: 100%; object-fit: contain;">
-                <span style="white-space: nowrap; font-size: 0.95rem; overflow: hidden; text-overflow: ellipsis;">Administration Dashboard</span>
+    <header style="overflow: visible !important; z-index: 9999 !important; position: relative !important; display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; width: 100%; box-sizing: border-box; gap: 20px;">
+        <div class="logo" style="flex-shrink: 1; order: 1; min-width: 0; flex: 0 1 auto; max-width: 35%; overflow: hidden;">
+            <a href="admin_dashboard.php" style="display: flex; align-items: center; text-decoration: none; color: inherit; gap: 8px; min-width: 0;">
+                <img src="../images/pnmc.png" alt="PNG Maritime College Logo" class="logo-img" style="width: auto; height: 35px; max-width: 60px; object-fit: contain; flex-shrink: 0;">
+                <span style="white-space: nowrap; font-size: 0.85rem; overflow: hidden; text-overflow: ellipsis; min-width: 0;">Administration Dashboard</span>
             </a>
         </div>
         <?php echo getMobileMenuToggle(); ?>
-        <div class="user-info" style="position: relative; z-index: 10000; flex-shrink: 0; order: 3; margin-left: auto; display: flex; align-items: center; gap: 10px; min-width: 0;">
-            <div class="user-dropdown-trigger" style="cursor: pointer; display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 5px; transition: background 0.2s;" onclick="toggleUserDropdown()" onmouseover="this.style.background='#e9ecef'" onmouseout="this.style.background='transparent'">
-                <span>👤</span>
-                <span>Logged in as <strong><?php echo htmlspecialchars($_SESSION['name']); ?></strong></span>
-                <span style="font-size: 0.8rem;">▼</span>
+        <div class="user-info" style="position: relative; z-index: 10000; flex-shrink: 0; order: 3; margin-left: auto; display: flex; align-items: center; gap: 10px; min-width: fit-content;">
+            <div class="user-dropdown-trigger" style="cursor: pointer; display: flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 5px; transition: background 0.2s; white-space: nowrap; flex-shrink: 0;" onclick="toggleUserDropdown()" onmouseover="this.style.background='#e9ecef'" onmouseout="this.style.background='transparent'">
+                <span style="flex-shrink: 0;">👤</span>
+                <span style="white-space: nowrap; overflow: visible; flex-shrink: 0; min-width: fit-content;">Logged in as <strong><?php echo htmlspecialchars($_SESSION['name']); ?></strong></span>
+                <span style="font-size: 0.8rem; flex-shrink: 0;">▼</span>
             </div>
             <div id="userDropdown" class="user-dropdown" style="display: none; position: fixed; background: white !important; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); min-width: 180px; z-index: 99999 !important; overflow: visible !important;">
                 <div style="padding: 12px 16px; border-bottom: 1px solid #eee;">
