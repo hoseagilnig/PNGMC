@@ -809,6 +809,60 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       margin-top: 40px;
       padding-top: 5px;
     }
+    
+    /* Responsive signature canvas for mobile */
+    #signatureCanvas {
+      max-width: 100% !important;
+      height: auto !important;
+      width: 100% !important;
+    }
+    
+    @media (max-width: 768px) {
+      .signature-line {
+        margin-top: 30px;
+        padding-top: 15px;
+      }
+      
+      #signatureCanvas {
+        width: 100% !important;
+        max-width: 100% !important;
+        height: 150px !important;
+        border: 2px solid #333 !important;
+        cursor: crosshair !important;
+        background: white !important;
+        display: block !important;
+        margin: 0 auto !important;
+        touch-action: none !important;
+      }
+      
+      #clearSignature {
+        padding: 10px 24px !important;
+        font-size: 1rem !important;
+        min-height: 44px !important;
+        width: auto !important;
+        margin: 10px auto !important;
+      }
+      
+      .signature-line label {
+        font-size: 1rem !important;
+      }
+      
+      .signature-line small {
+        font-size: 0.85rem !important;
+        padding: 0 10px !important;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      #signatureCanvas {
+        height: 120px !important;
+      }
+      
+      #clearSignature {
+        width: 100% !important;
+        max-width: 200px !important;
+      }
+    }
   </style>
 </head>
 <body>
@@ -1428,7 +1482,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <div class="signature-line" style="margin-top: 40px;">
             <label>Signature <span class="required">*</span></label>
             <div style="margin-top: 10px;">
-              <canvas id="signatureCanvas" width="600" height="200" style="border: 2px solid #333; cursor: crosshair; background: white; display: block; margin: 0 auto;"></canvas>
+              <canvas id="signatureCanvas" width="600" height="200" style="border: 2px solid #333; cursor: crosshair; background: white; display: block; margin: 0 auto; max-width: 100%; height: auto;"></canvas>
               <input type="hidden" name="signature" id="signatureData" required>
               <div style="text-align: center; margin-top: 10px;">
                 <button type="button" id="clearSignature" style="padding: 8px 20px; background: #dc3545; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 0.9rem;">Clear Signature</button>
@@ -1473,28 +1527,89 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       let lastX = 0;
       let lastY = 0;
       
+      // Function to resize canvas responsively
+      function resizeCanvas() {
+        const container = canvas.parentElement;
+        const containerWidth = container.clientWidth;
+        const aspectRatio = 600 / 200; // Original aspect ratio (3:1)
+        
+        // Set canvas display size
+        if (window.innerWidth <= 768) {
+          canvas.style.width = '100%';
+          canvas.style.height = (containerWidth / aspectRatio) + 'px';
+        } else {
+          canvas.style.width = '600px';
+          canvas.style.height = '200px';
+        }
+        
+        // Set actual canvas resolution (for high DPI displays)
+        const displayWidth = canvas.clientWidth;
+        const displayHeight = canvas.clientHeight;
+        const scale = window.devicePixelRatio || 1;
+        
+        canvas.width = displayWidth * scale;
+        canvas.height = displayHeight * scale;
+        
+        // Scale context to handle high DPI
+        ctx.scale(scale, scale);
+        
+        // Re-apply canvas settings
+        ctx.fillStyle = 'white';
+        ctx.fillRect(0, 0, displayWidth, displayHeight);
+        ctx.strokeStyle = '#000';
+        ctx.lineWidth = 2;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+      }
+      
+      // Initial resize
+      resizeCanvas();
+      
+      // Resize on window resize
+      window.addEventListener('resize', resizeCanvas);
+      
       // Set canvas background to white
       ctx.fillStyle = 'white';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillRect(0, 0, canvas.clientWidth, canvas.clientHeight);
       ctx.strokeStyle = '#000';
       ctx.lineWidth = 2;
       ctx.lineCap = 'round';
       ctx.lineJoin = 'round';
       
+      function getCoordinates(e) {
+        const rect = canvas.getBoundingClientRect();
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height;
+        
+        let clientX, clientY;
+        if (e.touches && e.touches.length > 0) {
+          clientX = e.touches[0].clientX;
+          clientY = e.touches[0].clientY;
+        } else {
+          clientX = e.clientX;
+          clientY = e.clientY;
+        }
+        
+        return {
+          x: (clientX - rect.left) * scaleX,
+          y: (clientY - rect.top) * scaleY
+        };
+      }
+      
       function startDrawing(e) {
         isDrawing = true;
-        const rect = canvas.getBoundingClientRect();
-        lastX = (e.clientX || e.touches[0].clientX) - rect.left;
-        lastY = (e.clientY || e.touches[0].clientY) - rect.top;
+        const coords = getCoordinates(e);
+        lastX = coords.x;
+        lastY = coords.y;
       }
       
       function draw(e) {
         if (!isDrawing) return;
         e.preventDefault();
         
-        const rect = canvas.getBoundingClientRect();
-        const currentX = (e.clientX || e.touches[0].clientX) - rect.left;
-        const currentY = (e.clientY || e.touches[0].clientY) - rect.top;
+        const coords = getCoordinates(e);
+        const currentX = coords.x;
+        const currentY = coords.y;
         
         ctx.beginPath();
         ctx.moveTo(lastX, lastY);
@@ -1540,6 +1655,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ctx.fillStyle = 'white';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         signatureInput.value = '';
+        // Re-apply stroke settings after clear
+        ctx.strokeStyle = '#000';
+        ctx.lineWidth = 2;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
       });
       
       // Update signature data before form submission
