@@ -1720,6 +1720,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ctx.fillStyle = 'white';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         signatureInput.value = '';
+        // Re-apply stroke settings after clear
+        ctx.strokeStyle = '#000';
+        ctx.lineWidth = 2;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
       });
       
       // Update signature data before form submission
