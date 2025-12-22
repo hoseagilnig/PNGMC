@@ -545,6 +545,7 @@ if ($conn) {
         max-width: none !important;
         width: auto !important;
         margin-left: auto !important;
+        margin-right: 20px !important;
         order: 999 !important;
       }
       body > header .user-dropdown-trigger,
