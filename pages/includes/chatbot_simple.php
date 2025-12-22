@@ -239,6 +239,18 @@ $user_name = $_SESSION['name'] ?? 'User';
     visibility: visible !important;
     opacity: 1 !important;
     pointer-events: auto !important;
+    z-index: 99999 !important;
+}
+
+/* Force active state to override all other rules */
+.chatbot-window.active,
+.chatbot-window[style*="display: flex"],
+.chatbot-window[style*="display:flex"] {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    z-index: 99999 !important;
 }
 
 .chatbot-header {
@@ -846,47 +858,68 @@ $user_name = $_SESSION['name'] ?? 'User';
             chatbotWindow.style.setProperty('visibility', 'hidden', 'important');
             chatbotWindow.style.setProperty('opacity', '0', 'important');
             chatbotWindow.style.setProperty('pointer-events', 'none', 'important');
-        } else {
-            // Open chatbot
-            console.log('Opening chatbot...');
-            chatbotWindow.classList.add('active');
-            chatbotWindow.style.setProperty('display', 'flex', 'important');
-            chatbotWindow.style.setProperty('visibility', 'visible', 'important');
-            chatbotWindow.style.setProperty('opacity', '1', 'important');
-            chatbotWindow.style.setProperty('pointer-events', 'auto', 'important');
-            chatbotWindow.style.setProperty('z-index', '99999', 'important');
-            
-            // Ensure proper positioning on desktop
-            if (window.innerWidth >= 768) {
-                console.log('Setting desktop positioning...');
-                chatbotWindow.style.setProperty('position', 'absolute', 'important');
-                const bottomValue = window.innerWidth >= 1440 ? '100px' : (window.innerWidth >= 1200 ? '90px' : '80px');
-                chatbotWindow.style.setProperty('bottom', bottomValue, 'important');
-                chatbotWindow.style.setProperty('right', '0', 'important');
-                chatbotWindow.style.setProperty('left', 'auto', 'important');
-                chatbotWindow.style.setProperty('width', window.innerWidth >= 1440 ? '450px' : (window.innerWidth >= 1200 ? '420px' : '380px'), 'important');
             } else {
-                // Mobile positioning
-                chatbotWindow.style.setProperty('position', 'fixed', 'important');
-                chatbotWindow.style.setProperty('bottom', '70px', 'important');
-                chatbotWindow.style.setProperty('right', '15px', 'important');
-                chatbotWindow.style.setProperty('left', '15px', 'important');
-                chatbotWindow.style.setProperty('width', 'auto', 'important');
+                // Open chatbot
+                console.log('Opening chatbot...');
+                
+                // Ensure proper positioning on desktop FIRST
+                if (window.innerWidth >= 768) {
+                    console.log('Setting desktop positioning...');
+                    chatbotWindow.style.setProperty('position', 'absolute', 'important');
+                    const bottomValue = window.innerWidth >= 1440 ? '100px' : (window.innerWidth >= 1200 ? '90px' : '80px');
+                    chatbotWindow.style.setProperty('bottom', bottomValue, 'important');
+                    chatbotWindow.style.setProperty('right', '0', 'important');
+                    chatbotWindow.style.setProperty('left', 'auto', 'important');
+                    const widthValue = window.innerWidth >= 1440 ? '450px' : (window.innerWidth >= 1200 ? '420px' : '380px');
+                    chatbotWindow.style.setProperty('width', widthValue, 'important');
+                    chatbotWindow.style.setProperty('height', window.innerWidth >= 1440 ? '700px' : (window.innerWidth >= 1200 ? '650px' : '600px'), 'important');
+                    chatbotWindow.style.setProperty('max-height', window.innerWidth >= 1440 ? '85vh' : '80vh', 'important');
+                } else {
+                    // Mobile positioning
+                    chatbotWindow.style.setProperty('position', 'fixed', 'important');
+                    chatbotWindow.style.setProperty('bottom', '70px', 'important');
+                    chatbotWindow.style.setProperty('right', '15px', 'important');
+                    chatbotWindow.style.setProperty('left', '15px', 'important');
+                    chatbotWindow.style.setProperty('width', 'auto', 'important');
+                }
+                
+                // Now set visibility properties
+                chatbotWindow.classList.add('active');
+                chatbotWindow.style.setProperty('display', 'flex', 'important');
+                chatbotWindow.style.setProperty('visibility', 'visible', 'important');
+                chatbotWindow.style.setProperty('opacity', '1', 'important');
+                chatbotWindow.style.setProperty('pointer-events', 'auto', 'important');
+                chatbotWindow.style.setProperty('z-index', '99999', 'important');
+                chatbotWindow.style.setProperty('flex-direction', 'column', 'important');
+                chatbotWindow.style.setProperty('overflow', 'hidden', 'important');
+                chatbotWindow.style.setProperty('background', 'white', 'important');
+                chatbotWindow.style.setProperty('border-radius', '15px', 'important');
+                chatbotWindow.style.setProperty('box-shadow', '0 10px 40px rgba(0, 0, 0, 0.2)', 'important');
+                
+                // Force a reflow to ensure styles are applied
+                chatbotWindow.offsetHeight;
+                
+                // Verify visibility
+                const computedStyle = window.getComputedStyle(chatbotWindow);
+                console.log('Computed display:', computedStyle.display);
+                console.log('Computed visibility:', computedStyle.visibility);
+                console.log('Computed opacity:', computedStyle.opacity);
+                console.log('Computed position:', computedStyle.position);
+                console.log('Computed bottom:', computedStyle.bottom);
+                console.log('Computed right:', computedStyle.right);
+                console.log('Computed width:', computedStyle.width);
+                console.log('Computed z-index:', computedStyle.zIndex);
+                
+                // Focus on input when opening
+                const input = document.getElementById('chatbot-input');
+                if (input) {
+                    setTimeout(function() {
+                        input.focus();
+                    }, 100);
+                }
+                
+                console.log('Chatbot window should now be visible');
             }
-            
-            // Force a reflow to ensure styles are applied
-            chatbotWindow.offsetHeight;
-            
-            // Focus on input when opening
-            const input = document.getElementById('chatbot-input');
-            if (input) {
-                setTimeout(function() {
-                    input.focus();
-                }, 100);
-            }
-            
-            console.log('Chatbot window should now be visible');
-        }
     }
     
     // Make toggleChatbot globally accessible
