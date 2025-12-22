@@ -135,6 +135,46 @@ if ($conn) {
       from { opacity: 0; transform: translateY(-10px); }
       to { opacity: 1; transform: translateY(0); }
     }
+    /* Header layout fixes */
+    header {
+      width: 100% !important;
+      box-sizing: border-box !important;
+      overflow: visible !important;
+    }
+    header .logo {
+      min-width: 0;
+      flex: 0 1 auto;
+      overflow: hidden;
+    }
+    header .logo span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .user-dropdown-trigger span:nth-child(2) {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 200px;
+    }
+    @media (max-width: 1200px) {
+      .user-dropdown-trigger span:nth-child(2) {
+        max-width: 150px;
+      }
+    }
+    @media (max-width: 992px) {
+      .user-dropdown-trigger span:nth-child(2) {
+        max-width: 120px;
+      }
+    }
+    @media (max-width: 768px) {
+      header .logo span {
+        display: none;
+      }
+      .user-dropdown-trigger span:nth-child(2) {
+        display: none;
+      }
+    }
   </style>
   <script>
     function toggleUserDropdown() {
@@ -155,6 +195,18 @@ if ($conn) {
         dropdown.style.visibility = 'visible';
         dropdown.style.opacity = '1';
         dropdown.style.zIndex = '99999';
+        dropdown.style.overflow = 'visible';
+        dropdown.style.maxHeight = 'none';
+        
+        // Ensure logout button is visible
+        const logoutLink = dropdown.querySelector('a[href*="logout"]');
+        if (logoutLink) {
+          logoutLink.style.display = 'block';
+          logoutLink.style.visibility = 'visible';
+          logoutLink.style.opacity = '1';
+          logoutLink.style.pointerEvents = 'auto';
+          logoutLink.style.zIndex = '100000';
+        }
         
         // On mobile, position dropdown relative to viewport at bottom
         if (window.innerWidth <= 767 && trigger) {
@@ -163,7 +215,7 @@ if ($conn) {
           dropdown.style.bottom = '80px';
           dropdown.style.top = 'auto';
           dropdown.style.left = 'auto';
-          dropdown.style.maxHeight = (window.innerHeight - 100) + 'px';
+          dropdown.style.maxHeight = 'none';
           dropdown.style.overflow = 'visible';
         } else {
           // Desktop/Workstation: use fixed positioning to ensure it's above all content
@@ -191,6 +243,8 @@ if ($conn) {
           dropdown.style.marginTop = '0';
           dropdown.style.visibility = 'visible';
           dropdown.style.opacity = '1';
+          dropdown.style.maxHeight = 'none';
+          dropdown.style.overflow = 'visible';
           
           // Force show with important styles
           dropdown.setAttribute('style', dropdown.getAttribute('style') + ' !important');
@@ -247,15 +301,15 @@ if ($conn) {
   </script>
 </head>
 <body>
-    <header style="overflow: visible !important; z-index: 9999 !important; position: relative !important; display: flex; justify-content: space-between; align-items: center; padding-right: 20px;">
-        <div class="logo" style="flex-shrink: 0; order: 1;">
-            <a href="admin_dashboard.php" style="display: flex; align-items: center; text-decoration: none; color: inherit;">
-                <img src="../images/pnmc.png" alt="PNG Maritime College Logo" class="logo-img">
-                <span style="margin-left: 10px; white-space: nowrap;">Administration Dashboard</span>
+    <header style="overflow: visible !important; z-index: 9999 !important; position: relative !important; display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; width: 100%; box-sizing: border-box;">
+        <div class="logo" style="flex-shrink: 0; order: 1; min-width: 0; flex: 0 1 auto;">
+            <a href="admin_dashboard.php" style="display: flex; align-items: center; text-decoration: none; color: inherit; gap: 10px;">
+                <img src="../images/pnmc.png" alt="PNG Maritime College Logo" class="logo-img" style="width: auto; height: 40px; max-width: 100%; object-fit: contain;">
+                <span style="white-space: nowrap; font-size: 0.95rem; overflow: hidden; text-overflow: ellipsis;">Administration Dashboard</span>
             </a>
         </div>
         <?php echo getMobileMenuToggle(); ?>
-        <div class="user-info" style="position: relative; z-index: 10000; flex-shrink: 0; order: 3; margin-left: auto; margin-right: 360px; display: flex; align-items: center;">
+        <div class="user-info" style="position: relative; z-index: 10000; flex-shrink: 0; order: 3; margin-left: auto; display: flex; align-items: center; gap: 10px; min-width: 0;">
             <div class="user-dropdown-trigger" style="cursor: pointer; display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 5px; transition: background 0.2s;" onclick="toggleUserDropdown()" onmouseover="this.style.background='#e9ecef'" onmouseout="this.style.background='transparent'">
                 <span>👤</span>
                 <span>Logged in as <strong><?php echo htmlspecialchars($_SESSION['name']); ?></strong></span>

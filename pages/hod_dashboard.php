@@ -102,6 +102,46 @@ $pending_applications = getPendingApplicationsForDepartment('hod', 'hod_review')
       from { opacity: 0; transform: translateY(-10px); }
       to { opacity: 1; transform: translateY(0); }
     }
+    /* Header layout fixes */
+    header {
+      width: 100% !important;
+      box-sizing: border-box !important;
+      overflow: visible !important;
+    }
+    header .logo {
+      min-width: 0;
+      flex: 0 1 auto;
+      overflow: hidden;
+    }
+    header .logo span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .user-dropdown-trigger span:nth-child(2) {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 200px;
+    }
+    @media (max-width: 1200px) {
+      .user-dropdown-trigger span:nth-child(2) {
+        max-width: 150px;
+      }
+    }
+    @media (max-width: 992px) {
+      .user-dropdown-trigger span:nth-child(2) {
+        max-width: 120px;
+      }
+    }
+    @media (max-width: 768px) {
+      header .logo span {
+        display: none;
+      }
+      .user-dropdown-trigger span:nth-child(2) {
+        display: none;
+      }
+    }
     @keyframes pulse-bubble {
       0%, 100% {
         transform: scale(1);
@@ -140,6 +180,19 @@ $pending_applications = getPendingApplicationsForDepartment('hod', 'hod_review')
         dropdown.style.visibility = 'visible';
         dropdown.style.opacity = '1';
         dropdown.style.zIndex = '99999';
+        dropdown.style.overflow = 'visible';
+        dropdown.style.maxHeight = 'none';
+        
+        // Ensure logout button is visible
+        const logoutLink = dropdown.querySelector('a[href*="logout"]');
+        if (logoutLink) {
+          logoutLink.style.display = 'block';
+          logoutLink.style.visibility = 'visible';
+          logoutLink.style.opacity = '1';
+          logoutLink.style.pointerEvents = 'auto';
+          logoutLink.style.zIndex = '100000';
+          logoutLink.style.position = 'relative';
+        }
         
         // On mobile, position dropdown relative to viewport at bottom
         if (window.innerWidth <= 767 && trigger) {
@@ -148,7 +201,7 @@ $pending_applications = getPendingApplicationsForDepartment('hod', 'hod_review')
           dropdown.style.bottom = '80px';
           dropdown.style.top = 'auto';
           dropdown.style.left = 'auto';
-          dropdown.style.maxHeight = (window.innerHeight - 100) + 'px';
+          dropdown.style.maxHeight = 'none';
           dropdown.style.overflow = 'visible';
         } else {
           // Desktop/Workstation: use fixed positioning to ensure it's above all content
@@ -176,6 +229,8 @@ $pending_applications = getPendingApplicationsForDepartment('hod', 'hod_review')
           dropdown.style.marginTop = '0';
           dropdown.style.visibility = 'visible';
           dropdown.style.opacity = '1';
+          dropdown.style.maxHeight = 'none';
+          dropdown.style.overflow = 'visible';
         }
       } else {
         // Hide dropdown
@@ -196,14 +251,14 @@ $pending_applications = getPendingApplicationsForDepartment('hod', 'hod_review')
   </script>
 </head>
 <body>
-    <header style="overflow: visible !important; z-index: 9999 !important; position: relative !important; display: flex; justify-content: space-between; align-items: center; padding-right: 20px;">
-        <div class="logo" style="flex-shrink: 0; order: 1;">
-            <a href="hod_dashboard.php" style="display: flex; align-items: center; text-decoration: none; color: inherit;">
-                <img src="../images/pnmc.png" alt="PNG Maritime College Logo" class="logo-img">
-                <span style="margin-left: 10px; white-space: nowrap;">HOD Dashboard</span>
+    <header style="overflow: visible !important; z-index: 9999 !important; position: relative !important; display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; width: 100%; box-sizing: border-box;">
+        <div class="logo" style="flex-shrink: 0; order: 1; min-width: 0; flex: 0 1 auto;">
+            <a href="hod_dashboard.php" style="display: flex; align-items: center; text-decoration: none; color: inherit; gap: 10px;">
+                <img src="../images/pnmc.png" alt="PNG Maritime College Logo" class="logo-img" style="width: auto; height: 40px; max-width: 100%; object-fit: contain;">
+                <span style="white-space: nowrap; font-size: 0.95rem; overflow: hidden; text-overflow: ellipsis;">HOD Dashboard</span>
             </a>
         </div>
-        <div class="user-info" style="position: relative; display: flex; align-items: center; gap: 15px; z-index: 10000; flex-shrink: 0; order: 3; margin-left: auto; margin-right: 360px;">
+        <div class="user-info" style="position: relative; display: flex; align-items: center; gap: 15px; z-index: 10000; flex-shrink: 0; order: 3; margin-left: auto; min-width: 0;">
             <?php if ($notification_count > 0): ?>
               <a href="workflow_manager.php" class="notification-bubble workflow-bubble" style="position: relative; display: flex; align-items: center; justify-content: center; width: 45px; height: 45px; background: linear-gradient(135deg, #f57c00 0%, #e65100 100%); border-radius: 50%; text-decoration: none; box-shadow: 0 4px 12px rgba(245, 124, 0, 0.4), 0 2px 4px rgba(0,0,0,0.2); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); animation: pulse-bubble 2s infinite; z-index: 100;" onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='0 6px 20px rgba(245, 124, 0, 0.6), 0 2px 6px rgba(0,0,0,0.3)';" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(245, 124, 0, 0.4), 0 2px 4px rgba(0,0,0,0.2)';" onclick="event.preventDefault(); window.location.href='workflow_manager.php'; return false;">
                 <span style="font-size: 1.5rem; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2)); pointer-events: none;">📬</span>

@@ -177,10 +177,46 @@ if ($conn) {
     /* Ensure dropdown and logout button are always visible */
     header {
       overflow: visible !important;
-      padding-right: 20px !important;
+      padding: 10px 20px !important;
       display: flex !important;
       justify-content: space-between !important;
       align-items: center !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+    }
+    header .logo {
+      min-width: 0;
+      flex: 0 1 auto;
+      overflow: hidden;
+    }
+    header .logo span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .user-dropdown-trigger span:nth-child(2) {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 200px;
+    }
+    @media (max-width: 1200px) {
+      .user-dropdown-trigger span:nth-child(2) {
+        max-width: 150px;
+      }
+    }
+    @media (max-width: 992px) {
+      .user-dropdown-trigger span:nth-child(2) {
+        max-width: 120px;
+      }
+    }
+    @media (max-width: 768px) {
+      header .logo span {
+        display: none;
+      }
+      .user-dropdown-trigger span:nth-child(2) {
+        display: none;
+      }
     }
     
     header .logo {
@@ -413,6 +449,18 @@ if ($conn) {
         dropdown.style.opacity = '1';
         dropdown.style.zIndex = '99999';
         dropdown.style.overflow = 'visible';
+        dropdown.style.maxHeight = 'none';
+        
+        // Force logout button to be visible FIRST
+        const logoutLink = dropdown.querySelector('a[href*="logout"]');
+        if (logoutLink) {
+          logoutLink.style.display = 'block';
+          logoutLink.style.visibility = 'visible';
+          logoutLink.style.opacity = '1';
+          logoutLink.style.pointerEvents = 'auto';
+          logoutLink.style.zIndex = '100000';
+          logoutLink.style.position = 'relative';
+        }
         
         // On mobile, position dropdown relative to viewport at bottom
         if (window.innerWidth <= 767 && trigger) {
@@ -421,7 +469,8 @@ if ($conn) {
           dropdown.style.bottom = '80px';
           dropdown.style.top = 'auto';
           dropdown.style.left = 'auto';
-          dropdown.style.maxHeight = (window.innerHeight - 100) + 'px';
+          dropdown.style.maxHeight = 'none';
+          dropdown.style.overflow = 'visible';
           dropdown.style.transform = 'none';
         } else {
           // Desktop/Workstation: use fixed positioning to ensure it's above all content
@@ -449,16 +498,8 @@ if ($conn) {
           dropdown.style.marginTop = '0';
           dropdown.style.visibility = 'visible';
           dropdown.style.opacity = '1';
-        }
-        
-        // Force logout button to be visible
-        const logoutLink = dropdown.querySelector('a[href*="logout"]');
-        if (logoutLink) {
-          logoutLink.style.display = 'block';
-          logoutLink.style.visibility = 'visible';
-          logoutLink.style.opacity = '1';
-          logoutLink.style.pointerEvents = 'auto';
-          logoutLink.style.zIndex = '100000';
+          dropdown.style.maxHeight = 'none';
+          dropdown.style.overflow = 'visible';
         }
       } else {
         // Hide dropdown
@@ -519,14 +560,14 @@ if ($conn) {
   </style>
 </head>
 <body>
-    <header style="overflow: visible !important; z-index: 9999 !important; position: relative !important; padding-right: 20px !important; display: flex; justify-content: space-between; align-items: center;">
-        <div class="logo" style="flex-shrink: 0; order: 1;">
-            <a href="student_service_dashboard.php" style="display: flex; align-items: center; text-decoration: none; color: inherit;">
-                <img src="../images/pnmc.png" alt="PNG Maritime College Logo" class="logo-img">
-                <span style="margin-left: 10px; white-space: nowrap;">Student Services Dashboard</span>
+    <header style="overflow: visible !important; z-index: 9999 !important; position: relative !important; padding: 10px 20px !important; display: flex; justify-content: space-between; align-items: center; width: 100%; box-sizing: border-box;">
+        <div class="logo" style="flex-shrink: 0; order: 1; min-width: 0; flex: 0 1 auto;">
+            <a href="student_service_dashboard.php" style="display: flex; align-items: center; text-decoration: none; color: inherit; gap: 10px;">
+                <img src="../images/pnmc.png" alt="PNG Maritime College Logo" class="logo-img" style="width: auto; height: 40px; max-width: 100%; object-fit: contain;">
+                <span style="white-space: nowrap; font-size: 0.95rem; overflow: hidden; text-overflow: ellipsis;">Student Services Dashboard</span>
             </a>
         </div>
-        <div class="user-info" style="position: relative; display: flex; align-items: center; gap: 10px; overflow: visible !important; z-index: 10000; flex-shrink: 0; order: 3; margin-left: auto; margin-right: 360px;">
+        <div class="user-info" style="position: relative; display: flex; align-items: center; gap: 10px; overflow: visible !important; z-index: 10000; flex-shrink: 0; order: 3; margin-left: auto; min-width: 0;">
             <!-- Notification Indicators -->
             <?php if ($finance_transfer_count > 0 || $notification_count > 0): ?>
               <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">

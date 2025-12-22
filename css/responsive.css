@@ -1311,11 +1311,73 @@ header .login-btn {
   display: flex;
   align-items: center;
   gap: 10px;
+  min-width: 0;
+  flex-shrink: 0;
+}
+
+/* Header layout fixes */
+header {
+  width: 100% !important;
+  box-sizing: border-box !important;
+  overflow: visible !important;
+}
+
+header .logo {
+  min-width: 0;
+  flex: 0 1 auto;
+  overflow: hidden;
+}
+
+header .logo a {
+  min-width: 0;
+  overflow: hidden;
+}
+
+header .logo img {
+  flex-shrink: 0;
+}
+
+header .logo span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 @media (max-width: 767px) {
   .user-info {
     gap: 8px;
+  }
+  
+  header .logo span {
+    display: none;
+  }
+  
+  header {
+    padding: 8px 10px !important;
+  }
+}
+
+@media (max-width: 1200px) {
+  header .logo span {
+    font-size: 0.85rem !important;
+  }
+  
+  .user-dropdown-trigger span:nth-child(2) {
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 992px) {
+  header .logo span {
+    font-size: 0.8rem !important;
+    max-width: 200px;
+  }
+  
+  .user-dropdown-trigger span:nth-child(2) {
+    max-width: 120px;
   }
 }
 
@@ -1329,6 +1391,15 @@ header .login-btn {
   transition: background 0.2s;
   white-space: nowrap;
   font-size: 0.85rem;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.user-dropdown-trigger span:nth-child(2) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 250px;
 }
 
 @media (max-width: 767px) {
@@ -1370,6 +1441,17 @@ header .login-btn {
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   min-width: 180px;
   z-index: 1000;
+  overflow: visible !important;
+}
+
+/* Ensure logout button is always visible on desktop */
+.user-dropdown a[href*="logout"] {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  position: relative !important;
+  z-index: 1000 !important;
 }
 
 @media (max-width: 767px) {
@@ -1434,6 +1516,10 @@ header .login-btn {
     margin-top: 0 !important;
     position: relative !important;
     z-index: 2 !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
   }
   
   /* Alternative: position relative to viewport */
